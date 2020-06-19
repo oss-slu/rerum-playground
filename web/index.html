@@ -9,10 +9,38 @@ and open the template in the editor.
         <title>Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <script src="playground.js"></script>
     </head>
     <body>
-        <div>
-            Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
+        <header>THIS      IS      A       HEADER</header>
+        <div class="container">
+            <div id="intro">
+                Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
+            </div>
+            <div id="equiptmentSet">
+                
+            </div>
+            <div id="chosenEquiptmentPreview" equiptment="none">
+                
+            </div>
         </div>
+        <footer>
+            THIS      IS        A          FOOTER
+        </footer>
     </body>
+    <script>
+        
+        /**
+         * Draw all modules/tools in the playground in a grid style.
+         * Fires Event EquiptmentBuilt or EquiptmentFail
+         * May be asyncronous
+         * @type type
+         */
+        PLAYGROUND.buildEquiptment()
+        
+        
+        
+        
+    </script>
 </html>
