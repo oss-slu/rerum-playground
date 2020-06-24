@@ -4,10 +4,10 @@
 
 
 // Identify playground configuration.  Will be available as github CDN.
-import { default as PLAYGROUND } from './blueprints.js'
+import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/blueprints.js'
     
 // Playground scripting utilities.  Will be available as github CDN.
-import { default as UTILS } from './utilities.js'
+import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/utilities.js'
 
 //Just use the RERUM sandbox, for now.  Playground should probably have its own agent and token though.
 PLAYGROUND.URLS = {

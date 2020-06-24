@@ -3,7 +3,7 @@
  * 
  */
 
-import { default as PLAYGROUND } from './blueprints.js'
+import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/blueprints.js'
 
 export default {
     /**

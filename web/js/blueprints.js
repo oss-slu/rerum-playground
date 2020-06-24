@@ -3,8 +3,6 @@
  * There should be no functions or HTML template literals here.
  * 
  */
-
-
 export default {
     URLS: {
         CREATE: "create",
