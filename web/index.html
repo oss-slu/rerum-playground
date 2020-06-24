@@ -18,11 +18,10 @@ and open the template in the editor.
             <div id="intro">
                 Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
             </div>
-            <div id="equiptmentSet">
-                
-            </div>
-            <div id="chosenEquiptmentPreview" equiptment="none">
-                
+            <div id="playground_set">
+                <div class="tool"> Catalog Item A </div>
+                <div class="tool"> Catalog Item B </div>
+                <div class="tool"> Catalog Item C </div>
             </div>
         </div>
         <footer>
@@ -37,10 +36,14 @@ and open the template in the editor.
          * May be asyncronous
          * @type type
          */
-        PLAYGROUND.buildEquiptment()
-        
-        
-        
-        
+        let playgroundInstance = PLAYGROUND.initializeEquiptmentCatalog(
+        {
+            id : "playground_set",
+            catalog : [
+                {"label":"A", "icon":"https://iconsplace.com/wp-content/uploads/_icons/ffc0cb/256/png/letter-a-icon-12-256.png", "view":"https://thehabes.github.io/playground_create/view_A.html" },
+                {"label":"B", "icon":"https://images.clipartlogo.com/files/istock/previews/9099/90999371-b-letter-icon-in-circle-with-speed-line.jpg", "view":"https://thehabes.github.io/playground_create/view_B.html" },
+                {"label":"C", "icon":"https://cdn2.iconfinder.com/data/icons/letters-and-numbers-1/32/lowercase_letter_c_red-512.png", "view":"https://thehabes.github.io/playground_create/view_A.html" }
+            ]
+        })
     </script>
 </html>
