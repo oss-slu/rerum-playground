@@ -3,7 +3,7 @@
  * 
  */
 
-import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/config.js'
+import { default as PLAYGROUND } from './config.js'
 
 export default {
     /**
