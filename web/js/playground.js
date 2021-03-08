@@ -4,7 +4,7 @@
 
 
 // Identify playground configuration.  Will be available as github CDN.
-import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/blueprints.js'
+import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/config.js'
     
 // Playground scripting utilities.  Will be available as github CDN.
 import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/utilities.js'
@@ -21,9 +21,9 @@ function initializeView(elem, viewURL, data) {
     //Do playground magic on it (apply header, footer, and utilities)
 }
 
-function initializePlaygroundCatalog(config) {
+function initializeTools(config) {
     return new Promise((res) => {
-        const setContainer = document.getElementById("equiptmentSet")
+        const setContainer = document.getElementById("tool_set")
         Array.from(config.REGISTRY).forEach(thumbnailGenerator => {
             setContainer.innerHTML += thumbnailGenerator()
         })
