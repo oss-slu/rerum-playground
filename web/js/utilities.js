@@ -66,8 +66,8 @@ export default {
                 method: 'POST',
                 headers: {
                    'Content-Type': 'application/json'
-                }
-                body: obj
+                },
+                body: JSON.stringify(obj)
             })
             .then(resp => resp.json())
             .catch(err => {return err})
@@ -77,8 +77,8 @@ export default {
                 method: 'POST',
                 headers: {
                    'Content-Type': 'application/json'
-                }
-                body: obj
+                },
+                body: JSON.stringify(obj)
             })
             .then(resp => resp.json())
             .catch(err => {return err})
@@ -88,8 +88,8 @@ export default {
                 method: 'POST',
                 headers: {
                    'Content-Type': 'application/json'
-                }
-                body: obj
+                },
+                body: JSON.stringify(obj)
             })
             .then(resp => resp.json())
             .catch(err => {return err})
@@ -99,7 +99,7 @@ export default {
                 method: 'DELETE',
                 headers: {
                    'Content-Type': 'application/json'
-                }
+                },
                 body: uri
             })
             .then(resp => {
