@@ -98,7 +98,7 @@ export default {
             return fetch(PLAYGROUND.URLS.DELETE,  {
                 method: 'DELETE',
                 headers: {
-                   'Content-Type': 'application/json'
+                   'Content-Type': 'text/plain'
                 },
                 body: uri
             })
