@@ -173,7 +173,7 @@ export default {
             // Make this the active tool for the user to interact with.
             document.location.href = tool.view
         })
-    }
+    },
 
     /**
     *  Behavior for when the user picks an interface. They may provide the data to take into that interface.
@@ -182,7 +182,7 @@ export default {
         return new Promise((res) => {
             // Make this the active interface for the user to interact with.
         })
-    }
+    },
 
     /**
     *  Behavior for when the user picks a technology. They may provide the data to take into that technology.
@@ -191,7 +191,7 @@ export default {
         return new Promise((res) => {
             // Make this the active technology for the user to interact with.
         })
-    }
+    },
 
     /**
     * Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
