@@ -7,7 +7,7 @@
 import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/config.js'
     
 // Playground scripting utilities.  Will be available as github CDN.
-import { default as UTILS, initializeTools } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
+import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
 
 /**
 *  Landing behavior for tools.  This should populate the set of available tools to the DOM.
@@ -18,7 +18,7 @@ function initializeTools(config) {
         Array.from(config.REGISTRY).forEach(thumbnailGenerator => {
             setContainer.innerHTML += thumbnailGenerator()
         })
-        UTILS.broadcast(undefined, PLAYGROUND.EVENTS.LOADED, setContainer, {})
+        
         /**
          * Really each render should be a promise and we should return a Promise.all() here of some kind.
          * That would only work if PlaygroundRender resulted in a Promise where we could return Promise.all(renderPromises).
