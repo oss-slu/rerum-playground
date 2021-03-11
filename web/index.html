@@ -10,7 +10,40 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
-        <script src="playground.js"></script>
+        <style>
+            img.thumb{
+                max-height: 250px;
+                max-width: 250px;
+            }
+            .thumbLabel{
+                font-size : 8pt;
+            }
+            .thumbDescription{
+                font-size : 8pt;
+            }
+            .catalogEntry{
+                padding: 3px;
+                border : 3px solid black;
+                margin: 3px 0px;
+                text-align: center;
+                display: inline-block;
+            }
+            #tool_set{
+                padding : 2px;
+                margin : 1em 0px;
+            }
+            #interface_set{
+                padding : 2px;
+                margin : 1em 0px;
+            }
+            #technology_set{
+                padding: 2px;
+                margin: 1em 0px;
+            }
+            h4{
+                text-decoration: underline;
+            }
+        </style>
     </head>
     <body>
         <header>THIS      IS      A       HEADER</header>
@@ -18,32 +51,21 @@ and open the template in the editor.
             <div id="intro">
                 Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
             </div>
-            <div id="playground_set">
-                <div class="tool"> Catalog Item A </div>
-                <div class="tool"> Catalog Item B </div>
-                <div class="tool"> Catalog Item C </div>
+            <div id="tool_set">
+                <h4 title="Tools connected with the playground.  You may be directed to a different site."> Tools </h4>
+            </div>
+            <div id="interface_set">
+                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
+                <a class="catalogEntry"> <div class="thumbLabel">None</div> <img class="thumb" src="https://i0.wp.com/sharetraveler.com/wp-content/uploads/2015/06/sad-face.jpg?ssl=1"> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
+            </div>
+            <div id="technology_set">
+                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
+                <a class="catalogEntry"> <div class="thumbLabel">None</div> <img class="thumb" src="https://i0.wp.com/sharetraveler.com/wp-content/uploads/2015/06/sad-face.jpg?ssl=1"> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
             </div>
         </div>
         <footer>
             THIS      IS        A          FOOTER
         </footer>
+        <script src="./js/playground.js" type="module"></script>
     </body>
-    <script>
-        
-        /**
-         * Draw all modules/tools in the playground in a grid style.
-         * Fires Event EquiptmentBuilt or EquiptmentFail
-         * May be asyncronous
-         * @type type
-         */
-        let playgroundIncludedTools = PLAYGROUND.initializeEquiptmentCatalog(
-        {
-            id : "playground_set",
-            catalog : [
-                {"label":"A", "icon":"https://iconsplace.com/wp-content/uploads/_icons/ffc0cb/256/png/letter-a-icon-12-256.png", "view":"https://thehabes.github.io/playground_create/create.html" },
-                {"label":"B", "icon":"https://images.clipartlogo.com/files/istock/previews/9099/90999371-b-letter-icon-in-circle-with-speed-line.jpg", "view":"https://thehabes.github.io/playground_create/view_B.html" },
-                {"label":"C", "icon":"https://cdn2.iconfinder.com/data/icons/letters-and-numbers-1/32/lowercase_letter_c_red-512.png", "view":"https://thehabes.github.io/playground_create/view_C.html" }
-            ]
-        })
-    </script>
 </html>
