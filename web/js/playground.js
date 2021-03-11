@@ -14,7 +14,7 @@ import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/r
 */
 function initializeTools(config) {
     return new Promise((res) => {
-        const setContainer = document.getElementById(config.id)
+        let setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(tool => {
             setContainer.innerHTML += UTILS.thumbnailGenerator(tool)
         })
@@ -32,7 +32,7 @@ function initializeTools(config) {
 */
 function initializeInterfaces(config) {
     return new Promise((res) => {
-        const setContainer = document.getElementById(config.id)
+        let setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(inter => {
             setContainer.innerHTML += UTILS.thumbnailGenerator(inter)
         })
@@ -50,7 +50,7 @@ function initializeInterfaces(config) {
 */
 function initializeTechnologies(config) {
     return new Promise((res) => {
-        const setContainer = document.getElementById(config.id)
+        let setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(tech => {
             setContainer.innerHTML += UTILS.thumbnailGenerator(tech)
         })
