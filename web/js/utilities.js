@@ -179,7 +179,7 @@ export function useTool(tool, data) {
 /**
 *  Behavior for when the user picks an interface. They may provide the data to take into that interface.
 */
-export function useInterface(interface, data) {
+export function useInterface(inter, data) {
     return new Promise((res) => {
         // Make this the active interface for the user to interact with.
     })
