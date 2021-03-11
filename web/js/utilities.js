@@ -160,48 +160,50 @@ export default {
                 }
             })
             .catch(err => {return err})
+    },
+
+    /**
+     * Behavior for when the user picks a tool. They may provide the data to take into that tool.
+     * When the user picks a tool/interface/technology, we need to load up the view for the user to interact with.
+     * We may want to handle internal views and external views separately.
+     * What if the user had done some stuff and would like to take that data to the view?  It may not just be a URI.
+     */
+    useTool: function(tool, data) {
+        return new Promise((res) => {
+            // Make this the active tool for the user to interact with.
+            document.location.href = tool.view
+        })
+    }
+
+    /**
+    *  Behavior for when the user picks an interface. They may provide the data to take into that interface.
+    */
+    useInterface: function(inter, data) {
+        return new Promise((res) => {
+            // Make this the active interface for the user to interact with.
+        })
+    }
+
+    /**
+    *  Behavior for when the user picks a technology. They may provide the data to take into that technology.
+    */
+    useTechnology: function(tech, data) {
+        return new Promise((res) => {
+            // Make this the active technology for the user to interact with.
+        })
+    }
+
+    /**
+    * Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
+    */
+    thumbnailGenerator: function(entry){
+        let thumbImg = `<img class="thumb" src="${entry.icon}" />`
+        let label = `<div class="thumbLabel">${entry.label}</div>`
+        let description = `<div class="thumbDescription">${entry.label}</div>`
+        let linkedThumb = `<a class="catalogEntry" href="${entry.view}"> ${label} ${thumbImg} ${description} </a>`
+        return linkedThumb
     }
 }
 
-/**
- * Behavior for when the user picks a tool. They may provide the data to take into that tool.
- * When the user picks a tool/interface/technology, we need to load up the view for the user to interact with.
- * We may want to handle internal views and external views separately.
- * What if the user had done some stuff and would like to take that data to the view?  It may not just be a URI.
- */
-export function useTool(tool, data) {
-    return new Promise((res) => {
-        // Make this the active tool for the user to interact with.
-        document.location.href = tool.view
-    })
-}
 
-/**
-*  Behavior for when the user picks an interface. They may provide the data to take into that interface.
-*/
-export function useInterface(inter, data) {
-    return new Promise((res) => {
-        // Make this the active interface for the user to interact with.
-    })
-}
-
-/**
-*  Behavior for when the user picks a technology. They may provide the data to take into that technology.
-*/
-export function useTechnology(tech, data) {
-    return new Promise((res) => {
-        // Make this the active technology for the user to interact with.
-    })
-}
-
-/**
-* Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
-*/
-export function thumbnailGenerator(entry){
-    let thumbImg = `<img class="thumb" src="${entry.icon}" />`
-    let label = `<div class="thumbLabel">${entry.label}</div>`
-    let description = `<div class="thumbDescription">${entry.label}</div>`
-    let linkedThumb = `<a class="catalogEntry" href="${entry.view}"> ${label} ${thumbImg} ${description} </a>`
-    return linkedThumb
-}
   
