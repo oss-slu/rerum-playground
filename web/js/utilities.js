@@ -193,4 +193,15 @@ export function useTechnology(tech, data) {
         // Make this the active technology for the user to interact with.
     })
 }
+
+/**
+* Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
+*/
+export function thumbnailGenerator(entry){
+    let thumbImg = `<img class="thumb" src="${entry.icon}" />`
+    let label = `<div class="thumbLabel">${entry.label}</div>`
+    let description = `<div class="thumbDescription">${entry.label}</div>`
+    let linkedThumb = `<a class="catalogEntry" href="${entry.view}"> ${label} ${thumbImg} ${description} </a>`
+    return linkedThumb
+}
   

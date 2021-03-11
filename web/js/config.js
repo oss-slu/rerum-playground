@@ -28,7 +28,7 @@ export default {
     //Of NOTE, it is possible for these to be in their own repository.  We could gather these from those repos.
     //Then just adding one of these things to the repos will make it show up in the playground.  Just a thought for now. 
     TOOLS:{
-        id : "playground_set",
+        id : "tool_set",
         catalog : [
             {"label":"Example A", "icon":"https://iconsplace.com/wp-content/uploads/_icons/ffc0cb/256/png/letter-a-icon-12-256.png", "view":"https://thehabes.github.io/playground_create/create.html", "description" : "Lorem Ipsem" },
             {"label":"Example B", "icon":"https://images.clipartlogo.com/files/istock/previews/9099/90999371-b-letter-icon-in-circle-with-speed-line.jpg", "view":"https://thehabes.github.io/playground_create/view_B.html", "description" : "Epsom Saltum" },
