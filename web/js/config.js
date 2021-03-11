@@ -32,7 +32,7 @@ export default {
         catalog : [
             {"label":"Example A", "icon":"https://iconsplace.com/wp-content/uploads/_icons/ffc0cb/256/png/letter-a-icon-12-256.png", "view":"https://thehabes.github.io/playground_create/create.html", "description" : "Lorem Ipsem" },
             {"label":"Example B", "icon":"https://images.clipartlogo.com/files/istock/previews/9099/90999371-b-letter-icon-in-circle-with-speed-line.jpg", "view":"https://thehabes.github.io/playground_create/view_B.html", "description" : "Epsom Saltum" },
-            {"label":"Example C", "icon":"https://cdn2.iconfinder.com/data/icons/letters-and-numbers-1/32/lowercase_letter_c_red-512.png", "view":"https://thehabes.github.io/playground_create/view_C.html" },
+            {"label":"Example C", "icon":"https://cdn2.iconfinder.com/data/icons/letters-and-numbers-1/32/lowercase_letter_c_red-512.png", "view":"https://thehabes.github.io/playground_create/view_C.html", "description" : "If they could SEE me now..." },
             {"label":"RERUM Geolocator", "icon":"http://geo.rerum.io/geolocate/images/earth.gif", "view":"http://geo.rerum.io/geolocate/annotate.html", "description" : "A water bear that knows where it is." }
         ]
     },
