@@ -199,7 +199,7 @@ export default {
     thumbnailGenerator: function(entry){
         let thumbImg = `<img class="thumb" src="${entry.icon}" />`
         let label = `<div class="thumbLabel">${entry.label}</div>`
-        let description = `<div class="thumbDescription">${entry.label}</div>`
+        let description = `<div class="thumbDescription">${entry.description}</div>`
         let linkedThumb = `<a class="catalogEntry" href="${entry.view}"> ${label} ${thumbImg} ${description} </a>`
         return linkedThumb
     }
