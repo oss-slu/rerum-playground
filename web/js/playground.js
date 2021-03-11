@@ -18,7 +18,7 @@ function initializeTools(config) {
         Array.from(config.TOOLS).forEach(thumbnailGenerator => {
             setContainer.innerHTML += thumbnailGenerator()
         })
-        
+        UTILS.broadcast(undefined, PLAYGROUND.EVENTS.LOADED, setContainer, {})
         /**
          * Really each render should be a promise and we should return a Promise.all() here of some kind.
          * That would only work if PlaygroundRender resulted in a Promise where we could return Promise.all(renderPromises).
