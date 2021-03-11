@@ -16,7 +16,7 @@ function initializeTools(config) {
     return new Promise((res) => {
         const setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(tool => {
-            setContainer.innerHTML += thumbnailGenerator(tool)
+            setContainer.innerHTML += UTILS.thumbnailGenerator(tool)
         })
         UTILS.broadcast(undefined, PLAYGROUND.EVENTS.LOADED, setContainer, {})
         /**
@@ -34,7 +34,7 @@ function initializeInterfaces(config) {
     return new Promise((res) => {
         const setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(inter => {
-            setContainer.innerHTML += thumbnailGenerator(inter)
+            setContainer.innerHTML += UTILS.thumbnailGenerator(inter)
         })
         UTILS.broadcast(undefined, PLAYGROUND.EVENTS.LOADED, setContainer, {})
         /**
@@ -52,7 +52,7 @@ function initializeTechnologies(config) {
     return new Promise((res) => {
         const setContainer = document.getElementById(config.id)
         Array.from(config.catalog).forEach(tech => {
-            setContainer.innerHTML += thumbnailGenerator(tech)
+            setContainer.innerHTML += UTILS.thumbnailGenerator(tech)
         })
         UTILS.broadcast(undefined, PLAYGROUND.EVENTS.LOADED, setContainer, {})
         /**
