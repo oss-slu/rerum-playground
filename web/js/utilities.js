@@ -116,15 +116,14 @@ const API = {
 export default {
         handleHTTPError,
         logger,
-        API
-
+        API,
         /**
          * Broadcast a message about PLAYGROUND
          */
         broadcast(event = {}, type = "message", element = document, obj = {}) {
 
             return element.dispatchEvent(new CustomEvent(type, { detail: Object.assign(obj, { target: event.target }), bubbles: true }))
-        }
+        },
 
         /**
          * Behavior for when the user picks a tool. They may provide the data to take into that tool.
@@ -160,12 +159,14 @@ export default {
         /**
         * Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
         */
-        thumbnailGenerator: function (entry) {
-            let thumbImg = `<img class="thumb" src="${entry.icon}" />`
-            let label = `<div class="thumbLabel">${entry.label}</div>`
-            let description = `<div class="thumbDescription">${entry.description}</div>`
-            let linkedThumb = `<a class="catalogEntry" href="${entry.view}"> ${label} ${thumbImg} ${description} </a>`
-            return linkedThumb
+        thumbnailGenerator: (entry) => {
+            return `<a class="catalogEntry" href="${entry.view}">
+            <figure class="thumb">
+                <label>${entry.label}</label>
+                <img src="${entry.icon}" />
+                <figcaption>${entry.description}</figcaption>
+            </figure>
+            </a>`
         }
     }
 
