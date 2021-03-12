@@ -45,6 +45,8 @@ export default {
             {"label":"RERUM Geolocator", "icon":"http://geo.rerum.io/geolocate/images/earth.gif", "view":"http://geo.rerum.io/geolocate/annotate.html", "description" : "A water bear that knows where it is." }
         ]
     },
+
+    // What are these here for? Do the users know about these?
     INTERFACES:{
         id : "interface_set",
         catalog : [
