@@ -23,7 +23,16 @@ export default {
         CLICKED: "clicked"
     },
     APPAGENT : "", //TODO register a new app with RERUM.
-    ROBUSTFEEDBACK: true, //Show warnings along with errors in the web console.  Set to false to only see errors. 
+    /**
+     * 0: OFF
+     * 6: TRACE
+     * 5: DEBUG
+     * 4: INFO
+     * 3: WARNING
+     * 2: ERROR
+     * 1: FATAL
+     */
+    LOGLEVEL: 3,
     VERSION: "0.0.1",
     //Of NOTE, it is possible for these to be in their own repository.  We could gather these from those repos.
     //Then just adding one of these things to the repos will make it show up in the playground.  Just a thought for now. 
@@ -36,6 +45,8 @@ export default {
             {"label":"RERUM Geolocator", "icon":"http://geo.rerum.io/geolocate/images/earth.gif", "view":"http://geo.rerum.io/geolocate/annotate.html", "description" : "A water bear that knows where it is." }
         ]
     },
+
+    // What are these here for? Do the users know about these?
     INTERFACES:{
         id : "interface_set",
         catalog : [
