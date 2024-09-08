@@ -11,61 +11,145 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <style>
-            .thumb img{
-                max-height: 250px;
-                max-width: 250px;
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-            .thumb label{
-                font-size : 8pt;
+
+            body {
+                font-family: Arial, sans-serif;
             }
-            .thumb figcaption{
-                font-size : 8pt;
+
+            header {
+                background-color: #333;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
             }
-            .catalogEntry{
-                padding: 3px;
-                border : 3px solid black;
-                margin: 3px 0px;
+
+            .logo {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .logoimg {
+                height: 50px;
+            }
+
+            .menu-icon {
+                font-size: 1.5em;
+                cursor: pointer;
+                position: absolute;
+                left: 15px;
+            }
+
+            nav {
+                width: 250px;
+                height: calc(100% - 120px);
+                background-color: #444;
+                position: fixed;
+                top: 60px;
+                left: -250px;
+                transition: all 0.3s;
+                z-index: 999;
+            }
+
+            nav ul {
+                list-style-type: none;
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 20px 0;
+            }
+
+            nav ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 1.2em;
+            }
+
+            main {
+                margin-top: 60px;
+                padding: 20px;
+                margin-left: 250px;
+                transition: margin-left 0.3s;
+            }
+
+            footer {
+                background-color: #333;
+                color: white;
                 text-align: center;
-                display: inline-block;
+                padding: 10px;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+                left: 0;
             }
-            #tool_set{
-                padding : 2px;
-                margin : 1em 0px;
+
+            @media (max-width: 768px) {
+                nav {
+                    left: -100%;
+                }
+
+                main {
+                    margin-left: 0;
+                }
+
+                footer {
+                    width: 100%;
+                }
+
+                .logo {
+                    justify-content: center;
+                }
             }
-            #interface_set{
-                padding : 2px;
-                margin : 1em 0px;
+
+            .open {
+                left: 0;
             }
-            #technology_set{
-                padding: 2px;
-                margin: 1em 0px;
-            }
-            h4{
-                text-decoration: underline;
-            }
+
         </style>
     </head>
     <body>
-        <header>THIS      IS      A       HEADER</header>
-        <div class="container">
-            <div id="intro">
-                Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
+        <header>
+            <div class="menu-icon" onclick="toggleMenu()">
+                &#9776;
             </div>
-            <div id="tool_set">
-                <h4 title="Tools connected with the playground.  You may be directed to a different site."> Tools </h4>
+            <div class="logo">
+                <img src="META-INF/logo.png" class = "logoimg">
             </div>
-            <div id="interface_set">
-                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <img class="thumb" src="https://i0.wp.com/sharetraveler.com/wp-content/uploads/2015/06/sad-face.jpg?ssl=1"> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            <div id="technology_set">
-                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <img class="thumb" src="https://i0.wp.com/sharetraveler.com/wp-content/uploads/2015/06/sad-face.jpg?ssl=1"> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-        </div>
+        </header>
+    
+        <nav id="sidebar">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contribute</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Tools</a></li>
+            </ul>
+        </nav>
+    
+        <main class="mainContent">
+            <section>
+                
+            </section>
+        </main>
+    
         <footer>
-            THIS      IS        A          FOOTER
+            <p>Footer</p>
         </footer>
-        <script src="./js/playground.js" type="module"></script>
+    
+        <script src="js/App.js"></script>
     </body>
 </html>
