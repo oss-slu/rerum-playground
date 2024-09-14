@@ -71,6 +71,6 @@ try {
     initializeInterfaces(PLAYGROUND.INTERFACES)
     initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
 } catch (err) {
-    
+    console.log(err)
 }
     
