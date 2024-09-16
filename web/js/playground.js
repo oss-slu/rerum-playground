@@ -71,6 +71,6 @@ try {
     initializeInterfaces(PLAYGROUND.INTERFACES)
     initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
 } catch (err) {
-    
+    console.error("Error initializing the playground: ", err);
 }
     
