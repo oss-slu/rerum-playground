@@ -1,28 +1,19 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-<!--
-Some code snippets are sourced from w3schools.com as of now, as I still need to go through this and fix things up.
--->
 <html lang="en">
     <head>
-        <title>Rerum Playground</title>
+        <title>Tools | Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <style>
-            .header{
+            .header {
                 padding: 15px;
                 text-align: left;
                 z-index: 1;
                 background: #222222;
             }
 
-            .header img{
+            .header img {
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
@@ -55,17 +46,35 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
                 color: #f1f1f1;
             }
 
-            body{
+            body {
                 font-family: 'Times New Roman', Times, serif;
             }
 
-            .placeholder{
-                height: 50px;
-                padding: 40px;
-                text-align: center;
+            .thumb img {
+                max-height: 100px;
+                max-width: 100px;
+                object-fit: contain;
+                display: block;
+                margin: 0 auto;
             }
 
-            footer{
+            .catalogEntry {
+                padding: 10px;
+                border: 2px solid black;
+                margin: 10px;
+                text-align: center;
+                display: inline-block;
+                vertical-align: top;
+                width: 30%;
+            }
+
+            h4 { 
+                text-align: center;
+                font-size: 24px;
+                margin-top: 20px;
+            }
+
+            footer {
                 padding: 40px;
                 text-align: center;
                 z-index: 1;
@@ -76,62 +85,42 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
             }
         </style>
     </head>
-
+    
     <body>
-        <!--Sidebar page links. Still needs styles above.-->
         <div id="toolBar" class="sidebar">
             <a href="index.html">Home</a>
             <a href="#">About</a>
             <a href="#">Contribute</a>
             <a href="#">Contact</a>
             <a href="tools.html">Tools</a>
-          </div>
+        </div>
 
         <header>
-            <div class = "header">
-                <div class = "row">
-                    <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
+            <div class="header">
+                <div class="row">
                     <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
+            <h2>Tools Available in Rerum Playground</h2>
         </header>
 
-        <div class="container">
-            <div class = "placeholder" style="height: 50px;"></div>
-
-            <div id="intro">
-                <h2>Welcome to the RERUM Playground</h2>
-                <p>This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
-            </div>
-
-            <!--
-            <div id="interface_set">
-                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-
-            <div id="technology_set">
-                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            -->
+        <div id="tool_set">
+            <h4>Tools</h4>
         </div>
 
         <footer>
-            <!--THIS      IS        A          FOOTER-->
-        </footer>         
+            <!-- THIS IS A FOOTER -->
+        </footer>
 
         <script src="./js/playground.js" type="module"></script>
 
-        <!--Function to open and close sidebar menu by changing its width. Needs work.-->
         <script>
             function openCloseMenu() {
                 var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px"){
+                if (toolBar.style.width === "0px") {
                     toolBar.style.width = "250px";
-                }
-                else {
+                } else {
                     toolBar.style.width = "0";
                 }
             }

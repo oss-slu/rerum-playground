@@ -3,7 +3,7 @@
  * There should be no functions or HTML template literals here.
  * 
  */
-import toolsCatalog from './tools.js';
+import ToolsCatalog from './tools.js';
 
 export default {
     URLS: {
@@ -40,7 +40,7 @@ export default {
     //Then just adding one of these things to the repos will make it show up in the playground.  Just a thought for now. 
     TOOLS:{
         id : "tool_set",
-        catalog : toolsCatalog // importing the tool catalog from tools.js
+        catalog : ToolsCatalog // importing the tool catalog from tools.js
     },
 
     // What are these here for? Do the users know about these?

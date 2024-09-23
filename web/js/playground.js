@@ -9,6 +9,7 @@ import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github
 // Playground scripting utilities.  Will be available as github CDN.
 import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
 
+import ToolsCatalog from './tools.js';
 /**
 *  Landing behavior for tools.  This should populate the set of available tools to the DOM.
 */
@@ -63,14 +64,46 @@ function initializeTechnologies(config) {
     })
 }
 
+// New function to render tools based on ToolsCatalog
+function renderTools() {
+    const toolSetContainer = document.getElementById('tool_set');
+
+    if (!toolSetContainer) {
+        console.error("Tool set container not found.");
+        return;
+    }
+
+    // toolSetContainer.innerHTML = '';
+
+    const toolsWrapper = document.createElement('div');
+
+    ToolsCatalog.forEach(tool => {
+        const toolHTML = `
+            <a href="${tool.view}" target="_blank" class="catalogEntry">
+                <figure class="thumb">
+                    <label>${tool.label}</label>
+                    <img src="${tool.icon}" alt="${tool.label}" />
+                    <figcaption>${tool.description}</figcaption>
+                </figure>
+            </a>
+        `;
+        toolsWrapper.innerHTML += toolHTML;
+    });
+
+    toolSetContainer.appendChild(toolsWrapper);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
 /**
 *  These are promises so we can control the chaining how we like, if necessary.
 */
-try {
-    initializeTools(PLAYGROUND.TOOLS)
-    initializeInterfaces(PLAYGROUND.INTERFACES)
-    initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
-} catch (err) {
-    console.error("Error initializing the playground: ", err);
-}
-    
+    try {
+        initializeTools(PLAYGROUND.TOOLS)
+        initializeInterfaces(PLAYGROUND.INTERFACES)
+        initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
+
+        renderTools();
+    } catch (err) {
+        console.error("Error initializing the playground: ", err);
+    }
+});    
