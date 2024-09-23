@@ -8,166 +8,60 @@ and open the template in the editor.
 <!--
 Some code snippets are sourced from w3schools.com as of now, as I still need to go through this and fix things up.
 -->
+<!--
+Ran into some difficulties when attempting to separate HTML, styles, and JavaScript as requested. In the process of fixing.
+-->
 <html lang="en">
     <head>
         <title>Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
-        <style>
-            .header{
-                padding: 15px;
-                text-align: left;
-                z-index: 1;
-                background: #222222;
-                color: white;
-            }
-
-            .header img{
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                height: 80px;
-            }
-
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 0;
-                top: 100px;
-                left: 0;
-                background-color: #222222;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-            }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-
-            body{
-                font-family: 'Times New Roman', Times, serif;
-            }
-
-            .placeholder{
-                height:550px;
-                padding: 40px;
-                text-align: center;
-            }
-
-            footer{
-                padding: 40px;
-                text-align: center;
-                z-index: 1;
-                background: #222222;
-            }
-
-            .thumb img{
-                max-height: 250px;
-                max-width: 250px;
-            }
-            .thumb label{
-                font-size : 8pt;
-            }
-            .thumb figcaption{
-                font-size : 8pt;
-            }
-            .catalogEntry{
-                padding: 3px;
-                border : 3px solid black;
-                margin: 3px 0px;
-                text-align: center;
-                display: inline-block;
-            }
-            #tool_set{
-                padding : 2px;
-                margin : 1em 0px;
-            }
-            #interface_set{
-                padding : 2px;
-                margin : 1em 0px;
-            }
-            #technology_set{
-                padding: 2px;
-                margin: 1em 0px;
-            }
-            h4{
-                text-decoration: underline;
-            }
-        </style>
+        <link rel="stylesheet" href="styles.css">
     </head>
 
     <body>
-        <!--Sidebar page links. Still needs styles above.-->
+        <header>
+        <div class = "header">
+            <div class = "row">
+                <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
+                <div class = "rowItem">
+                    <p class = "menuOpener" onclick="openCloseMenu()">&#9776;</p>
+                </div>
+                <div class = "rowItem">
+                    <img src="logo.png" alt="Rerum Playground">
+                </div>
+            </div>
+        </div>
+        </header>
+
+        <!--Sidebar page links.-->
         <div id="toolBar" class="sidebar">
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Contribute</a>
             <a href="#">Contact</a>
             <a href="#">Tools</a>
-          </div>
-
-        <header>
-        <div class = "header">
-            <div class = "row">
-                <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
-                <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
-                <img src="logo.png" alt="Rerum Playground">
-            </div>
         </div>
-        </header>
 
+        <!--Temporary space between header and footer. To be replaced with page content.-->
         <div class="container">
             <div class = "placeholder">
             </div>
-
-            <!--
-                <div id="intro">
-                Hello.  This is the RERUM playground.  Have fun, be safe, be friendly, follow curfew.  
-            </div>
-            <div id="tool_set">
-                <h4 title="Tools connected with the playground.  You may be directed to a different site."> Tools </h4>
-            </div>
-            <div id="interface_set">
-                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            <div id="technology_set">
-                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            -->
         </div>
 
+        <!--Navigation buttons to Rerum home site for page footer.-->
         <footer>
-            <!--THIS      IS        A          FOOTER-->
+            <div class="footerButtons">
+                <button>Rerum Home</button>
+                <button>The Annotation Story</button>
+                <button>Research Computing Group</button>
+                <button>Use Rerum API</button>
+                <button>The Future</button>
+            </div>
         </footer>
 
+        <script src="./js/index.js" type="module"></script>
         <script src="./js/playground.js" type="module"></script>
 
-        <!--Function to open and close sidebar menu by changing its width. Needs work.-->
-        <script>
-            function openCloseMenu() {
-                var toolBar = document.getElementById("toolBar");
-
-                if(toolBar.style.width == 0){
-                    toolBar.style.width = "250px";
-                }
-                else{
-                    toolBar.style.width = "0";
-                }
-            }
-        </script>
     </body>
 </html>
