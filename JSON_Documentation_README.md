@@ -30,7 +30,9 @@ For example,
 
 Here, "@context": "https://www.com" tells computers to look up the meanings of "name" and "jobTitle" on www.com. This helps ensure that different systems interpret the data in the same way.
 
-Below are some websites that provide more details regarding JSON, JSON-LD, and @context element of JSON-LD:
-json.org
-json-ld.org
-schema.org
+Below are some websites that provide more details regarding JSON, JSON-LD, and @context element of JSON-LD, as well as a web application that functions as a JSON-LD playground:
+
+[JSON](json.org)
+[JSON-LD](json-ld.org)
+[schema](schema.org)
+[JSON-LD Playground](https://json-ld.org/playground/) 
