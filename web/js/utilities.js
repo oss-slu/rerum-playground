@@ -158,6 +158,9 @@ export default {
 
         /**
         * Generate a thumbnail that represents an entry from the set of tools, interfaces, or technologies.
+        *
+        * @param {Object} entry - each tool/interface/technology object with properties like label, icon, view, and description
+        * @returns {String} HTML structure for the thumbnail
         */
         thumbnailGenerator: (entry) => {
             return `<a class="catalogEntry" href="${entry.view}">
@@ -166,7 +169,7 @@ export default {
                 <img src="${entry.icon}" />
                 <figcaption>${entry.description}</figcaption>
             </figure>
-            </a>`
+            </a>`;
         }
     }
 
