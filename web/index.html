@@ -65,15 +65,61 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
                 text-align: center;
             }
 
-            footer{
-                padding: 40px;
-                text-align: center;
-                z-index: 1;
-                background: #222222;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
+            /*Footer and button styling from RERUM homepage.*/
+            footer {
+                position:fixed;
+                bottom:0;
+                width:100vw;
+                overflow: hidden;
+                padding: 1rem 0;
+                background-color: #dfdfdf;
             }
+            footer .button {
+                border-color: transparent;
+                margin:0;
+                width: 19%;
+                float: left;
+                box-sizing: border-box;
+            }
+            footer .button:hover{
+                background-color: #a3d1ff;
+            }
+            footer::before{
+                content: "";
+                position: absolute;
+                box-shadow: 0 0 3rem #001e3c;
+                height: 2rem;
+                top: -2.5rem;
+                width: 120%;
+                left: -10%;
+            }
+
+            .button{
+                display: inline-block;
+                height: 38px;
+                padding: 0 30px;
+                color: #555;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 38px;
+                letter-spacing: .1rem;
+                text-transform: uppercase;
+                text-decoration: none;
+                white-space: nowrap;
+                background-color: transparent;
+                border-radius: 4px;
+                border: 1px solid #bbb;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .button:focus{
+                color: #333;
+                border-color: #888;
+                outline: 0;
+            }
+
         </style>
     </head>
 
@@ -119,7 +165,24 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         </div>
 
         <footer>
-            <!--THIS      IS        A          FOOTER-->
+            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
+            <div class="footerButtons">
+                <a href="https://rerum.io/#/welcome" class="button">
+                    Home
+                </a>
+                <a href="https://rerum.io/#/annotation" class="button">
+                    The Annotation Story
+                </a>
+                <a href="https://rerum.io/#about" class="button">
+                    Research Computing Group
+                </a>
+                <a href="https://rerum.io/#api" class="button">
+                    Use Rerum API
+                </a>
+                <a href="https://rerum.io/#future" class="button">
+                    The Future
+                </a>
+            </div>
         </footer>         
 
         <script src="./js/playground.js" type="module"></script>
