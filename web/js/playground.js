@@ -69,7 +69,6 @@ function initializeTechnologies(config) {
 
 // New function to render tools based on ToolsCatalog
 function renderTools() {
-    console.log("rendering tools");
     const toolSetContainer = document.getElementById('tool_set');
 
     if (!toolSetContainer) {
