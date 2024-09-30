@@ -25,6 +25,18 @@ const ToolsCatalog = [
         icon: "./images/T-PEN_logo.png",
         view: "https://t-pen.org/TPEN/",
         description: "Allows users to transcribe manuscripts by aligning text with scanned images for research and accuracy."
+    },
+    {
+        label: "Adno",
+        icon: "./images/adno-logo.png",
+        view: "https://w.adno.app/",
+        description: "A tool for viewing and editing IIIF and static images within archives and heritage collections."
+    },
+    {
+        label: "Universal Viewer",
+        icon: "./images/uv-logo.png",
+        view: "https://universalviewer.io/",
+        description: "A viewer for web objects, allowing users to share their media with the world."
     }
 ];
 
