@@ -83,35 +83,27 @@
                 padding: 1rem 0;
                 background-color: #dfdfdf;
             }
-            footer .button {
-                border-color: transparent;
-                margin:0;
-                width: 19%;
-                float: left;
-                box-sizing: border-box;
-            }
-            footer .button:hover{
-                background-color: #a3d1ff;
-            }
-            footer::before{
-                content: "";
-                position: absolute;
-                box-shadow: 0 0 3rem #001e3c;
-                height: 2rem;
-                top: -2.5rem;
-                width: 120%;
-                left: -10%;
+
+            footer .footerButtons {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
             }
 
-            .button{
-                display: inline-block;
+            footer .button {
+                flex: 1;
+                border-color: transparent;
+                margin:0;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 height: 38px;
-                padding: 0 30px;
+                padding: 0 10px;
                 color: #555;
                 text-align: center;
                 font-size: 11px;
                 font-weight: 600;
-                line-height: 38px;
                 letter-spacing: .1rem;
                 text-transform: uppercase;
                 text-decoration: none;
@@ -120,7 +112,26 @@
                 border-radius: 4px;
                 border: 1px solid #bbb;
                 cursor: pointer;
-                box-sizing: border-box;
+            }
+
+            footer .button:hover{
+                background-color: #a3d1ff;
+            }
+
+            footer .button img {
+                height: 20px;
+                width: auto;
+                margin-right: 5px;
+            }
+            
+            footer::before{
+                content: "";
+                position: absolute;
+                box-shadow: 0 0 3rem #001e3c;
+                height: 2rem;
+                top: -2.5rem;
+                width: 120%;
+                left: -10%;
             }
 
             .button:focus{
@@ -133,7 +144,7 @@
     </head>
     
     <body>
-        <div id="toolBar" class="sidebar">
+        <div id="toolBar" class="sidebar" style="width: 0;">
             <a href="index.html">Home</a>
             <a href="#">About</a>
             <a href="#">Contribute</a>
@@ -156,21 +167,21 @@
         </div>
 
         <footer>
-            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
             <div class="footerButtons">
-                <a href="https://rerum.io/#/welcome" class="button">
-                    Home
-                </a>
                 <a href="https://rerum.io/#/annotation" class="button">
+                    <img src="/web/images/rerum_logo.png" alt="Annotation Icon">
                     The Annotation Story
                 </a>
                 <a href="https://rerum.io/#about" class="button">
+                    <img src="/web/images/rerum_logo.png" alt="Research Icon">
                     Research Computing Group
                 </a>
                 <a href="https://rerum.io/#api" class="button">
+                    <img src="/web/images/rerum_logo.png" alt="API Icon">
                     Use Rerum API
                 </a>
                 <a href="https://rerum.io/#future" class="button">
+                    <img src="/web/images/rerum_logo.png" alt="Future Icon">
                     The Future
                 </a>
             </div>
@@ -181,7 +192,7 @@
         <script>
             function openCloseMenu() {
                 var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px") {
+                if (toolBar.style.width === "0px" || toolBar.style.width === "") {
                     toolBar.style.width = "250px";
                 } else {
                     toolBar.style.width = "0";
