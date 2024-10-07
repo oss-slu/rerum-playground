@@ -1,203 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Tools | Rerum Playground</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
-        <style>
-            .header {
-                padding: 15px;
-                text-align: left;
-                z-index: 1;
-                background: #222222;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | Rerum Playground</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contribute</a>
+        <a href="#">Contact</a>
+        <a href="#">Tools</a>
+    </div>
 
-            .header img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                height: 80px;
-            }
-
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 1;
-                top: 100px;
-                left: 0;
-                background-color: #222222;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-            }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-
-            body {
-                font-family: 'Times New Roman', Times, serif;
-            }
-
-            .thumb img {
-                max-height: 100px;
-                max-width: 100px;
-                object-fit: contain;
-                display: block;
-                margin: 0 auto;
-            }
-
-            .catalogEntry {
-                padding: 10px;
-                border: 2px solid black;
-                margin: 10px;
-                text-align: center;
-                display: inline-block;
-                vertical-align: top;
-                width: 30%;
-            }
-
-            h4 { 
-                text-align: center;
-                font-size: 24px;
-                margin-top: 20px;
-            }
-
-            /*Footer and button styling from RERUM homepage.*/
-            footer {
-                position:fixed;
-                bottom:0;
-                width:100vw;
-                overflow: hidden;
-                padding: 1rem 0;
-                background-color: #dfdfdf;
-            }
-
-            footer .footerButtons {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-            }
-
-            footer .button {
-                flex: 1;
-                border-color: transparent;
-                margin:0;
-                box-sizing: border-box;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 38px;
-                padding: 0 10px;
-                color: #555;
-                text-align: center;
-                font-size: 11px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-transform: uppercase;
-                text-decoration: none;
-                white-space: nowrap;
-                background-color: transparent;
-                border-radius: 4px;
-                border: 1px solid #bbb;
-                cursor: pointer;
-            }
-
-            footer .button:hover{
-                background-color: #a3d1ff;
-            }
-
-            footer .button img {
-                height: 20px;
-                width: auto;
-                margin-right: 5px;
-            }
-            
-            footer::before{
-                content: "";
-                position: absolute;
-                box-shadow: 0 0 3rem #001e3c;
-                height: 2rem;
-                top: -2.5rem;
-                width: 120%;
-                left: -10%;
-            }
-
-            .button:focus{
-                color: #333;
-                border-color: #888;
-                outline: 0;
-            }
-            
-        </style>
-    </head>
-    
-    <body>
-        <div id="toolBar" class="sidebar" style="width: 0;">
-            <a href="index.html">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contribute</a>
-            <a href="#">Contact</a>
-            <a href="tools.html">Tools</a>
-        </div>
-
-        <header>
-            <div class="header">
-                <div class="row">
-                    <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
-                    <img src="logo.png" alt="Rerum Playground">
-                </div>
-            </div>
-            <h2>Tools Available in Rerum Playground</h2>
+    <div id="main-content">
+        <header class="header">
+            <button class="menu-button" onclick="openNav()">&#9776;</button>
+            <img src="logo.png" alt="Rerum Playground">
         </header>
 
-        <div id="tool_set">
-            <h4>Tools</h4>
-        </div>
+        <h2>Tools Available in Rerum Playground</h2>
 
-        <footer>
-            <div class="footerButtons">
-                <a href="https://rerum.io/#/annotation" class="button">
-                    <img src="/web/images/rerum_logo.png" alt="Annotation Icon">
-                    The Annotation Story
-                </a>
-                <a href="https://rerum.io/#about" class="button">
-                    <img src="/web/images/rerum_logo.png" alt="Research Icon">
-                    Research Computing Group
-                </a>
-                <a href="https://rerum.io/#api" class="button">
-                    <img src="/web/images/rerum_logo.png" alt="API Icon">
-                    Use Rerum API
-                </a>
-                <a href="https://rerum.io/#future" class="button">
-                    <img src="/web/images/rerum_logo.png" alt="Future Icon">
-                    The Future
-                </a>
-            </div>
-        </footer>
+        <h4>Tools</h4>
 
-        <script src="./js/playground.js" type="module"></script>
+        <!-- Add your tool content here -->
 
-        <script>
-            function openCloseMenu() {
-                var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px" || toolBar.style.width === "") {
-                    toolBar.style.width = "250px";
-                } else {
-                    toolBar.style.width = "0";
-                }
-            }
-        </script>
-    </body>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        }
+
+        // Load the footer
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    </script>
+</body>
 </html>
