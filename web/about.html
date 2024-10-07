@@ -4,160 +4,7 @@
         <title>About | Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
-        <style>
-            .header {
-                padding: 15px;
-                text-align: left;
-                z-index: 1;
-                background: #222222;
-            }
-
-            .header img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                height: 80px;
-            }
-
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 1;
-                top: 100px;
-                left: 0;
-                background-color: #222222;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-            }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-
-            .thumb img {
-                max-height: 100px;
-                max-width: 100px;
-                object-fit: contain;
-                display: block;
-                margin: 0 auto;
-            }
-
-            .catalogEntry {
-                padding: 10px;
-                border: 2px solid black;
-                margin: 10px;
-                text-align: center;
-                display: inline-block;
-                vertical-align: top;
-                width: 30%;
-            }
-
-            h4 { 
-                text-align: center;
-                font-size: 24px;
-                margin-top: 20px;
-            }
-
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            h2 { 
-                text-align: center;
-                font-size: 32px;
-                font-family: Arial, Helvetica, sans-serif;
-                margin-top: 15px;
-                margin-bottom: 10px;
-            }
-
-            .content{
-                max-width: 800px;
-                margin: auto;
-                text-align: center;
-            }
-
-            p{
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-
-            .json p{
-                text-align: left;
-                margin: 0px;
-            }
-
-            .spacer{
-                margin-top: 80px;
-            }
-
-            /*Footer and button styling from RERUM homepage.*/
-            footer {
-                position:fixed;
-                bottom:0;
-                width:100vw;
-                overflow: hidden;
-                padding: 1rem 0;
-                background-color: #dfdfdf;
-            }
-            footer .button {
-                border-color: transparent;
-                margin:0;
-                width: 19%;
-                float: left;
-                box-sizing: border-box;
-            }
-            footer .button:hover{
-                background-color: #a3d1ff;
-            }
-            footer::before{
-                content: "";
-                position: absolute;
-                box-shadow: 0 0 3rem #001e3c;
-                height: 2rem;
-                top: -2.5rem;
-                width: 120%;
-                left: -10%;
-            }
-
-            .button{
-                display: inline-block;
-                height: 38px;
-                padding: 0 30px;
-                color: #555;
-                text-align: center;
-                font-size: 11px;
-                font-weight: 600;
-                line-height: 38px;
-                letter-spacing: .1rem;
-                text-transform: uppercase;
-                text-decoration: none;
-                white-space: nowrap;
-                background-color: transparent;
-                border-radius: 4px;
-                border: 1px solid #bbb;
-                cursor: pointer;
-                box-sizing: border-box;
-            }
-
-            .button:focus{
-                color: #333;
-                border-color: #888;
-                outline: 0;
-            }
-            
-        </style>
+        <link rel="stylesheet" href="styles.css">
     </head>
     
     <body>
@@ -211,9 +58,10 @@
 
             <!--This description needs to be updated with additional information, possibly including a demo.-->
             <h2>What is a JSON Manifest?</h2>
-            <p>A manifest provides information about a web application.</p>
+            <p>A manifest provides information about a web application. It works like a cargo manifest for IIIF objects, containing links to all the resources which make up the object.</p>
+            <p>Manifests are created so the IIIF objects that they represent can be opened and explored in viewers or other tools.</p>
             <p>For more information on manifests, please visit:</p>
-            <p>https://iiif.io/api/cookbook/</p>
+            <a href="https://iiif.io/guides/using_iiif_resources/">https://iiif.io/guides/using_iiif_resources/</a>
 
             <!--This is not the correct way to prevent text from moving behind the page footer. I will need to figure out the issue and revise this shortly.-->
             <div class="spacer">
