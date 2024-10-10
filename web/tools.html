@@ -6,117 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <style>
-            .header {
-                padding: 15px;
-                text-align: left;
-                z-index: 1;
-                background: #222222;
-            }
-
-            .header img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                height: 80px;
-            }
-
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 1;
-                top: 100px;
-                left: 0;
-                background-color: #222222;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-            }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-
-            body {
-                font-family: 'Times New Roman', Times, serif;
-            }
-
-            .thumb img {
-                max-height: 100px;
-                max-width: 100px;
-                object-fit: contain;
-                display: block;
-                margin: 0 auto;
-            }
-
-            .catalogEntry {
-                padding: 10px;
-                border: 2px solid black;
-                margin: 10px;
-                text-align: center;
-                display: inline-block;
-                vertical-align: top;
-                width: 30%;
-                position: relative;
-            }
-
-            h4 { 
-                text-align: center;
-                font-size: 24px;
-                margin-top: 20px;
-            }
-
-            .recent-badge{
-                display: inline-block;
-                padding: 4px 8px;
-                background-color: #f00;
-                color: white;
-                font-size: 10px;
-                border-radius: 4px;
-                position: absolute;
-                top: 5px;
-                right: 5px;
-            }
-
-            /*Footer and button styling from RERUM homepage.*/
-            footer {
-                position:fixed;
-                bottom:0;
-                width:100vw;
-                overflow: hidden;
-                padding: 1rem 0;
-                background-color: #dfdfdf;
-            }
-            footer .button {
-                border-color: transparent;
-                margin:0;
-                width: 19%;
-                float: left;
-                box-sizing: border-box;
-            }
-            footer .button:hover{
-                background-color: #a3d1ff;
-            }
-            footer::before{
-                content: "";
-                position: absolute;
-                box-shadow: 0 0 3rem #001e3c;
-                height: 2rem;
-                top: -2.5rem;
-                width: 120%;
-                left: -10%;
-            }
-
             .button{
                 display: inline-block;
                 height: 38px;
@@ -137,12 +28,21 @@
                 box-sizing: border-box;
             }
 
-            .button:focus{
-                color: #333;
-                border-color: #888;
-                outline: 0;
+            .fa-home:before {
+                content: "\f015";
             }
-            
+            .fa-comment-o:before {
+                content: "\f0e5";
+            }
+            .fa-map-marker:before {
+                content: "\f041";
+            }
+            .fa-wrench:before {
+                content: "\f0ad";
+            }
+            .fa-cubes:before {
+                content: "\f1b3";
+            }
         </style>
     </head>
     
@@ -158,7 +58,13 @@
         <header>
             <div class="header">
                 <div class="row">
-                    <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
+                    <button 
+                        style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px;background:none;border:none;" 
+                        onclick="openCloseMenu()" 
+                        aria-label="Toggle Menu"
+                    >
+                        &#9776;
+                    </button>
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
@@ -169,38 +75,25 @@
             <h4>Tools</h4>
         </div>
 
-        <footer>
-            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
-            <div class="footerButtons">
-                <a href="https://rerum.io/#/welcome" class="button">
-                    Home
-                </a>
-                <a href="https://rerum.io/#/annotation" class="button">
-                    The Annotation Story
-                </a>
-                <a href="https://rerum.io/#about" class="button">
-                    Research Computing Group
-                </a>
-                <a href="https://rerum.io/#api" class="button">
-                    Use Rerum API
-                </a>
-                <a href="https://rerum.io/#future" class="button">
-                    The Future
-                </a>
-            </div>
-        </footer>
+        <div id="footer-placeholder"></div>
 
         <script src="./js/playground.js" type="module"></script>
 
         <script>
             function openCloseMenu() {
                 var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px") {
-                    toolBar.style.width = "250px";
-                } else {
-                    toolBar.style.width = "0";
+                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
+                toolBar.classList.toggle("sidebar-open");
+                if (mainContent) {
+                    mainContent.classList.toggle("shift");
                 }
             }
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
         </script>
     </body>
 </html>
