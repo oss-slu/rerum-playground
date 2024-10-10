@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+    <head>
+        <title>Rerum Playground</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <style>
+            .button{
+                display: inline-block;
+                height: 38px;
+                padding: 0 30px;
+                color: #555;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 38px;
+                letter-spacing: .1rem;
+                text-transform: uppercase;
+                text-decoration: none;
+                white-space: nowrap;
+                background-color: transparent;
+                border-radius: 4px;
+                border: 1px solid #bbb;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .fa-home:before {
+                content: "\f015";
+            }
+            .fa-comment-o:before {
+                content: "\f0e5";
+            }
+            .fa-map-marker:before {
+                content: "\f041";
+            }
+            .fa-wrench:before {
+                content: "\f0ad";
+            }
+            .fa-cubes:before {
+                content: "\f1b3";
+            }   
+        </style>
+    </head>
+
+    <body>
+        <!--Sidebar page links. Still needs styles above.-->
+        <div id="toolBar" class="sidebar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="#">Contribute</a>
+            <a href="#">Contact</a>
+            <a href="tools.html">Tools</a>
+          </div>
+
+        <header>
+            <div class = "header">
+                <div class = "row">
+                    <button 
+                        style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px;background:none;border:none;" 
+                        onclick="openCloseMenu()" 
+                        aria-label="Toggle Menu"
+                    >
+                        &#9776;
+                    </button>
+                    <img src="logo.png" alt="Rerum Playground">
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class = "placeholder" style="height: 50px;"></div>
+
+            <div id="content">
+                <h2>Welcome to the RERUM Playground</h2>
+                <p style="max-width: 800px; margin: auto; text-align: center;">This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>         
+
+        <script src="./js/playground.js" type="module"></script>
+
+        <!--Function to open and close sidebar menu by changing its width. Needs work.-->
+        <script>
+            function openCloseMenu() {
+                var toolBar = document.getElementById("toolBar");
+                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
+                toolBar.classList.toggle("sidebar-open");
+                if (mainContent) {
+                    mainContent.classList.toggle("shift");
+                }
+            }
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+        </script>
+    </body>
+</html>
