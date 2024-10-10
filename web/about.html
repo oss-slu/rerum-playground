@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>About | Rerum Playground</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <style></style>
+    </head>
+    
+    <body>
+        <div id="toolBar" class="sidebar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="#">Contribute</a>
+            <a href="#">Contact</a>
+            <a href="tools.html">Tools</a>
+        </div>
+
+        <header>
+            <div class="header">
+                <div class="row">
+                    <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
+                    <img src="logo.png" alt="Rerum Playground">
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <h2>About RERUM Playground</h2>
+            <p>RERUM Playground is designed to act as a self-guided interactive tutorial for tools involved in working with digital objects.</p>
+            <p>Here, you can explore tools for adding annotations, geolocation data, and many other enhancements to JSON objects without worrying that you may break something.</p>
+            
+            <!--From provided README. Text formatting still needs to be moved to separate stylesheet.-->
+            <h2>What is a JSON object?</h2>
+            <p>JSON (JavaScript Object Notation) is a simple way to store and send information between computers. Think of it like a person's case file, but for data. JSON organizes information using curly braces {}, square brackets [], and colons :. It's easy for both humans and computers to read.</p>
+            <p>For example, a person's details in JSON might look like this:</p>
+            <div class="json">
+                <p>{</p>
+                <p>"name": "Jane Doe",</p>
+                <p>"age": 28,</p>
+                <p>"jobTitle": Software Engineer</p>
+                <p>}</p>
+            </div>
+            <p>JSON is used widely on the internet to send data between a server (like a website's backend) and a user's browser.</p>
+            
+            <h2>What is JSON-LD?</h2>
+            <p>JSON-LD (JSON for Linked Data) is like a more savvier JSON. It does everything JSON does, but adds context to the data. This context helps computers understand the meaning of the data, not just its structure.</p>
+            <p>For instance, when JSON-LD sees "name," it can understand that it's talking about a person's name, not a pet's name or a company's name. This makes it easier for different systems to work together and understand each other's data.</p>
+            <p>JSON-LD has an element called @context, which is like a dictionary that explains what the terms in your data mean. It links your data to standardized definitions on the internet. For example,</p>
+            <div class="json">
+                <p>{</p>
+                <p>"@context": "https://www.com",</p>
+                <p>"name": "Jane Doe",</p>
+                <p>"jobTitle": "Software Developer"</p>
+                <p>}</p>
+            </div>
+            <p>Here, "@context": "https://www.com" tells computers to look up the meanings of "name" and "jobTitle" on www.com. This helps ensure that different systems interpret the data in the same way.</p>
+
+            <!--This description needs to be updated with additional information, possibly including a demo.-->
+            <h2>What is a JSON Manifest?</h2>
+            <p>A manifest provides information about a web application. It works like a cargo manifest for IIIF objects, containing links to all the resources which make up the object.</p>
+            <p>Manifests are created so the IIIF objects that they represent can be opened and explored in viewers or other tools.</p>
+            <p>For more information on manifests, please visit:</p>
+            <a href="https://iiif.io/guides/using_iiif_resources/">https://iiif.io/guides/using_iiif_resources/</a>
+
+            <!--This is not the correct way to prevent text from moving behind the page footer. I will need to figure out the issue and revise this shortly.-->
+            <div class="spacer">
+            </div>
+        </div>
+
+        <footer>
+            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
+            <div class="footerButtons">
+                <a href="https://rerum.io/#/welcome" class="button">
+                    Home
+                </a>
+                <a href="https://rerum.io/#/annotation" class="button">
+                    The Annotation Story
+                </a>
+                <a href="https://rerum.io/#about" class="button">
+                    Research Computing Group
+                </a>
+                <a href="https://rerum.io/#api" class="button">
+                    Use Rerum API
+                </a>
+                <a href="https://rerum.io/#future" class="button">
+                    The Future
+                </a>
+            </div>
+        </footer>
+
+        <script src="./js/playground.js" type="module"></script>
+
+        <script>
+            function openCloseMenu() {
+                var toolBar = document.getElementById("toolBar");
+                if (toolBar.style.width === "0px") {
+                    toolBar.style.width = "250px";
+                } else {
+                    toolBar.style.width = "0";
+                }
+            }
+        </script>
+    </body>
+</html>
