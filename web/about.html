@@ -4,11 +4,11 @@
         <title>About | Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <link rel="stylesheet" href="styles.css">
         <style></style>
     </head>
-    
+
     <body>
         <div id="toolBar" class="sidebar">
             <a href="index.html">Home</a>
@@ -21,7 +21,7 @@
         <header>
             <div class="header">
                 <div class="row">
-                    <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
+                    <span class="menu-toggle" onclick="openCloseMenu()">&#9776;</span>
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <h2>About RERUM Playground</h2>
             <p>RERUM Playground is designed to act as a self-guided interactive tutorial for tools involved in working with digital objects.</p>
             <p>Here, you can explore tools for adding annotations, geolocation data, and many other enhancements to JSON objects without worrying that you may break something.</p>
-            
+
             <!--From provided README. Text formatting still needs to be moved to separate stylesheet.-->
             <h2>What is a JSON object?</h2>
             <p>JSON (JavaScript Object Notation) is a simple way to store and send information between computers. Think of it like a person's case file, but for data. JSON organizes information using curly braces {}, square brackets [], and colons :. It's easy for both humans and computers to read.</p>
@@ -44,7 +44,7 @@
                 <p>}</p>
             </div>
             <p>JSON is used widely on the internet to send data between a server (like a website's backend) and a user's browser.</p>
-            
+
             <h2>What is JSON-LD?</h2>
             <p>JSON-LD (JSON for Linked Data) is like a more savvier JSON. It does everything JSON does, but adds context to the data. This context helps computers understand the meaning of the data, not just its structure.</p>
             <p>For instance, when JSON-LD sees "name," it can understand that it's talking about a person's name, not a pet's name or a company's name. This makes it easier for different systems to work together and understand each other's data.</p>
@@ -91,17 +91,7 @@
             </div>
         </footer>
 
-        <script src="./js/playground.js" type="module"></script>
+        <script src="main.js" type="module"></script>
 
-        <script>
-            function openCloseMenu() {
-                var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px") {
-                    toolBar.style.width = "250px";
-                } else {
-                    toolBar.style.width = "0";
-                }
-            }
-        </script>
     </body>
 </html>
