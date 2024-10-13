@@ -9,46 +9,10 @@ and open the template in the editor.
         <title>Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <style>
-            .button{
-                display: inline-block;
-                height: 38px;
-                padding: 0 30px;
-                color: #555;
-                text-align: center;
-                font-size: 11px;
-                font-weight: 600;
-                line-height: 38px;
-                letter-spacing: .1rem;
-                text-transform: uppercase;
-                text-decoration: none;
-                white-space: nowrap;
-                background-color: transparent;
-                border-radius: 4px;
-                border: 1px solid #bbb;
-                cursor: pointer;
-                box-sizing: border-box;
-            }
-
-            .fa-home:before {
-                content: "\f015";
-            }
-            .fa-comment-o:before {
-                content: "\f0e5";
-            }
-            .fa-map-marker:before {
-                content: "\f041";
-            }
-            .fa-wrench:before {
-                content: "\f0ad";
-            }
-            .fa-cubes:before {
-                content: "\f1b3";
-            }   
-        </style>
+        <link rel="stylesheet" href="styles.css">
+      
+       
     </head>
 
     <body>
@@ -64,20 +28,17 @@ and open the template in the editor.
         <header>
             <div class = "header">
                 <div class = "row">
-                    <button 
-                        style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px;background:none;border:none;" 
-                        onclick="openCloseMenu()" 
-                        aria-label="Toggle Menu"
-                    >
-                        &#9776;
-                    </button>
+
+                    <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
+                    <span class="menu-toggle" onclick="openCloseMenu()">&#9776;</span>
+              
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
         </header>
 
         <div class="container">
-            <div class = "placeholder" style="height: 50px;"></div>
+            <div class = "placeholder"></div>
 
             <div id="content">
                 <h2>Welcome to the RERUM Playground</h2>
@@ -85,26 +46,30 @@ and open the template in the editor.
             </div>
         </div>
 
-        <div id="footer-placeholder"></div>         
+        <footer>
+            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
+            <div class="footerButtons">
+                <a href="https://rerum.io/#/welcome" class="button">
+                    Home
+                </a>
+                <a href="https://rerum.io/#/annotation" class="button">
+                    The Annotation Story
+                </a>
+                <a href="https://rerum.io/#about" class="button">
+                    Research Computing Group
+                </a>
+                <a href="https://rerum.io/#api" class="button">
+                    Use Rerum API
+                </a>
+                <a href="https://rerum.io/#future" class="button">
+                    The Future
+                </a>
+            </div>
+        </footer>
 
-        <script src="./js/playground.js" type="module"></script>
+        <script src="main.js" type="module" defer></script>
 
-        <!--Function to open and close sidebar menu by changing its width. Needs work.-->
-        <script>
-            function openCloseMenu() {
-                var toolBar = document.getElementById("toolBar");
-                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
-                toolBar.classList.toggle("sidebar-open");
-                if (mainContent) {
-                    mainContent.classList.toggle("shift");
-                }
-            }
-            fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading footer:', error));
-        </script>
+
+
     </body>
 </html>
