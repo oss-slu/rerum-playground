@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <link rel="stylesheet" href="styles.css">
-
     </head>
 
     <body>
@@ -21,7 +20,9 @@
         <header>
             <div class="header">
                 <div class="row">
+
                     <span class="menu-toggle" onclick="openCloseMenu()">&#9776;</span>
+                    
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
@@ -32,29 +33,9 @@
             <h4>Tools</h4>
         </div>
 
-        <footer>
-            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
-            <div class="footerButtons">
-                <a href="https://rerum.io/#/welcome" class="button">
-                    Home
-                </a>
-                <a href="https://rerum.io/#/annotation" class="button">
-                    The Annotation Story
-                </a>
-                <a href="https://rerum.io/#about" class="button">
-                    Research Computing Group
-                </a>
-                <a href="https://rerum.io/#api" class="button">
-                    Use Rerum API
-                </a>
-                <a href="https://rerum.io/#future" class="button">
-                    The Future
-                </a>
-            </div>
-        </footer>
+        <div id="footer-placeholder"></div>
 
         <script src="main.js" type="module"></script>
-
 
     </body>
 </html>

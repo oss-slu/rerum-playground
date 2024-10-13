@@ -4,10 +4,6 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
-<!--
-Some code snippets are sourced from w3schools.com as of now, as I still need to go through this and fix things up.
--->
 <html lang="en">
     <head>
         <title>Rerum Playground</title>
@@ -15,7 +11,8 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <link rel="stylesheet" href="styles.css">
-        <style></style>
+      
+       
     </head>
 
     <body>
@@ -31,8 +28,10 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <header>
             <div class = "header">
                 <div class = "row">
+
                     <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
                     <span class="menu-toggle" onclick="openCloseMenu()">&#9776;</span>
+              
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
@@ -43,20 +42,8 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
 
             <div id="content">
                 <h2>Welcome to the RERUM Playground</h2>
-                <p>This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
+                <p style="max-width: 800px; margin: auto; text-align: center;">This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
             </div>
-
-            <!--
-            <div id="interface_set">
-                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-
-            <div id="technology_set">
-                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            -->
         </div>
 
         <footer>
@@ -81,6 +68,7 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         </footer>
 
         <script src="main.js" type="module" defer></script>
+
 
 
     </body>

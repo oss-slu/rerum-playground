@@ -1,6 +1,15 @@
 body{
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 .header {
@@ -22,26 +31,63 @@ body{
     width: 0;
     position: fixed;
     z-index: 1;
-    top: 100px;
+    top: 110px;
     left: 0;
-    background-color: #222222;
+    background-color: #333333; 
     overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 20px;
+    transition: width 0.3s ease;
+    padding-top: 30px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Sidebar Open State */
+.sidebar-open {
+    width: 250px; /* Width when sidebar is open */
+}
+
+/* Menu Links */
 .sidebar a {
-    padding: 8px 8px 8px 32px;
+    padding: 10px 20px; /* Increased padding for better spacing */
     text-decoration: none;
-    font-size: 25px;
-    color: #818181;
+    font-size: 20px; /* Adjusted font size */
+    color: #f1f1f1; /* Light color for better contrast */
     display: block;
-    transition: 0.3s;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .sidebar a:hover {
-    color: #f1f1f1;
+    color: #3370f6; /* Vibrant color on hover */
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+}
+
+/* Main Content Styles */
+.content, .container, #tool_set {
+    transition: margin-left 0.3s ease; /* Smooth content shift */
+    padding: 80px 20px 20px 20px; /* Top padding to avoid header overlap */
+    
+    margin: auto;
+    text-align: center;
+}
+
+#tool_set.shift {
+    margin-left: 250px;
+    margin-right: 10px;
+}
+
+.shift {
+    margin-left: 250px; /* Shift content when sidebar is open */
+}
+
+@media screen and (max-width: 600px) {
+    /* Sidebar covers full screen on small devices */
+    .sidebar-open {
+        width: 100%;
+    }
+
+    /* Do not shift content on small screens */
+    .shift {
+        margin-left: 0;
+    }
 }
 
 .thumb img {
@@ -119,6 +165,7 @@ p{
 
 /*Footer and button styling from RERUM homepage.*/
 footer {
+    z-index: 3;
     position:fixed;
     bottom:0;
     width:100vw;
@@ -131,7 +178,7 @@ footer {
 footer .button {
     border-color: transparent;
     margin:0;
-    width: 19%;
+    width: 23%;
     float: left;
     box-sizing: border-box;
 }
@@ -148,26 +195,6 @@ footer::before{
     top: -2.5rem;
     width: 120%;
     left: -10%;
-}
-
-.button{
-    display: inline-block;
-    height: 38px;
-    padding: 0 30px;
-    color: #555;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 38px;
-    letter-spacing: .1rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    background-color: transparent;
-    border-radius: 4px;
-    border: 1px solid #bbb;
-    cursor: pointer;
-    box-sizing: border-box;
 }
 
 .button:focus{
