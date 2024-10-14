@@ -115,6 +115,46 @@ h4 {
     margin-top: 20px;
 }
 
+.manifest-loader {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 6px 10px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#manifestMessage {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#loadManifest {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0;
+    cursor: pointer;
+    line-height: 1.5;
+    text-transform: none;
+    vertical-align: middle;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
