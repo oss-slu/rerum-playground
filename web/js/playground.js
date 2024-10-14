@@ -7,6 +7,7 @@ import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/r
 
 import PLAYGROUND from './config.js';
 import ToolsCatalog from './tools.js';
+import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
 
 const RECENTLY_USED_KEY = 'recentlyUsedTools';
 
@@ -127,6 +128,35 @@ function renderTools() {
             const toolLabel = this.querySelector('label').innerText;
             handleToolClick(toolLabel);
         });
+    });
+}
+
+/**
+ * Render stored manifest links.
+ */
+function renderStoredManifests() {
+    const manifestContainer = document.getElementById('manifest_set');
+
+    if (!manifestContainer) {
+        console.error("Manifest set container not found.");
+        return;
+    }
+
+    manifestContainer.innerHTML = '';
+
+    const storedManifests = getStoredManifestLinks();
+    if (storedManifests.length === 0) {
+        manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
+        return;
+    }
+
+    storeManifestLink.forEach(manifestLink => {
+        const manifestHTML = `
+            <a href="${manifestLink}" target="_blank" class="manifestLink">
+                <p>${manifestLink}</p>
+            </a>
+        `;
+        manifestContainer.innerHTML += manifestHTML;
     });
 }
 
