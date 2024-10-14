@@ -73,6 +73,14 @@
 
         <div id="tool_set">
             <h4>Tools</h4>
+            <div class="manifest-loader">
+                <h5>Load Manifest</h5>
+                <div class="input-group">
+                    <input type="text" id="manifestUrl" placeholder="Enter manifest URL">
+                    <button id="loadManifest" class="button">Next</button>
+                </div>
+                <div id="manifestMessage"></div>
+            </div>
         </div>
 
         <div id="footer-placeholder"></div>
@@ -94,6 +102,45 @@
                 document.getElementById('footer-placeholder').innerHTML = data;
             })
             .catch(error => console.error('Error loading footer:', error));
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const manifestUrl = document.getElementById('manifestUrl');
+                const loadManifest = document.getElementById('loadManifest');
+                const manifestMessage = document.getElementById('manifestMessage');
+
+                loadManifest.addEventListener('click', function() {
+                    const url = manifestUrl.value.trim();
+                    if (!url) {
+                        manifestMessage.textContent = 'Please enter a URL.';
+                        manifestMessage.style.color = 'red';
+                        return;
+                    }
+
+                    manifestMessage.textContent = 'Loading...';
+                    manifestMessage.style.color = 'black';
+
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // process JSON URL data
+                            manifestMessage.textContent = 'Manifest loaded successfully!';
+                            manifestMessage.style.color = 'green';
+                            console.log(data); // only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
+                        })
+                        .catch(error => {
+                            manifestMessage.textContent = 'Failed to load manifest. Please check the URL and try again.';
+                            manifestMessage.style.color = 'red';
+                            console.error('Error:', error);
+                        });
+                });
+            });
         </script>
     </body>
 </html>
