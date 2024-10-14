@@ -68,6 +68,8 @@
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
+            <div class="manifestInfo"></div>
+
             <h2>Tools Available in Rerum Playground</h2>
         </header>
 
@@ -114,6 +116,7 @@
                 const manifestUrl = document.getElementById('manifestUrl');
                 const loadManifest = document.getElementById('loadManifest');
                 const manifestMessage = document.getElementById('manifestMessage');
+                const manifestInfo = document.getElementById('manifestInfo');
 
                 loadManifest.addEventListener('click', function() {
                     const url = manifestUrl.value.trim();
@@ -138,6 +141,12 @@
                             manifestMessage.textContent = 'Manifest loaded successfully!';
                             manifestMessage.style.color = 'green';
                             console.log(data); // only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
+                            
+                            //[Working on]: If manifest has the fields to be displayed, load text at the top of the page.
+                            /*
+                                manifestInfo.textContent = '';
+                                manifestInfo.style.color = 'black';
+                            */
                         })
                         .catch(error => {
                             manifestMessage.textContent = 'Failed to load manifest. Please check the URL and try again.';
