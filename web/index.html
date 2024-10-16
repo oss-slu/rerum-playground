@@ -4,96 +4,15 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
-<!--
-Some code snippets are sourced from w3schools.com as of now, as I still need to go through this and fix things up.
--->
 <html lang="en">
     <head>
         <title>Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <style>
-            .header{
-                padding: 15px;
-                text-align: left;
-                z-index: 1;
-                background: #222222;
-            }
-
-            .header img{
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                height: 80px;
-            }
-
-            .sidebar {
-                height: 100%;
-                width: 0;
-                position: fixed;
-                z-index: 1;
-                top: 100px;
-                left: 0;
-                background-color: #222222;
-                overflow-x: hidden;
-                transition: 0.5s;
-                padding-top: 20px;
-            }
-
-            .sidebar a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
-
-            .sidebar a:hover {
-                color: #f1f1f1;
-            }
-
-            body{
-                font-family: 'Times New Roman', Times, serif;
-            }
-
-            .placeholder{
-                height: 50px;
-                padding: 40px;
-                text-align: center;
-            }
-
-            /*Footer and button styling from RERUM homepage.*/
-            footer {
-                position:fixed;
-                bottom:0;
-                width:100vw;
-                overflow: hidden;
-                padding: 1rem 0;
-                background-color: #dfdfdf;
-            }
-            footer .button {
-                border-color: transparent;
-                margin:0;
-                width: 19%;
-                float: left;
-                box-sizing: border-box;
-            }
-            footer .button:hover{
-                background-color: #a3d1ff;
-            }
-            footer::before{
-                content: "";
-                position: absolute;
-                box-shadow: 0 0 3rem #001e3c;
-                height: 2rem;
-                top: -2.5rem;
-                width: 120%;
-                left: -10%;
-            }
-
             .button{
                 display: inline-block;
                 height: 38px;
@@ -114,12 +33,21 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
                 box-sizing: border-box;
             }
 
-            .button:focus{
-                color: #333;
-                border-color: #888;
-                outline: 0;
+            .fa-home:before {
+                content: "\f015";
             }
-
+            .fa-comment-o:before {
+                content: "\f0e5";
+            }
+            .fa-map-marker:before {
+                content: "\f041";
+            }
+            .fa-wrench:before {
+                content: "\f0ad";
+            }
+            .fa-cubes:before {
+                content: "\f1b3";
+            }   
         </style>
     </head>
 
@@ -127,7 +55,7 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <!--Sidebar page links. Still needs styles above.-->
         <div id="toolBar" class="sidebar">
             <a href="index.html">Home</a>
-            <a href="#">About</a>
+            <a href="about.html">About</a>
             <a href="#">Contribute</a>
             <a href="#">Contact</a>
             <a href="tools.html">Tools</a>
@@ -136,8 +64,13 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <header>
             <div class = "header">
                 <div class = "row">
-                    <!--This needs to be worked on, as onclick does not appear to remain active for this button without reload.-->
-                    <span style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px" onclick="openCloseMenu()">&#9776;</span>
+                    <button 
+                        style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px;background:none;border:none;" 
+                        onclick="openCloseMenu()" 
+                        aria-label="Toggle Menu"
+                    >
+                        &#9776;
+                    </button>
                     <img src="logo.png" alt="Rerum Playground">
                 </div>
             </div>
@@ -146,44 +79,13 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <div class="container">
             <div class = "placeholder" style="height: 50px;"></div>
 
-            <div id="intro">
+            <div id="content">
                 <h2>Welcome to the RERUM Playground</h2>
-                <p>This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
+                <p style="max-width: 800px; margin: auto; text-align: center;">This is a space for experimenting with various tools for interacting with RERUM and linked data across the web. Feel free to explore and learn more about these tools.</p>
             </div>
-
-            <!--
-            <div id="interface_set">
-                <h4 title="Interfaces connected with the playground.  You may be directed to a different site."> Interfaces </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-
-            <div id="technology_set">
-                <h4 title="Technologies connected with the playground.  You may be directed to a different site."> Technologies </h4>
-                <a class="catalogEntry"> <div class="thumbLabel">None</div> <div class="thumbDescription">We are working on it.  Check back soon!</div> </a>
-            </div>
-            -->
         </div>
 
-        <footer>
-            <!--Buttons from RERUM Home Page. Not properly reflexive currently, and missing the correct font.-->
-            <div class="footerButtons">
-                <a href="https://rerum.io/#/welcome" class="button">
-                    Home
-                </a>
-                <a href="https://rerum.io/#/annotation" class="button">
-                    The Annotation Story
-                </a>
-                <a href="https://rerum.io/#about" class="button">
-                    Research Computing Group
-                </a>
-                <a href="https://rerum.io/#api" class="button">
-                    Use Rerum API
-                </a>
-                <a href="https://rerum.io/#future" class="button">
-                    The Future
-                </a>
-            </div>
-        </footer>         
+        <div id="footer-placeholder"></div>         
 
         <script src="./js/playground.js" type="module"></script>
 
@@ -191,13 +93,18 @@ Some code snippets are sourced from w3schools.com as of now, as I still need to 
         <script>
             function openCloseMenu() {
                 var toolBar = document.getElementById("toolBar");
-                if (toolBar.style.width === "0px"){
-                    toolBar.style.width = "250px";
-                }
-                else {
-                    toolBar.style.width = "0";
+                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
+                toolBar.classList.toggle("sidebar-open");
+                if (mainContent) {
+                    mainContent.classList.toggle("shift");
                 }
             }
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
         </script>
     </body>
 </html>

@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+# Run this workflow on push events to the main branch
+on:
+  push:
+    branches:
+      - main
+
+# Set up the jobs for the workflow
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (required for GitHub Pages deployment tools)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GIT_ACTIONS }}
+          publish_dir: ./web

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>About | Rerum Playground</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <style>
+            .button{
+                display: inline-block;
+                height: 38px;
+                padding: 0 30px;
+                color: #555;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 38px;
+                letter-spacing: .1rem;
+                text-transform: uppercase;
+                text-decoration: none;
+                white-space: nowrap;
+                background-color: transparent;
+                border-radius: 4px;
+                border: 1px solid #bbb;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+
+            .fa-home:before {
+                content: "\f015";
+            }
+            .fa-comment-o:before {
+                content: "\f0e5";
+            }
+            .fa-map-marker:before {
+                content: "\f041";
+            }
+            .fa-wrench:before {
+                content: "\f0ad";
+            }
+            .fa-cubes:before {
+                content: "\f1b3";
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="toolBar" class="sidebar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="#">Contribute</a>
+            <a href="#">Contact</a>
+            <a href="tools.html">Tools</a>
+        </div>
+
+        <header>
+            <div class="header">
+                <div class="row">
+                    <button 
+                        style="font-size:40px;cursor:pointer;padding:8px 0px 0px 25px;background:none;border:none;" 
+                        onclick="openCloseMenu()" 
+                        aria-label="Toggle Menu"
+                    >
+                        &#9776;
+                    </button>
+                    <img src="logo.png" alt="Rerum Playground">
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <h2>About RERUM Playground</h2>
+            <p>RERUM Playground is designed to act as a self-guided interactive tutorial for tools involved in working with digital objects.</p>
+            <p>Here, you can explore tools for adding annotations, geolocation data, and many other enhancements to JSON objects without worrying that you may break something.</p>
+            
+            <!--From provided README. Text formatting still needs to be moved to separate stylesheet.-->
+            <h2>What is a JSON object?</h2>
+            <p>JSON (JavaScript Object Notation) is a simple way to store and send information between computers. Think of it like a person's case file, but for data. JSON organizes information using curly braces {}, square brackets [], and colons :. It's easy for both humans and computers to read.</p>
+            <p>For example, a person's details in JSON might look like this:</p>
+            <div class="json">
+                <p>{</p>
+                <p>"name": "Jane Doe",</p>
+                <p>"age": 28,</p>
+                <p>"jobTitle": Software Engineer</p>
+                <p>}</p>
+            </div>
+            <p>JSON is used widely on the internet to send data between a server (like a website's backend) and a user's browser.</p>
+            
+            <h2>What is JSON-LD?</h2>
+            <p>JSON-LD (JSON for Linked Data) is like a more savvier JSON. It does everything JSON does, but adds context to the data. This context helps computers understand the meaning of the data, not just its structure.</p>
+            <p>For instance, when JSON-LD sees "name," it can understand that it's talking about a person's name, not a pet's name or a company's name. This makes it easier for different systems to work together and understand each other's data.</p>
+            <p>JSON-LD has an element called @context, which is like a dictionary that explains what the terms in your data mean. It links your data to standardized definitions on the internet. For example,</p>
+            <div class="json">
+                <p>{</p>
+                <p>"@context": "https://www.com",</p>
+                <p>"name": "Jane Doe",</p>
+                <p>"jobTitle": "Software Developer"</p>
+                <p>}</p>
+            </div>
+            <p>Here, "@context": "https://www.com" tells computers to look up the meanings of "name" and "jobTitle" on www.com. This helps ensure that different systems interpret the data in the same way.</p>
+
+            <!--This description needs to be updated with additional information, possibly including a demo.-->
+            <h2>What is a JSON Manifest?</h2>
+            <p>A manifest provides information about a web application. It works like a cargo manifest for IIIF objects, containing links to all the resources which make up the object.</p>
+            <p>Manifests are created so the IIIF objects that they represent can be opened and explored in viewers or other tools.</p>
+            <p>For more information on manifests, please visit:</p>
+            <a href="https://iiif.io/guides/using_iiif_resources/">https://iiif.io/guides/using_iiif_resources/</a>
+
+            <!--This is not the correct way to prevent text from moving behind the page footer. I will need to figure out the issue and revise this shortly.-->
+            <div class="spacer">
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+
+        <script src="./js/playground.js" type="module"></script>
+
+        <script>
+            function openCloseMenu() {
+                var toolBar = document.getElementById("toolBar");
+                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
+                toolBar.classList.toggle("sidebar-open");
+                if (mainContent) {
+                    mainContent.classList.toggle("shift");
+                }
+            }
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+        </script>
+    </body>
+</html>
