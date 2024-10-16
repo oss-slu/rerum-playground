@@ -73,21 +73,25 @@
             <h2>Tools Available in Rerum Playground</h2>
         </header>
 
-        <div class="manifest-form">
-            <input type="text" id="manifestInput" placeholder="Object URI" />
-            <button id="saveManifestBtn">Next</button>
+        <div class="manifest-loader">
+            <h5>Load Manifest</h5>
+            <div class="input-group">
+                <input type="text" id="manifestUrl" placeholder="Enter manifest URL">
+                <button id="loadManifest" class="button">Next</button>
+            </div>
+            <div id="manifestMessage"></div>
         </div>
 
+        <div class="dropdown">
+            <label id="dropdownLabel" class="dropdown-label">Recently Used Links</label>
+            <span id="dropdownArrow" class="dropdown-arrow">▼</span>
+            <div id="stored_manifest_links" class="dropdown-content" style="display: none;">
+                <!-- Stored manifests links will appear here -->
+            </div>
+        </div>        
+        
         <div id="tool_set">
             <h4>Tools</h4>
-            <div class="manifest-loader">
-                <h5>Load Manifest</h5>
-                <div class="input-group">
-                    <input type="text" id="manifestUrl" placeholder="Enter manifest URL">
-                    <button id="loadManifest" class="button">Next</button>
-                </div>
-                <div id="manifestMessage"></div>
-            </div>
         </div>
 
         <div id="footer-placeholder"></div>
@@ -111,7 +115,9 @@
             .catch(error => console.error('Error loading footer:', error));
         </script>
 
-        <script>
+        <script type="module">
+            import { storeManifestLink } from './js/manifestStorage.js';
+
             document.addEventListener('DOMContentLoaded', function() {
                 const manifestUrl = document.getElementById('manifestUrl');
                 const loadManifest = document.getElementById('loadManifest');
@@ -140,6 +146,9 @@
                             // process JSON URL data
                             manifestMessage.textContent = 'Manifest loaded successfully!';
                             manifestMessage.style.color = 'green';
+
+                            storeManifestLink(url);
+                            
                             console.log(data); // only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
                             
                             //[Working on]: If manifest has the fields to be displayed, load text at the top of the page.
@@ -155,6 +164,51 @@
                         });
                 });
             });
+        </script>
+        <script>
+            function toggleDropdown() {
+                const manifestContainer = document.getElementById('stored_manifest_links');
+                const dropdownArrow = document.getElementById('dropdownArrow');
+
+                if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
+                    manifestContainer.style.display = 'block';  // Show content
+                    dropdownArrow.textContent = '▲';  // Change arrow to up
+                } else {
+                    manifestContainer.style.display = 'none';   // Hide content
+                    dropdownArrow.textContent = '▼';  // Change arrow to down
+                }
+            }
+
+            // Add click event to both label and arrow to toggle the dropdown
+            document.getElementById('dropdownLabel').addEventListener('click', toggleDropdown);
+            document.getElementById('dropdownArrow').addEventListener('click', toggleDropdown);
+
+            function renderStoredManifests() {
+                const manifestContainer = document.getElementById('stored_manifest_links');
+                const storedManifests = getStoredManifestLinks();
+
+                if (!manifestContainer) {
+                    console.error("Manifest container not found.");
+                    return;
+                }
+
+                manifestContainer.innerHTML = '';  // Clear previous content
+
+                if (storedManifests.length === 0) {
+                    manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
+                    return;
+                }
+
+                storedManifests.forEach(manifestLink => {
+                    const manifestHTML = `
+                        <a href="${manifestLink}" target="_blank" class="manifestLink">
+                            <p>${manifestLink}</p>
+                        </a>
+                    `;
+                    manifestContainer.innerHTML += manifestHTML;
+                });
+            }
+
         </script>
     </body>
 </html>
