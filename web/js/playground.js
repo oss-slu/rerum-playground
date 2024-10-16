@@ -135,7 +135,8 @@ function renderTools() {
  * Render stored manifest links.
  */
 function renderStoredManifests() {
-    const manifestContainer = document.getElementById('manifest_set');
+    const manifestContainer = document.getElementById('stored_manifest_links');
+    const storedManifests = getStoredManifestLinks();
 
     if (!manifestContainer) {
         console.error("Manifest set container not found.");
@@ -144,13 +145,12 @@ function renderStoredManifests() {
 
     manifestContainer.innerHTML = '';
 
-    const storedManifests = getStoredManifestLinks();
     if (storedManifests.length === 0) {
         manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
         return;
     }
 
-    storeManifestLink.forEach(manifestLink => {
+    storedManifests.forEach(manifestLink => {
         const manifestHTML = `
             <a href="${manifestLink}" target="_blank" class="manifestLink">
                 <p>${manifestLink}</p>
@@ -159,6 +159,7 @@ function renderStoredManifests() {
         manifestContainer.innerHTML += manifestHTML;
     });
 }
+
 
 /**
  * Handle tool click event to manage recently used logic and allow default navigation
@@ -195,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeInterfaces(PLAYGROUND.INTERFACES)
         initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
         renderTools();
+        renderStoredManifests();
     } catch (err) {
         console.error("Error initializing the playground: ", err);
     }

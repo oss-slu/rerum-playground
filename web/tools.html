@@ -79,6 +79,10 @@
             </div>
             <div id="manifestMessage"></div>
         </div>
+
+        <div id="stored_manifest_links">
+            <!-- Stored manifests links will appear here-->
+        </div>
         
         <div id="tool_set">
             <h4>Tools</h4>
@@ -105,7 +109,9 @@
             .catch(error => console.error('Error loading footer:', error));
         </script>
 
-        <script>
+        <script type="module">
+            import { storeManifestLink } from './js/manifestStorage.js';
+
             document.addEventListener('DOMContentLoaded', function() {
                 const manifestUrl = document.getElementById('manifestUrl');
                 const loadManifest = document.getElementById('loadManifest');
@@ -133,6 +139,9 @@
                             // process JSON URL data
                             manifestMessage.textContent = 'Manifest loaded successfully!';
                             manifestMessage.style.color = 'green';
+
+                            storeManifestLink(url);
+                            
                             console.log(data); // only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
                         })
                         .catch(error => {
