@@ -238,3 +238,24 @@ footer::before{
     border-color: #888;
     outline: 0;
 }
+
+.dropdown{
+    text-align: center;
+}
+
+.dropdown-label {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.dropdown-arrow {
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 1.2em;
+}
+
+.dropdown-content {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+}

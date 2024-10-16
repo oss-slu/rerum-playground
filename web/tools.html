@@ -79,6 +79,14 @@
             </div>
             <div id="manifestMessage"></div>
         </div>
+
+        <div class="dropdown">
+            <label id="dropdownLabel" class="dropdown-label">Recently Used Links</label>
+            <span id="dropdownArrow" class="dropdown-arrow">▼</span>
+            <div id="stored_manifest_links" class="dropdown-content" style="display: none;">
+                <!-- Stored manifests links will appear here -->
+            </div>
+        </div>        
         
         <div id="tool_set">
             <h4>Tools</h4>
@@ -105,7 +113,9 @@
             .catch(error => console.error('Error loading footer:', error));
         </script>
 
-        <script>
+        <script type="module">
+            import { storeManifestLink } from './js/manifestStorage.js';
+
             document.addEventListener('DOMContentLoaded', function() {
                 const manifestUrl = document.getElementById('manifestUrl');
                 const loadManifest = document.getElementById('loadManifest');
@@ -133,6 +143,9 @@
                             // process JSON URL data
                             manifestMessage.textContent = 'Manifest loaded successfully!';
                             manifestMessage.style.color = 'green';
+
+                            storeManifestLink(url);
+                            
                             console.log(data); // only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
                         })
                         .catch(error => {
@@ -142,6 +155,51 @@
                         });
                 });
             });
+        </script>
+        <script>
+            function toggleDropdown() {
+                const manifestContainer = document.getElementById('stored_manifest_links');
+                const dropdownArrow = document.getElementById('dropdownArrow');
+
+                if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
+                    manifestContainer.style.display = 'block';  // Show content
+                    dropdownArrow.textContent = '▲';  // Change arrow to up
+                } else {
+                    manifestContainer.style.display = 'none';   // Hide content
+                    dropdownArrow.textContent = '▼';  // Change arrow to down
+                }
+            }
+
+            // Add click event to both label and arrow to toggle the dropdown
+            document.getElementById('dropdownLabel').addEventListener('click', toggleDropdown);
+            document.getElementById('dropdownArrow').addEventListener('click', toggleDropdown);
+
+            function renderStoredManifests() {
+                const manifestContainer = document.getElementById('stored_manifest_links');
+                const storedManifests = getStoredManifestLinks();
+
+                if (!manifestContainer) {
+                    console.error("Manifest container not found.");
+                    return;
+                }
+
+                manifestContainer.innerHTML = '';  // Clear previous content
+
+                if (storedManifests.length === 0) {
+                    manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
+                    return;
+                }
+
+                storedManifests.forEach(manifestLink => {
+                    const manifestHTML = `
+                        <a href="${manifestLink}" target="_blank" class="manifestLink">
+                            <p>${manifestLink}</p>
+                        </a>
+                    `;
+                    manifestContainer.innerHTML += manifestHTML;
+                });
+            }
+
         </script>
     </body>
 </html>

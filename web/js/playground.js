@@ -7,6 +7,7 @@ import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/r
 
 import PLAYGROUND from './config.js';
 import ToolsCatalog from './tools.js';
+import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
 
 const RECENTLY_USED_KEY = 'recentlyUsedTools';
 
@@ -131,6 +132,36 @@ function renderTools() {
 }
 
 /**
+ * Render stored manifest links.
+ */
+function renderStoredManifests() {
+    const manifestContainer = document.getElementById('stored_manifest_links');
+    const storedManifests = getStoredManifestLinks();
+
+    if (!manifestContainer) {
+        console.error("Manifest set container not found.");
+        return;
+    }
+
+    manifestContainer.innerHTML = '';
+
+    if (storedManifests.length === 0) {
+        manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
+        return;
+    }
+
+    storedManifests.forEach(manifestLink => {
+        const manifestHTML = `
+            <a href="${manifestLink}" target="_blank" class="manifestLink">
+                <p>${manifestLink}</p>
+            </a>
+        `;
+        manifestContainer.innerHTML += manifestHTML;
+    });
+}
+
+
+/**
  * Handle tool click event to manage recently used logic and allow default navigation
  */
 function handleToolClick(toolLabel) {
@@ -165,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeInterfaces(PLAYGROUND.INTERFACES)
         initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
         renderTools();
+        renderStoredManifests();
     } catch (err) {
         console.error("Error initializing the playground: ", err);
     }
