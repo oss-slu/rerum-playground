@@ -139,6 +139,15 @@ h4 {
     font-weight: bold;
 }
 
+.manifestInfo {
+    text-align: center;
+    background: #a3d1ff;
+}
+
+.manifestInfo p{
+    margin-bottom: 0px;
+}
+
 #loadManifest {
     background-color: #4CAF50;
     color: white;
