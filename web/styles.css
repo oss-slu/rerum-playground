@@ -115,12 +115,6 @@ h4 {
     margin-top: 20px;
 }
 
-.manifest-loader {
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: left;
-}
-
 .input-group {
     display: flex;
     margin-bottom: 10px;
@@ -149,7 +143,7 @@ h4 {
 }
 
 #loadManifest {
-    background-color: #4CAF50;
+    background-color: #7397f9;
     color: white;
     border: none;
     padding: 6px 20px;
@@ -288,7 +282,7 @@ footer::before{
     margin: 20px auto;
     text-align: left;
     position: relative;
-    min-height: 150px;
+    min-height: 100px;
 }
 
 .loading-overlay {
