@@ -84,7 +84,11 @@
             <h5>Load Manifest</h5>
             <div class="input-group">
                 <input type="text" id="manifestUrl" placeholder="Enter manifest URL">
-                <button id="loadManifest" class="button">Next</button>
+                <button id="loadManifest" class="button">Load</button>
+            </div>
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading Manifest...</div>
             </div>
             <div id="manifestMessage"></div>
         </div>
@@ -131,8 +135,18 @@
                 const manifestMessage = document.getElementById('manifestMessage');
                 const loadMessage = document.getElementById("loadMessage");
                 const manifestLabelField = document.getElementById("manifestLabelField");
+                const loadingOverlay = document.querySelector('.loading-overlay');
 
-                loadManifest.addEventListener('click', function() {
+                function showLoading() {
+                    loadingOverlay.style.display = 'flex';
+                    manifestMessage.textContent = '';
+                }
+
+                function hideLoading() {
+                    loadingOverlay.style.display = 'none';
+                }
+
+                loadManifest.addEventListener('click', async function() {
                     const url = manifestUrl.value.trim();
                     if (!url) {
                         manifestMessage.textContent = 'Please enter a URL.';
@@ -140,52 +154,47 @@
                         return;
                     }
 
-                    manifestMessage.textContent = 'Loading...';
-                    manifestMessage.style.color = 'black';
+                    showLoading();
 
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            // process JSON URL data
-                            manifestMessage.textContent = 'Manifest loaded successfully!';
-                            manifestMessage.style.color = 'green';
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const data = await response.json();
+            
+                        // Process the successfully loaded manifest
+                        hideLoading();
+                        manifestMessage.textContent = 'Manifest loaded successfully!';
+                        manifestMessage.style.color = 'green';
 
-                            storeManifestLink(url);
-                            
-                            //console.log(data); only logging the manifest for now. this can be changed to open a specific tool to use or however we want to handle the newly loaded manifest.
-                            
-                            //If manifest has the fields to be displayed, load text at the top of the page.
-                            const loadedManifest = data;
+                        storeManifestLink(url);
+            
+                        // Process manifest metadata
+                        try {
+                            let manifestLabel = JSON.stringify(data.label.en[0]);
+                            manifestLabel = "Name: " + manifestLabel.replaceAll("\"","");
 
-                            //Attempts to load specific fields from manifest. If any do not exist, displays error message. (Need to fix this to work a different way.)
-                            try{
-                                let manifestLabel = JSON.stringify(loadedManifest.label.en[0]);
-                                manifestLabel = "Name: " + manifestLabel.replaceAll("\"","");
+                            let manifestType = JSON.stringify(data.type);
+                            manifestType = "Type: " + manifestType.replaceAll("\"","");
 
-                                let manifestType = JSON.stringify(loadedManifest.type);
-                                manifestType = "Type: " + manifestType.replaceAll("\"","");
+                            let manifestItemCount = "Number of Items: " + data.items.length;
 
-                                let manifestItemCount = "Number of Items: " + loadedManifest.items.length;
-
-                                loadMessage.innerHTML = "<u>Current Object:</u>";
-                                //This should also be replaced with separate columns, in case there may be longer fields to display.
-                                manifestLabelField.innerHTML = manifestLabel + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + manifestType + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + manifestItemCount;
-                            }
-                            catch{
-                                loadMessage.innerHTML = "No metadata available!";
-                                manifestLabelField.innerHTML = "";
-                            }
-                        })
-                        .catch(error => {
-                            manifestMessage.textContent = 'Failed to load manifest. Please check the URL and try again.';
-                            manifestMessage.style.color = 'red';
-                            console.error('Error:', error);
-                        });
+                            loadMessage.innerHTML = "<u>Current Object:</u>";
+                            manifestLabelField.innerHTML = manifestLabel + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
+                                            manifestType + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
+                                            manifestItemCount;
+                        } catch (metadataError) {
+                            loadMessage.innerHTML = "No metadata available!";
+                            manifestLabelField.innerHTML = "";
+                        }
+                    //Manifest loaded unsuccessfully
+                    } catch (error) {
+                        hideLoading();
+                        manifestMessage.textContent = 'Failed to load manifest. Please check the URL and try again.';
+                        manifestMessage.style.color = 'red';
+                        console.error('Error:', error);
+                    }
                 });
             });
         </script>
