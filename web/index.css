@@ -1,0 +1,42 @@
+/* Styles specific to index.html */
+
+/* General button styling used throughout index.html */
+.button {
+    display: inline-block;
+    height: 38px; /* Sets a consistent button height */
+    padding: 0 30px; /* Horizontal padding for spacing */
+    color: #555; /* Standard text color */
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase; /* Makes button text uppercase */
+    border-radius: 4px; /* Adds rounded corners */
+    border: 1px solid #bbb; /* Light gray border */
+    cursor: pointer; /* Indicates interactivity */
+}
+
+/* Styling for the sidebar menu toggle button */
+.menu-toggle-button {
+    font-size: 40px; /* Large size for visibility */
+    padding: 8px 0px 0px 25px; /* Custom padding for layout alignment */
+    background: none;
+    border: none;
+}
+
+/* Font Awesome icon content settings for icons used in this page */
+.fa-home:before { content: "\f015"; /* Home icon */ }
+.fa-comment-o:before { content: "\f0e5"; /* Comment icon */ }
+.fa-map-marker:before { content: "\f041"; /* Map marker icon */ }
+.fa-wrench:before { content: "\f0ad"; /* Wrench icon */ }
+.fa-cubes:before { content: "\f1b3"; /* Cubes icon */ }
+
+/* Placeholder div to add vertical spacing */
+.placeholder {
+    height: 50px;
+}
+
+/* Centering and limiting width for paragraph content */
+.container p {
+    max-width: 800px;
+    margin: auto; /* Centers the paragraph */
+    text-align: center;
+}
