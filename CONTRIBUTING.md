@@ -21,14 +21,14 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
   ```
 
 ### 4. Set Up Your Environment
-- The code base is in HTML, CSS, JS so there are no extentions or seperate software installation is requred. Just run the code it will open and renders in your default browser.
+- The code base is in HTML, CSS, JS so there is no seperate software installation is requred. Just run the code it will open and renders in your default browser. Use the live server extention if needed.
 
 ---
 
 ## Contribution Workflow
 
-### 1.Choose an Issue associated with the label **hacktoberfest**
-- Choose the Issue associated with the label hacktoberfest and clearly read all the details and acceptance criteria for the issue before starting to work on the issue.
+### 1.Choose an Issue from issue board
+- Choose the Issue and clearly read all the details and acceptance criteria for the issue before starting to work on the issue.
   
 ### 2. Make Your Changes
 - Work on your branch locally. Implement your changes and test them thoroughly to ensure they work correctly.
