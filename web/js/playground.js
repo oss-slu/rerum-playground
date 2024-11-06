@@ -11,8 +11,6 @@ import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js'
 
 const RECENTLY_USED_KEY = 'recentlyUsedTools';
 
-console.log("script is loading...");
-
 /**
  * Retrieve recently used tools from local storage.
  */
@@ -25,30 +23,20 @@ function getRecentlyUsedTools() {
  * Save recently used tools to local storage.
  */
 function saveRecentlyUsedTools(recentTools) {
-    console.log("Saving recent tools:", recentTools);
     localStorage.setItem(RECENTLY_USED_KEY, JSON.stringify(recentTools));
 }
 
 /**
  * Update recently used tools, move the clicked tool to the top.
  */
-function updateRecentlyUsedTools(clickedTool) {
-    // const recentTools = getRecentlyUsedTools();
-    // const existingIndex = recentTools.findIndex(tool => tool.label.toLowerCase() === clickedTool.label.toLowerCase());
-
-    // if (existingIndex !== -1) {
-    //     recentTools.splice(existingIndex, 1);
-    // }
-    console.log("updateRecentlyUsedTools called with:", clickedTool);
+function updateRecentlyUsedTools(clickedTool) {    
     let recentTools = getRecentlyUsedTools();
 
-    // Remove the tool if it exists in recentTools, then add it to the top
     recentTools = recentTools.filter(tool => tool.label.toLowerCase() !== clickedTool.label.toLowerCase());
     recentTools.unshift(clickedTool);
 
     const topThreeTools = recentTools.slice(0, 3);
     saveRecentlyUsedTools(topThreeTools);
-    console.log("updated recent tools after click:", topThreeTools);
 }
 
 /**
@@ -91,7 +79,6 @@ function initializeTechnologies(config) {
  * Render tools, higlighting recently used ones.
  */
 function renderTools() {
-    console.log("renderTools is running");
     const toolSetContainer = document.getElementById('tool_set');
     if (!toolSetContainer) {
         console.error("Tool set container not found.");
@@ -101,33 +88,13 @@ function renderTools() {
     toolSetContainer.innerHTML = '';
 
     const recentTools = getRecentlyUsedTools();
-    const hasRecentlyUsedTools = recentTools.length > 0;
+    const recentToolLabels = new Set(recentTools.map(tool => tool.label.toLowerCase()));
 
-    // Divide ToolsCatalog into recently used tools and non-recently-used tools
-    const recentlyUsedLabels = recentTools.map(tool => tool.label.toLowerCase());
-    const recentToolsSet = new Set(recentlyUsedLabels);
-
-    const recentlyUsedTools = ToolsCatalog.filter(tool =>
-        recentToolsSet.has(tool.label.toLowerCase())
-    );
-
-    const nonRecentlyUsedTools = ToolsCatalog.filter(tool =>
-        !recentToolsSet.has(tool.label.toLowerCase())
-    );
-
-    // Sort recently used tools based on their order in recentTools array
-    const sortedRecentlyUsedTools = recentlyUsedTools.sort(
-        (a, b) =>
-            recentToolsSet.has(a.label.toLowerCase()) - recentToolsSet.has(b.label.toLowerCase())
-    );
-
-    // Combine sorted recently used tools and non-recently-used tools
-    const sortedTools = [...sortedRecentlyUsedTools, ...nonRecentlyUsedTools];
-
-    const toolsWrapper = document.createElement('div');
+    const sortedTools = [...recentTools, ...ToolsCatalog.filter(tool => !recentToolLabels.has(tool.label.toLowerCase()))];
 
     sortedTools.forEach((tool, index) => {
-        const isRecentlyUsed = hasRecentlyUsedTools && index < 3 && recentToolsSet.has(tool.label.toLowerCase()) ? `<span class="recent-badge">Recently used</span>` : '';
+        const isRecentlyUsed = index < 3 ? `<span class="recent-badge">Recently used</span>` : '';;
+
         const toolHTML = `
             <a href="${tool.view}" target="_blank" class="catalogEntry">
                 <figure class="thumb">
@@ -138,22 +105,18 @@ function renderTools() {
                 </figure>
             </a>
         `;
-        toolsWrapper.innerHTML += toolHTML;
+        toolSetContainer.innerHTML += toolHTML;
     });
-
-    toolSetContainer.appendChild(toolsWrapper);
 
     // Add event listeners after elements are created
     const toolLinks = toolSetContainer.querySelectorAll('a.catalogEntry');
-    toolLinks.forEach(link => {
+    toolLinks.forEach((link, index) => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const toolLabel = this.querySelector('label').innerText;
             handleToolClick(toolLabel);
         });
     });
-
-    console.log("rendered tool order:", sortedTools.map(tool => tool.label));
 }
 
 /**
@@ -190,7 +153,6 @@ function renderStoredManifests() {
  * Handle tool click event to manage recently used logic and allow default navigation
  */
 function handleToolClick(toolLabel) {
-    console.log("handleToolClick called with:", toolLabel);
     const clickedTool = ToolsCatalog.find(tool => tool.label === toolLabel);
     if (clickedTool) {
         updateRecentlyUsedTools(clickedTool);
@@ -202,6 +164,15 @@ function handleToolClick(toolLabel) {
         console.error('Clicked tool not found:', toolLabel);
     }
 }
+
+// Initialize and render tools on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        renderTools();
+    } catch (err) {
+        console.error("Error initializing the playground:", err);
+    }
+});
 
 /**
  * Update tool order when a tool is clicked.
