@@ -9,6 +9,8 @@ and open the template in the editor.
         <title>Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="./js/index.js"></script>
+        <script src="./js/playground.js" type="module"></script>
         <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -52,15 +54,7 @@ and open the template in the editor.
     </head>
 
     <body>
-        <!--Sidebar page links. Still needs styles above.-->
-        <div id="toolBar" class="sidebar">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="#">Contribute</a>
-            <a href="#">Contact</a>
-            <a href="tools.html">Tools</a>
-          </div>
-
+        <div id="menu-placeholder"></div> 
         <header>
             <div class = "header">
                 <div class = "row">
@@ -86,25 +80,5 @@ and open the template in the editor.
         </div>
 
         <div id="footer-placeholder"></div>         
-
-        <script src="./js/playground.js" type="module"></script>
-
-        <!--Function to open and close sidebar menu by changing its width. Needs work.-->
-        <script>
-            function openCloseMenu() {
-                var toolBar = document.getElementById("toolBar");
-                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
-                toolBar.classList.toggle("sidebar-open");
-                if (mainContent) {
-                    mainContent.classList.toggle("shift");
-                }
-            }
-            fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading footer:', error));
-        </script>
     </body>
 </html>
