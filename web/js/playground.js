@@ -33,12 +33,6 @@ function saveRecentlyUsedTools(recentTools) {
  * Update recently used tools, move the clicked tool to the top.
  */
 function updateRecentlyUsedTools(clickedTool) {
-    // const recentTools = getRecentlyUsedTools();
-    // const existingIndex = recentTools.findIndex(tool => tool.label.toLowerCase() === clickedTool.label.toLowerCase());
-
-    // if (existingIndex !== -1) {
-    //     recentTools.splice(existingIndex, 1);
-    // }
     console.log("updateRecentlyUsedTools called with:", clickedTool);
     let recentTools = getRecentlyUsedTools();
 
@@ -46,9 +40,9 @@ function updateRecentlyUsedTools(clickedTool) {
     recentTools = recentTools.filter(tool => tool.label.toLowerCase() !== clickedTool.label.toLowerCase());
     recentTools.unshift(clickedTool);
 
-    const topThreeTools = recentTools.slice(0, 3);
-    saveRecentlyUsedTools(topThreeTools);
-    console.log("updated recent tools after click:", topThreeTools);
+    //const topThreeTools = recentTools.slice(0, 3);
+    saveRecentlyUsedTools(recentTools.slice(0, 3));
+    console.log("updated recent tools after click:", recentTools.slice(0, 3));
 }
 
 /**
@@ -101,33 +95,15 @@ function renderTools() {
     toolSetContainer.innerHTML = '';
 
     const recentTools = getRecentlyUsedTools();
-    const hasRecentlyUsedTools = recentTools.length > 0;
+    //const recentToolLabels = new Set(recentTools.map(tool => tool.label.toLowerCase()));
 
-    // Divide ToolsCatalog into recently used tools and non-recently-used tools
-    const recentlyUsedLabels = recentTools.map(tool => tool.label.toLowerCase());
-    const recentToolsSet = new Set(recentlyUsedLabels);
-
-    const recentlyUsedTools = ToolsCatalog.filter(tool =>
-        recentToolsSet.has(tool.label.toLowerCase())
-    );
-
-    const nonRecentlyUsedTools = ToolsCatalog.filter(tool =>
-        !recentToolsSet.has(tool.label.toLowerCase())
-    );
-
-    // Sort recently used tools based on their order in recentTools array
-    const sortedRecentlyUsedTools = recentlyUsedTools.sort(
-        (a, b) =>
-            recentToolsSet.has(a.label.toLowerCase()) - recentToolsSet.has(b.label.toLowerCase())
-    );
-
-    // Combine sorted recently used tools and non-recently-used tools
-    const sortedTools = [...sortedRecentlyUsedTools, ...nonRecentlyUsedTools];
+    const sortedTools = [...recentTools, ...ToolsCatalog.filter(tool => 
+        !recentTools.some(recentTool => recentTool.label === tool.label))];
 
     const toolsWrapper = document.createElement('div');
 
     sortedTools.forEach((tool, index) => {
-        const isRecentlyUsed = hasRecentlyUsedTools && index < 3 && recentToolsSet.has(tool.label.toLowerCase()) ? `<span class="recent-badge">Recently used</span>` : '';
+        const isRecentlyUsed = index < 3 ? `<span class="recent-badge">Recently used</span>` : '';
         const toolHTML = `
             <a href="${tool.view}" target="_blank" class="catalogEntry">
                 <figure class="thumb">
@@ -152,7 +128,6 @@ function renderTools() {
             handleToolClick(toolLabel);
         });
     });
-
     console.log("rendered tool order:", sortedTools.map(tool => tool.label));
 }
 
