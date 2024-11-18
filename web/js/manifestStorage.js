@@ -8,24 +8,19 @@ export function storeManifestLink(manifestLink) {
 
     if (!manifestLinks.includes(manifestLink)) {
         manifestLinks.push(manifestLink);
-    }
 
-    // save updated links array to local storage
-    localStorage.setItem(MANIFEST_LINKS_KEY, JSON.stringify(manifestLinks));
-    // refresh the manifest cards display if the container is visable
-    const container = document.getElementById("stored_manifest_links");
-    if (container && container.style.display !== "none") {
+        // save updated links array to local storage
+        localStorage.setItem(MANIFEST_LINKS_KEY, JSON.stringify(manifestLinks));
+
+        // refresh the manifest cards display
         renderManifestCards();
-    }
+    }   
 }
 
 export function getStoredManifestLinks() {
-    // get the stored links from local storage, or return an empty array if none are found
     const manifestLinks = localStorage.getItem(MANIFEST_LINKS_KEY);
     return manifestLinks ? JSON.parse(manifestLinks) : [];
 }
-
-// Fetch details for a single manifest
 
 async function fetchManifestDetails(uri) {
     try {
@@ -40,11 +35,20 @@ async function fetchManifestDetails(uri) {
         if (data.label) {
             if (typeof data.label === 'string') {
                 title = data.label;
-            } else if (data.label.en && Array.isArray(data.label.en)) {
+            } 
+            else if (data.label.en && Array.isArray(data.label.en)) {
                 title = data.label.en[0];
-            } else if (Array.isArray(data.label)) {
+            } 
+            else if (Array.isArray(data.label)) {
                 title = data.label[0];
             }
+            else if (typeof data.label === 'object') {
+                // This handles IIIF 3.0 language map format
+                const firstKey = Object.keys(data.label)[0];
+                if (firstKey && Array.isArray(data.label[firstKey])) {
+                    title = data.label[firstKey][0];
+                }
+            } 
         }
 
         // Extract thumbnail URL
@@ -52,19 +56,17 @@ async function fetchManifestDetails(uri) {
         if (data.thumbnail) {
             if (typeof data.thumbnail === 'string') {
                 thumbnail = data.thumbnail;
-            } else if (Array.isArray(data.thumbnail)) {
+            } 
+            else if (Array.isArray(data.thumbnail)) {
                 thumbnail = data.thumbnail[0].id || data.thumbnail[0];
-            } else if (data.thumbnail.id) {
+            } 
+            else if (data.thumbnail.id) {
                 thumbnail = data.thumbnail.id;
             }
-        } else if (data.items && data.items[0]?.thumbnail) {
-            const firstItem = data.items[0];
-            if (Array.isArray(firstItem.thumbnail)) {
-                thumbnail = firstItem.thumbnail[0].id || firstItem.thumbnail[0];
-            } else if (firstItem.thumbnail.id) {
-                thumbnail = firstItem.thumbnail.id;
+            else if (data.thumbnail['@id']) {
+                thumbnail = data.thumbnail['@id'];
             }
-        }
+        } 
 
         return {
             title: title,
@@ -83,7 +85,7 @@ async function fetchManifestDetails(uri) {
     }
 }
 
-   // create a single manifest card element
+   
 
    function createManifestCard(details) {
     const card = document.createElement('div');
@@ -108,34 +110,36 @@ async function fetchManifestDetails(uri) {
     `;
 
     // Add click handler for the Load button
-    card.querySelector('.manifest-load-btn').addEventListener('click', (e) => {
-        const uri = e.target.dataset.uri;
-        const manifestUrlInput = document.getElementById('manifestUrl');
-        if (manifestUrlInput) {
-            manifestUrlInput.value = uri;
-            // Trigger the load manifest button if it exists
-            const loadButton = document.getElementById('loadManifest');
-            if (loadButton) {
-                loadButton.click();
+    const loadBtn = card.querySelector('.manifest-load-btn');
+    if (loadBtn) {
+        loadBtn.addEventListener('click', (e) => {
+            const uri = e.target.dataset.uri;
+            const manifestUrlInput = document.getElementById('manifestUrl');
+            if (manifestUrlInput) {
+                manifestUrlInput.value = uri;
+                const loadButton = document.getElementById('loadManifest');
+                if (loadButton) {
+                    loadButton.click();
+                }
             }
-        }
-    });
+        });
+    }
 
     return card;
 }
 
-   // Render all manifest cards
    
    export async function renderManifestCards() {
     const manifestContainer = document.getElementById('stored_manifest_links');
-    const storedManifests = getStoredManifestLinks();
-
     if (!manifestContainer) {
         console.error("Manifest container not found.");
         return;
     }
 
-    manifestContainer.innerHTML = ''; // Clear previous content
+    //Clear previous content
+    manifestContainer.innerHTML = '';
+
+    const storedManifests = getStoredManifestLinks();
 
     if (storedManifests.length === 0) {
         manifestContainer.innerHTML = '<p class="no-manifests">No stored manifest links.</p>';
@@ -152,10 +156,10 @@ async function fetchManifestDetails(uri) {
     
     try {
         // Fetch all manifest details concurrently
-        const manifestDetailsPromises = storedManifests.map(uri => fetchManifestDetails(uri));
-        const manifestDetails = await Promise.all(manifestDetailsPromises);
+        const manifestDetails = await Promise.all(
+            storedManifests.map(uri => fetchManifestDetails(uri))
+        );
 
-        // Remove loading message
         loadingMessage.remove();
 
         // Create and append all cards
@@ -176,6 +180,11 @@ async function fetchManifestDetails(uri) {
     export function toggleDropdown() {
         const manifestContainer = document.getElementById('stored_manifest_links');
         const dropdownArrow = document.getElementById('dropdownArrow');
+
+        if (!manifestContainer || !dropdownArrow) {
+            console.error("Required elements not found");
+            return;
+        }
     
         if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
             manifestContainer.style.display = 'block';
@@ -186,3 +195,17 @@ async function fetchManifestDetails(uri) {
             dropdownArrow.textContent = '▼';
         }
     }
+
+
+    //Initialize event listeners when the module loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownLabel = document.getElementById('dropdownLabel');
+        const dropdownArrow = document.getElementById('dropdownArrow')
+
+        if (dropdownLabel) {
+            dropdownLabel.addEventListener('click', toggleDropdown);
+        }
+        if (dropdownArrow) {
+            dropdownArrow.addEventListener('click', toggleDropdown);
+        }
+    });

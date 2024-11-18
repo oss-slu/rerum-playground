@@ -123,22 +123,27 @@
         </script>
 
         <script type="module">
-            import { toggleDropdown, storeManifestLink} from './js/manifestStorage.js';
+            import { toggleDropdown, storeManifestLink, renderManifestCards} from './js/manifestStorage.js';
 
             document.addEventListener('DOMContentLoaded', function() {
-
-                dropdownLabel.addEventListener("click", toggleDropdown);
-                dropdownArrow.addEventListener("click", toggleDropdown);
-            
-
+                //Get DOM elements
+                const dropdownLabel = document.getElementById('dropdownLabel');
+                const dropdownArrow = document.getElementById('dropdownArrow');
                 const manifestUrl = document.getElementById('manifestUrl');
                 const loadManifest = document.getElementById('loadManifest');
                 const manifestMessage = document.getElementById('manifestMessage');
-                const loadMessage = document.getElementById("loadMessage");
-                const manifestLabelField = document.getElementById("manifestLabelField");
+                const loadMessage = document.getElementById('loadMessage');
+                const manifestLabelField = document.getElementById('manifestLabelField');
+
+                if (dropdownLabel) {
+                    dropdownLabel.addEventListener('click', toggleDropdown);
+                }
+                if (dropdownArrow) {
+                    dropdownArrow.addEventListener('click', toggleDropdown);
+                }
 
                 if (loadManifest) {
-                    loadManifest.addEventListener('click', function() {
+                    loadManifest.addEventListener('click', async function() {
                         const url = manifestUrl.value.trim();
                         if (!url) {
                             manifestMessage.textContent = 'Please enter a URL.';
@@ -149,89 +154,46 @@
                         manifestMessage.textContent = 'Loading...';
                         manifestMessage.style.color = 'black';
 
-                        fetch(url)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                manifestMessage.textContent = 'Manifest loaded successfully!';
-                                manifestMessage.style.color = 'green';
-
-                                storeManifestLink(url);
+                        try {
+                            const response = await fetch(url);
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            const loadedManifest = await response.json();
                             
-                                try{
-                                    let manifestLabel = JSON.stringify(loadedManifest.label.en[0]);
-                                    manifestLabel = "Name: " + manifestLabel.replaceAll("\"","");
+                            manifestMessage.textContent = 'Manifest loaded successfully!';
+                            manifestMessage.style.color = 'green';
 
-                                    let manifestType = JSON.stringify(loadedManifest.type);
-                                    manifestType = "Type: " + manifestType.replaceAll("\"","");
+                            // Store the manifest link
+                            await storeManifestLink(url);
+                            
+                            try {
+                                // Display manifest metadata
+                                let manifestLabel = loadedManifest.label?.en?.[0] || 'Untitled';
+                                let manifestType = loadedManifest.type || 'Unknown Type';
+                                let manifestItemCount = loadedManifest.items?.length || 0;
 
-                                    let manifestItemCount = "Number of Items: " + loadedManifest.items.length;
-
-                                    loadMessage.innerHTML = "<u>Current Object:</u>";
-                                    manifestLabelField.innerHTML = manifestLabel + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + manifestType + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + manifestItemCount;
-                                }
-                                catch {
-                                    loadMessage.innerHTML = "No metadata available!";
-                                    manifestLabelField.innerHTML = "";
-                                }
-                            })
-                            .catch(error => {
-                                manifestMessage.textContent = "Failed to load manifest. Please check the URL and try again.";
-                                manifestMessage.style.color = "red";
-                                console.error('Error:', error);
-                            });
+                                loadMessage.innerHTML = "<u>Current Object:</u>";
+                                manifestLabelField.innerHTML = `Name: ${manifestLabel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: ${manifestType}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of Items: ${manifestItemCount}`;
+                            } catch (metadataError) {
+                                loadMessage.innerHTML = "No metadata available!";
+                                manifestLabelField.innerHTML = "";
+                                console.error('Metadata error:', metadataError);
+                            }
+                        } catch (error) {
+                            manifestMessage.textContent = "Failed to load manifest. Please check the URL and try again.";
+                            manifestMessage.style.color = "red";
+                            console.error('Error:', error);
+                        }
                     });
                 }
+
+                // Initial render of manifest cards if dropdown is visible
+                const manifestContainer = document.getElementById('stored_manifest_links');
+                if (manifestContainer && manifestContainer.style.display !== 'none') {
+                    renderManifestCards();
+                }
             });
-        </script>
-        <script>
-            function toggleDropdown() {
-                const manifestContainer = document.getElementById('stored_manifest_links');
-                const dropdownArrow = document.getElementById('dropdownArrow');
-
-                if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
-                    manifestContainer.style.display = 'block';  // Show content
-                    dropdownArrow.textContent = '▲';  // Change arrow to up
-                } else {
-                    manifestContainer.style.display = 'none';   // Hide content
-                    dropdownArrow.textContent = '▼';  // Change arrow to down
-                }
-            }
-
-            // Add click event to both label and arrow to toggle the dropdown
-            document.getElementById('dropdownLabel').addEventListener('click', toggleDropdown);
-            document.getElementById('dropdownArrow').addEventListener('click', toggleDropdown);
-
-            function renderStoredManifests() {
-                const manifestContainer = document.getElementById('stored_manifest_links');
-                const storedManifests = getStoredManifestLinks();
-
-                if (!manifestContainer) {
-                    console.error("Manifest container not found.");
-                    return;
-                }
-
-                manifestContainer.innerHTML = '';  // Clear previous content
-
-                if (storedManifests.length === 0) {
-                    manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
-                    return;
-                }
-
-                storedManifests.forEach(manifestLink => {
-                    const manifestHTML = `
-                        <a href="${manifestLink}" target="_blank" class="manifestLink">
-                            <p>${manifestLink}</p>
-                        </a>
-                    `;
-                    manifestContainer.innerHTML += manifestHTML;
-                });
-            }
-
         </script>
     </body>
 </html>
