@@ -37,7 +37,11 @@ function updateRecentlyUsedTools(clickedTool) {
     let recentTools = getRecentlyUsedTools();
 
     // Remove the tool if it exists in recentTools, then add it to the top
-    recentTools = recentTools.filter(tool => tool.label.toLowerCase() !== clickedTool.label.toLowerCase());
+    const clickedToolIndex = recentTools.findIndex(tool => tool.label.toLowerCase() === clickedTool.label.toLowerCase());
+    if (clickedToolIndex !== -1) {
+        recentTools.splice(clickedToolIndex, 1);
+    }
+    
     recentTools.unshift(clickedTool);
 
     //const topThreeTools = recentTools.slice(0, 3);
