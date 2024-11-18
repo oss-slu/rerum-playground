@@ -11,8 +11,6 @@ import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js'
 
 const RECENTLY_USED_KEY = 'recentlyUsedTools';
 
-console.log("script is loading...");
-
 /**
  * Retrieve recently used tools from local storage.
  */
@@ -25,7 +23,6 @@ function getRecentlyUsedTools() {
  * Save recently used tools to local storage.
  */
 function saveRecentlyUsedTools(recentTools) {
-    console.log("Saving recent tools:", recentTools);
     localStorage.setItem(RECENTLY_USED_KEY, JSON.stringify(recentTools));
 }
 
@@ -33,20 +30,22 @@ function saveRecentlyUsedTools(recentTools) {
  * Update recently used tools, move the clicked tool to the top.
  */
 function updateRecentlyUsedTools(clickedTool) {
-    console.log("updateRecentlyUsedTools called with:", clickedTool);
-    let recentTools = getRecentlyUsedTools();
+    let allTools = getRecentlyUsedTools();
 
-    // Remove the tool if it exists in recentTools, then add it to the top
-    const clickedToolIndex = recentTools.findIndex(tool => tool.label.toLowerCase() === clickedTool.label.toLowerCase());
-    if (clickedToolIndex !== -1) {
-        recentTools.splice(clickedToolIndex, 1);
-    }
-    
-    recentTools.unshift(clickedTool);
+    allTools = allTools.filter(
+        tool => tool.label.toLowerCase() !== clickedTool.label.toLowerCase()
+    );
 
-    //const topThreeTools = recentTools.slice(0, 3);
-    saveRecentlyUsedTools(recentTools.slice(0, 3));
-    console.log("updated recent tools after click:", recentTools.slice(0, 3));
+    allTools.unshift(clickedTool);
+
+    const updatedTools = [
+        ...allTools,
+        ...ToolsCatalog.filter(tool =>
+            !allTools.some(recentTool => recentTool.label === tool.label)
+        ),
+    ];
+
+    saveRecentlyUsedTools(updatedTools);
 }
 
 /**
@@ -89,7 +88,6 @@ function initializeTechnologies(config) {
  * Render tools, higlighting recently used ones.
  */
 function renderTools() {
-    console.log("renderTools is running");
     const toolSetContainer = document.getElementById('tool_set');
     if (!toolSetContainer) {
         console.error("Tool set container not found.");
@@ -98,15 +96,11 @@ function renderTools() {
 
     toolSetContainer.innerHTML = '';
 
-    const recentTools = getRecentlyUsedTools();
-    //const recentToolLabels = new Set(recentTools.map(tool => tool.label.toLowerCase()));
-
-    const sortedTools = [...recentTools, ...ToolsCatalog.filter(tool => 
-        !recentTools.some(recentTool => recentTool.label === tool.label))];
+    const allTools = getRecentlyUsedTools();
 
     const toolsWrapper = document.createElement('div');
 
-    sortedTools.forEach((tool, index) => {
+    allTools.forEach((tool, index) => {
         const isRecentlyUsed = index < 3 ? `<span class="recent-badge">Recently used</span>` : '';
         const toolHTML = `
             <a href="${tool.view}" target="_blank" class="catalogEntry">
@@ -132,7 +126,6 @@ function renderTools() {
             handleToolClick(toolLabel);
         });
     });
-    console.log("rendered tool order:", sortedTools.map(tool => tool.label));
 }
 
 /**
@@ -169,8 +162,10 @@ function renderStoredManifests() {
  * Handle tool click event to manage recently used logic and allow default navigation
  */
 function handleToolClick(toolLabel) {
-    console.log("handleToolClick called with:", toolLabel);
-    const clickedTool = ToolsCatalog.find(tool => tool.label === toolLabel);
+    const clickedTool = ToolsCatalog.find(
+        tool => tool.label.toLowerCase() === toolLabel.toLowerCase()
+    );
+
     if (clickedTool) {
         updateRecentlyUsedTools(clickedTool);
         renderTools();
