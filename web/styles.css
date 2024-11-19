@@ -1,6 +1,7 @@
 body{
     margin: 0;
     padding: 0;
+    padding-bottom: 100px;
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
     overflow-x: hidden;
@@ -60,6 +61,12 @@ body{
     background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
 }
 
+#tool_set {
+    padding: 20px;
+    margin-bottom: 120px;
+    text-align: center;
+}
+
 /* Main Content Styles */
 .content, .container, #tool_set {
     transition: margin-left 0.3s ease; /* Smooth content shift */
@@ -90,23 +97,42 @@ body{
     }
 }
 
-.thumb img {
-    max-height: 100px;
-    max-width: 100px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-}
-
 .catalogEntry {
-    padding: 10px;
-    border: 2px solid black;
+    display: inline-block;
+    padding: 15px;
+    border: 1px solid #ccc;
     margin: 10px;
     text-align: center;
-    display: inline-block;
-    vertical-align: top;
     width: 30%;
     position: relative;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+}
+
+.thumb {
+    margin: 0;
+}
+
+.thumb img {
+    max-height: 80px;
+    max-width: 80px;
+    object-fit: contain;
+    margin: 15px auto;
+}
+
+.thumb label {
+    display: block;
+    color: #007bff;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.thumb figcaption {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 10px;
 }
 
 h4 { 
@@ -158,10 +184,6 @@ h4 {
     vertical-align: middle;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 h2 { 
     text-align: center;
     font-size: 32px;
@@ -191,27 +213,29 @@ p{
 }
 
 .recent-badge{
-    display: inline-block;
-    padding: 4px 8px;
-    background-color: #f00;
-    color: white;
-    font-size: 10px;
-    border-radius: 4px;
     position: absolute;
     top: 5px;
     right: 5px;
+    background-color: #ff0000;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
 }
 
 /*Footer and button styling from RERUM homepage.*/
 footer {
     z-index: 3;
-    position:fixed;
-    bottom:0;
-    width:100vw;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
     overflow: hidden;
     padding: 1rem 0;
     background-color: #dfdfdf;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+
+    
 }
 
 footer .button {
@@ -261,6 +285,9 @@ footer::before{
     padding: 10px;
     border: 1px solid #ccc;
     margin-top: 5px;
+    margin-bottom: 100px;
+    max-height: calc(100vh - 350px);
+    overflow-y: auto;
 }
 
 .spinner {
@@ -308,19 +335,22 @@ footer::before{
 }
 
 .manifest-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .manifest-card {
+    display: flex;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 4px;
     background: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    height: 120px;
+    width: 100%;
 }
 
 .manifest-card:hover {
@@ -329,9 +359,10 @@ footer::before{
 }
 
 .manifest-card-image {
-    height: 200px;
+    height: 100%;
+    width: 120px;
+    min-width: 120px;
     background: #f5f5f5;
-    position: relative;
 }
 
 .manifest-card-image img {
@@ -352,11 +383,16 @@ footer::before{
 }
 
 .manifest-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 15px;
+    overflow: hidden;
 }
 
 .manifest-title {
-    margin: 0 0 10px 0;
+    margin: 0;
     font-size: 16px;
     font-weight: bold;
     color: #333;
@@ -366,9 +402,28 @@ footer::before{
 }
 
 .manifest-items {
-    margin: 0 0 10px 0;
+    margin: 5px 0;
     font-size: 14px;
     color: #666;
+}
+
+.manifest-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.manifest-load-btn {
+    padding: 6px 12px;
+    background: #7397f9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.manifest-load-btn:hover {
+    background: #5a7ce0;
 }
 
 .manifest-link {
@@ -389,7 +444,7 @@ footer::before{
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .manifest-cards-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 15px;
@@ -398,5 +453,15 @@ footer::before{
 
     .manifest-card-image {
         height: 150px;
+    }
+
+    .catalogEntry {
+        width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .catalogEntry {
+        width: 45%;
     }
 }

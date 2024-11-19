@@ -209,3 +209,44 @@ async function fetchManifestDetails(uri) {
             dropdownArrow.addEventListener('click', toggleDropdown);
         }
     });
+
+    export async function loadManifest(url) {
+        const manifestMessage = document.getElementById('manifestMessage');
+        const loadMessage = document.getElementById('loadMessage');
+        const manifestLabelField = document.getElementById('manifestLabelField');
+        
+        if (!url) {
+            manifestMessage.textContent = 'Please enter a URL.';
+            manifestMessage.style.color = 'red';
+            return;
+        }
+    
+        manifestMessage.textContent = 'Loading...';
+        manifestMessage.style.color = 'black';
+    
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const loadedManifest = await response.json();
+            
+            manifestMessage.textContent = 'Manifest loaded successfully!';
+            manifestMessage.style.color = 'green';
+    
+            // Store the manifest link
+            await storeManifestLink(url);
+            
+            // Display manifest metadata
+            const manifestLabel = loadedManifest.label?.en?.[0] || 'Untitled';
+            const manifestType = loadedManifest.type || 'Unknown Type';
+            const manifestItemCount = loadedManifest.items?.length || 0;
+    
+            loadMessage.innerHTML = "<u>Current Object:</u>";
+            manifestLabelField.innerHTML = `Name: ${manifestLabel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: ${manifestType}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of Items: ${manifestItemCount}`;
+        } catch (error) {
+            manifestMessage.textContent = "Failed to load manifest. Please check the URL and try again.";
+            manifestMessage.style.color = "red";
+            console.error('Error:', error);
+        }
+    } 
