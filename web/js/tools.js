@@ -9,8 +9,6 @@ import ToolsCatalog from './toolsCatalog.js';
 
 const RECENTLY_USED_KEY = 'recentlyUsedTools';
 
-console.log("script is loading...");
-
 /**
  * Retrieve recently used tools from local storage.
  */

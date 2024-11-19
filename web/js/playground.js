@@ -3,15 +3,6 @@
  */
    
 // Playground scripting utilities.  Will be available as github CDN.
-import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
-
-import PLAYGROUND from './config.js';
-import ToolsCatalog from './toolsCatalog.js';
-import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
-
-const RECENTLY_USED_KEY = 'recentlyUsedTools';
-
-console.log("script is loading...");
 
 //fetch footer
 fetch('footer.html')
