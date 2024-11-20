@@ -1,5 +1,5 @@
 // Import the function for storing manifest links
-import { storeManifestLink } from './manifestStorage.js';
+import { storeManifestLink , getStoredManifestLinks } from './manifestStorage.js';
 
 // Wait until the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {

@@ -96,11 +96,17 @@ function renderTools() {
 
     toolSetContainer.innerHTML = '';
 
-    const allTools = getRecentlyUsedTools();
+    const recentTools = getRecentlyUsedTools();
+
+    const toolsToRender = recentTools.length > 0
+        ? [...recentTools, ...ToolsCatalog.filter(tool =>
+            !recentTools.some(recentTool => recentTool.label === tool.label)
+        )]
+        : [...ToolsCatalog];
 
     const toolsWrapper = document.createElement('div');
 
-    allTools.forEach((tool, index) => {
+    toolsToRender.forEach((tool, index) => {
         const isRecentlyUsed = index < 3 ? `<span class="recent-badge">Recently used</span>` : '';
         const toolHTML = `
             <a href="${tool.view}" target="_blank" class="catalogEntry">
