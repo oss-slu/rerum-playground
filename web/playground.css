@@ -98,64 +98,10 @@ body{
     margin: 0 auto;
 }
 
-.catalogEntry {
-    padding: 10px;
-    border: 2px solid black;
-    margin: 10px;
-    text-align: center;
-    display: inline-block;
-    vertical-align: top;
-    width: 30%;
-    position: relative;
-}
-
 h4 { 
     text-align: center;
     font-size: 24px;
     margin-top: 20px;
-}
-
-.input-group {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.input-group input {
-    flex-grow: 1;
-    margin-right: 10px;
-    padding: 6px 10px;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-#manifestMessage {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.manifestInfo {
-    text-align: center;
-    background: #a3d1ff;
-}
-
-.manifestInfo p{
-    margin-bottom: 0px;
-}
-
-#loadManifest {
-    background-color: #7397f9;
-    color: white;
-    border: none;
-    padding: 6px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 0;
-    cursor: pointer;
-    line-height: 1.5;
-    text-transform: none;
-    vertical-align: middle;
 }
 
 body {
@@ -181,59 +127,8 @@ p{
     margin-bottom: 10px;
 }
 
-.json p{
-    text-align: left;
-    margin: 0px;
-}
-
 .spacer{
     margin-top: 100px;
-}
-
-.recent-badge{
-    display: inline-block;
-    padding: 4px 8px;
-    background-color: #f00;
-    color: white;
-    font-size: 10px;
-    border-radius: 4px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
-/*Footer and button styling from RERUM homepage.*/
-footer {
-    z-index: 3;
-    position:fixed;
-    bottom:0;
-    width:100vw;
-    overflow: hidden;
-    padding: 1rem 0;
-    background-color: #dfdfdf;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-footer .button {
-    border-color: transparent;
-    margin:0;
-    width: 23%;
-    float: left;
-    box-sizing: border-box;
-}
-
-footer .button:hover{
-    background-color: #a3d1ff;
-}
-
-footer::before{
-    content: "";
-    position: absolute;
-    box-shadow: 0 0 3rem #001e3c;
-    height: 2rem;
-    top: -2.5rem;
-    width: 120%;
-    left: -10%;
 }
 
 .button:focus{
@@ -261,48 +156,4 @@ footer::before{
     padding: 10px;
     border: 1px solid #ccc;
     margin-top: 5px;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.manifest-loader {
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: left;
-    position: relative;
-    min-height: 100px;
-}
-
-.loading-overlay {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.9);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1000;
-    padding: 20px;
-}
-
-.loading-text {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #3498db;
-    font-size: 16px;
 }
