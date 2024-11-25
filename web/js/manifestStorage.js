@@ -178,37 +178,28 @@ async function fetchManifestDetails(uri) {
     // Toggle the dropdown visibility and render cards
 
     export function toggleDropdown() {
-        const manifestContainer = document.getElementById('stored_manifest_links');
-        const dropdownArrow = document.getElementById('dropdownArrow');
-
-        if (!manifestContainer || !dropdownArrow) {
-            console.error("Required elements not found");
-            return;
-        }
+        try {
+            console.log("toggleDropdown called"); // Debug log
+            const manifestContainer = document.getElementById('stored_manifest_links');
+            const dropdownArrow = document.getElementById('dropdownArrow');
     
-        if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
-            manifestContainer.style.display = 'block';
-            dropdownArrow.textContent = '▲';
-            renderManifestCards(); // This calls the render function when opening the dropdown
-        } else {
-            manifestContainer.style.display = 'none';
-            dropdownArrow.textContent = '▼';
+            if (!manifestContainer || !dropdownArrow) {
+                console.error("Required elements not found");
+                return;
+            }
+        
+            if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
+                manifestContainer.style.display = 'block';
+                dropdownArrow.textContent = '▲';
+                renderManifestCards().catch(err => console.error('Error rendering cards:', err));
+            } else {
+                manifestContainer.style.display = 'none';
+                dropdownArrow.textContent = '▼';
+            }
+        } catch (error) {
+            console.error("Error in toggleDropdown:", error);
         }
     }
-
-
-    //Initialize event listeners when the module loads
-    document.addEventListener('DOMContentLoaded', () => {
-        const dropdownLabel = document.getElementById('dropdownLabel');
-        const dropdownArrow = document.getElementById('dropdownArrow')
-
-        if (dropdownLabel) {
-            dropdownLabel.addEventListener('click', toggleDropdown);
-        }
-        if (dropdownArrow) {
-            dropdownArrow.addEventListener('click', toggleDropdown);
-        }
-    });
 
     export async function loadManifest(url) {
         const manifestMessage = document.getElementById('manifestMessage');
@@ -249,4 +240,28 @@ async function fetchManifestDetails(uri) {
             manifestMessage.style.color = "red";
             console.error('Error:', error);
         }
+    }
+    
+    export function initializeManifestHandlers() {
+        // Handle manifest loading button
+        const loadManifestBtn = document.getElementById('loadManifest');
+        const manifestUrl = document.getElementById('manifestUrl');
+        if (loadManifestBtn) {
+            loadManifestBtn.textContent = 'Upload';
+            loadManifestBtn.addEventListener('click', () => {
+                if (manifestUrl) {
+                    loadManifest(manifestUrl.value.trim());
+                }
+            });
+        }
+    
+        // Handle dropdown toggling
+        const dropdownLabel = document.getElementById('dropdownLabel');
+        const dropdownArrow = document.getElementById('dropdownArrow');
+        if (dropdownLabel) dropdownLabel.addEventListener('click', toggleDropdown);
+        if (dropdownArrow) dropdownArrow.addEventListener('click', toggleDropdown);
     } 
+
+window.loadManifest = loadManifest;
+window.toggleDropdown = toggleDropdown;
+window.renderManifestCards = renderManifestCards;
