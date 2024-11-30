@@ -4,8 +4,6 @@
         <title>Tools | Rerum Playground</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="./js/tools.js" type="module" defer></script>        
-        <script src="./js/playground.js" type="module"></script>
         <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://unpkg.com/chota@latest">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -49,7 +47,13 @@
     </head>
     
     <body>
-        <div id="menu-placeholder"></div>
+        <div id="toolBar" class="sidebar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="#">Contribute</a>
+            <a href="#">Contact</a>
+            <a href="tools.html">Tools</a>
+        </div>
 
         <header>
             <div class="header">
@@ -80,11 +84,7 @@
             <h5>Load Manifest</h5>
             <div class="input-group">
                 <input type="text" id="manifestUrl" placeholder="Enter manifest URL">
-                <button id="loadManifest" class="button">Load</button>
-            </div>
-            <div class="loading-overlay">
-                <div class="spinner"></div>
-                <div class="loading-text">Loading Manifest...</div>
+                <button id="loadManifest" class="button">Next</button>
             </div>
             <div id="manifestMessage"></div>
         </div>
@@ -102,5 +102,24 @@
         </div>
 
         <div id="footer-placeholder"></div>
+
+        <script src="./js/playground.js" type="module"></script>
+
+        <script>
+            function openCloseMenu() {
+                var toolBar = document.getElementById("toolBar");
+                var mainContent = document.querySelector(".content") || document.querySelector(".container") || document.querySelector("#tool_set");
+                toolBar.classList.toggle("sidebar-open");
+                if (mainContent) {
+                    mainContent.classList.toggle("shift");
+                }
+            }
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+        </script>
     </body>
 </html>

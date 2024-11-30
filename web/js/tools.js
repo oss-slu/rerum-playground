@@ -1,5 +1,5 @@
 // Import the function for storing manifest links
-import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
+import { toggleDropdown, loadManifest, renderManifestCards } from './manifestStorage.js';
 
 // Playground scripting utilities.  Will be available as github CDN.
 import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
@@ -133,39 +133,6 @@ function renderTools() {
 }
 
 /**
- * Render stored manifest links.
- */
-function renderStoredManifests() {
-    const manifestContainer = document.getElementById('stored_manifest_links');
-    const storedManifests = getStoredManifestLinks();
-
-    if (!manifestContainer) {
-        console.error("Manifest set container not found.");
-        return;
-    }
-
-    manifestContainer.innerHTML = '';
-
-    if (storedManifests.length === 0) {
-        manifestContainer.innerHTML = '<p>No stored manifest links.</p>';
-        return;
-    }
-
-    storedManifests.forEach(manifestLink => {
-        const manifestHTML = `
-            <a href="${manifestLink}" target="_blank" class="manifestLink">
-                <p>${manifestLink}</p>
-            </a>
-        `;
-        manifestContainer.innerHTML += manifestHTML;
-    });
-}
-
-window.onload = function() {
-    renderStoredManifests(); 
-};
-
-/**
  * Handle tool click event to manage recently used logic and allow default navigation
  */
 function handleToolClick(toolLabel) {
@@ -195,122 +162,40 @@ window.updateToolOrder = function(toolLabel) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-/**
-*  These are promises so we can control the chaining how we like, if necessary.
-*/
-    try {
-        initializeInterfaces(PLAYGROUND.INTERFACES)
-        initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
-        renderTools();
-        renderStoredManifests();
-    } catch (err) {
-        console.error("Error initializing the playground: ", err);
-    }
-});    
-
-// Wait until the DOM is fully loaded
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    const manifestUrl = document.getElementById('manifestUrl');
-    const loadManifest = document.getElementById('loadManifest');
-    const manifestMessage = document.getElementById('manifestMessage');
-    const loadMessage = document.getElementById("loadMessage");
-    const manifestLabelField = document.getElementById("manifestLabelField");
-    const loadingOverlay = document.querySelector('.loading-overlay');
+    try {
+        initializeInterfaces(PLAYGROUND.INTERFACES);
+        initializeTechnologies(PLAYGROUND.TECHNOLOGIES);
+        renderTools();
 
-    // Function to show loading overlay
-    function showLoading() {
-        loadingOverlay.style.display = 'flex';
-        manifestMessage.textContent = '';
-    }
+        // Set up manifest-related event listeners
+        const dropdownLabel = document.getElementById('dropdownLabel');
+        const dropdownArrow = document.getElementById('dropdownArrow');
+        const manifestUrl = document.getElementById('manifestUrl');
+        const loadManifestBtn = document.getElementById('loadManifest');
 
-    // Function to hide loading overlay
-    function hideLoading() {
-        loadingOverlay.style.display = 'none';
-    }
-
-    // Event listener for loading manifest
-    loadManifest.addEventListener('click', async function() {
-        const url = manifestUrl.value.trim();
-        if (!url) {
-            manifestMessage.textContent = 'Please enter a URL.';
-            manifestMessage.style.color = 'red';
-            return;
+        if (dropdownLabel) {
+            dropdownLabel.addEventListener('click', toggleDropdown);
+        }
+        if (dropdownArrow) {
+            dropdownArrow.addEventListener('click', toggleDropdown);
+        }
+        if (loadManifestBtn && manifestUrl) {
+            loadManifestBtn.addEventListener('click', () => {
+                loadManifest(manifestUrl.value.trim());
+            });
         }
 
-        showLoading();
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-
-            hideLoading();
-            manifestMessage.textContent = 'Manifest loaded successfully!';
-            manifestMessage.style.color = 'green';
-
-            storeManifestLink(url);
-
-            try {
-                let manifestLabel = `Name: ${data.label.en[0]}`;
-                let manifestType = `Type: ${data.type}`;
-                let manifestItemCount = `Number of Items: ${data.items.length}`;
-
-                loadMessage.innerHTML = "<u>Current Object:</u>";
-                manifestLabelField.innerHTML = `${manifestLabel} &nbsp;&nbsp;&nbsp;&nbsp; ${manifestType} &nbsp;&nbsp;&nbsp;&nbsp; ${manifestItemCount}`;
-            } catch (metadataError) {
-                loadMessage.innerHTML = "No metadata available!";
-                manifestLabelField.innerHTML = "";
-            }
-        } catch (error) {
-            hideLoading();
-            manifestMessage.textContent = 'Failed to load manifest. Please check the URL and try again.';
-            manifestMessage.style.color = 'red';
-            console.error('Error:', error);
+        // Initial render of manifest cards if dropdown is visible
+        const manifestContainer = document.getElementById('stored_manifest_links');
+        if (manifestContainer && manifestContainer.style.display !== 'none') {
+            renderManifestCards();
         }
-    });
+    } catch (err) {
+        console.error("Error initializing the playground:", err);
+    }
 });
 
-// Toggle dropdown function, defined outside of DOMContentLoaded to ensure it's globally accessible
-function toggleDropdown() {
-    const manifestContainer = document.getElementById('stored_manifest_links');
-    const dropdownArrow = document.getElementById('dropdownArrow');
-
-    if (manifestContainer.style.display === 'none' || manifestContainer.style.display === '') {
-        manifestContainer.style.display = 'block';
-        dropdownArrow.textContent = '▲';
-    } else {
-        manifestContainer.style.display = 'none';
-        dropdownArrow.textContent = '▼';
-    }
-}
-
-document.getElementById('dropdownLabel').addEventListener('click', toggleDropdown);
-document.getElementById('dropdownArrow').addEventListener('click', toggleDropdown);
-
-/**
- * Update tool order when a tool is clicked.
- */
-window.updateToolOrder = function(toolLabel) {
-    const clickedTool = ToolsCatalog.find(tool => tool.label === toolLabel);
-    if (clickedTool) {
-        updateRecentlyUsedTools(clickedTool);
-        renderTools();
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-/**
-*  These are promises so we can control the chaining how we like, if necessary.
-*/
-    try {
-        initializeInterfaces(PLAYGROUND.INTERFACES)
-        initializeTechnologies(PLAYGROUND.TECHNOLOGIES)
-        renderTools();
-        renderStoredManifests();
-    } catch (err) {
-        console.error("Error initializing the playground: ", err);
-    }
-});    
+// Export for global access if needed
+window.updateToolOrder = handleToolClick;
