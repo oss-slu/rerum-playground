@@ -1,3 +1,4 @@
+// manifestStorage.js
 const MANIFEST_LINKS_KEY ='storedManifestLinks';
 
 /**
