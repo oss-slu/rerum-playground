@@ -157,3 +157,11 @@ p{
     border: 1px solid #ccc;
     margin-top: 5px;
 }
+
+.header button{
+    font-size: 40px;
+    cursor: pointer;
+    padding: 8px 0px 0px 25px;
+    background: none;
+    border: none;
+}
