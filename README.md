@@ -1,5 +1,5 @@
 # Rerum Playground
-This is a web space that uses the RERUM installation at the Walter J. Ong,<sub><sup> S.J.</sup></sub> Center for Digital Humanities to explore the possibilities of interoperable tools and standards. By using the Tiny Things sandbox, users can immediately create reusable JSON-LD objects that conform to IIIF and Web Annotation standards and find new ways to interact with them.
+This is a web space that uses the RERUM installation of the Research Computing Group at Saint Louis University to explore the possibilities of interoperable tools and standards. By using the Tiny Things sandbox, users can immediately create reusable JSON-LD objects that conform to IIIF and Web Annotation standards and find new ways to interact with them.
 
 **RERUM Playground** is a web-based toolset enabling users to work with IIIF manifests and JSON-LD objects. Users can bring their own manifest or create one within the playground, then use the listed tools to visualize, edit, and redirect the manifest to other compatible applications.
 
@@ -42,4 +42,3 @@ Contributions are welcome! Check out the `CONTRIBUTING.md` for guidelines.
 Licensed under the MIT License. See `LICENSE` for more details.
 
 ---
-
