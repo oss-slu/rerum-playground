@@ -12,12 +12,17 @@ footer {
     font-family:Arial, Helvetica, sans-serif;
 }
 
+footer .footerButtons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+}
+
 footer .button {
-    border-color: transparent;
-    margin:0;
-    width: 23%;
-    float: left;
-    box-sizing: border-box;
+    background: transparent;
+    flex: 1;               
+    margin: 0 5px;         
+    text-align: center;
 }
 
 footer .button:hover{

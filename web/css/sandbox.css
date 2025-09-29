@@ -1,0 +1,74 @@
+/* Match Rerum Playground styling */
+
+.sandbox-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  gap: 1rem;
+}
+
+.sandbox-buttons button {
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sandbox-buttons button:hover {
+  background-color: #003366;
+}
+
+.sandbox-section {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12rem;
+  margin-top: 1rem;
+}
+
+.sandbox-section h3 {
+  margin-top: 0;
+  color: #001e3c;
+}
+
+.sandbox-section p {
+  margin-bottom: 1rem;
+}
+
+.sandbox-section input,
+.sandbox-section textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.sandbox-section textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.sandbox-section .action-btn {
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sandbox-section .action-btn:hover {
+  background-color: #003366;
+}
+
+.hidden {
+  display: none;
+}
