@@ -1,5 +1,9 @@
 /* Match Rerum Playground styling */
 
+.container {
+  padding-bottom: 15rem;
+}
+
 .sandbox-buttons {
   display: flex;
   justify-content: center;
@@ -26,7 +30,7 @@
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 6px;
-  padding: 12rem;
+  padding: 1.5rem;
   margin-top: 1rem;
 }
 

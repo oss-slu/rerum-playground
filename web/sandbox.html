@@ -41,10 +41,11 @@
 
       <div class="sandbox-buttons">
         <button onclick="showSection('create')">Create</button>
+        <button onclick="showSection('read')">Read</button>
         <button onclick="showSection('update')">Update</button>
         <button onclick="showSection('overwrite')">Overwrite</button>
         <button onclick="showSection('delete')">Delete</button>
-        <button onclick="showSection('query')">Query</button>
+        <button onclick = "showSection('view')">View</button>
       </div>
 
       <div id="sandbox-sections">
@@ -54,6 +55,19 @@
           <p>Provide a JSON object to create a new record in RERUM.</p>
           <textarea placeholder="Enter JSON to create"></textarea>
           <button class="action-btn">Create</button>
+        </section>
+
+        <!-- Read -->
+        <section id="read" class="sandbox-section hidden">
+          <h3>Read</h3>
+          <p>
+            Enter a key and value to search RERUM for objects containing that
+            key-value pair. <em>Note: RERUM supports more complex queries than
+            this simple form (multi-key, embedded-key, wildcards, etc.).</em>
+          </p>
+          <input type="text" placeholder="Key" />
+          <input type="text" placeholder="Value" />
+          <button class="action-btn">Read</button>
         </section>
 
         <!-- Update -->
@@ -99,17 +113,14 @@
           <button class="action-btn">Delete</button>
         </section>
 
-        <!-- Query -->
-        <section id="query" class="sandbox-section hidden">
-          <h3>Query</h3>
-          <p>
-            Enter a key and value to search RERUM for objects containing that
-            key-value pair. <em>Note: RERUM supports more complex queries than
-            this simple form (multi-key, embedded-key, wildcards, etc.).</em>
+        <!-- View -->
+        <section id="view" class="sandbox-section hidden">
+          <h3>View</h3>
+          <p>Paste the URI link to view the JSON represntation of the data
+            associated with the URI.
           </p>
-          <input type="text" placeholder="Key" />
-          <input type="text" placeholder="Value" />
-          <button class="action-btn">Query</button>
+          <textarea placeholder="URI to view"></textarea>
+          <button class="action-btn">View</button>
         </section>
       </div>
     </div>

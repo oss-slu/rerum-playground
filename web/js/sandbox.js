@@ -11,7 +11,9 @@ window.showSection = showSection;
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".action-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      alert(`${btn.textContent} action clicked (placeholder).`);
+      const action = btn.textContent.trim();
+      console.log(`${action} action triggered (placeholder).`);
+      alert(`${action} action clicked (placeholder).`);
     });
   });
 });
