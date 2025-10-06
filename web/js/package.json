@@ -1,6 +1,7 @@
 {
 "name": "jestdemo",
 "version": "1.0.0",
+"type": "module",
 "description": "",
 "main": "json-utils.test.js",
 "scripts": {

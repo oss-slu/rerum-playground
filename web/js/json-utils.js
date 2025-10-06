@@ -1,12 +1,13 @@
-function prettifyJSON(input){
-    try{
-        const jsonString = JSON.stringify(input);
-        return jsonString;
-    }
-    catch (error) {
-        return false;
-    }
+
+function prettifyJSON(input) {
+  try {
+    const obj = typeof input === "string" ? JSON.parse(input) : input;
+    return JSON.stringify(obj, null, 2);
+  } catch (error) {
+    return `Invalid JSON: ${error.message}`;
+  }
 }
+
 
 function validateJSON(input){
     try {
@@ -18,3 +19,7 @@ function validateJSON(input){
     }
 }
 
+module.exports = {
+    prettifyJSON: prettifyJSON,
+    validateJSON: validateJSON
+}
