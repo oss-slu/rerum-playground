@@ -14,3 +14,12 @@ test('JSON is validated.', () => {
   expect(validateJSON(JSON.stringify(Student,null,2))).toBe(true);
 });
 
+test('Invalid JSON should return false', () => {
+  expect(validateJSON("{name: 'Brian'}")).toBe(false);
+});
+
+test('Invalid JSON should show helpful message', () => {
+  const result = prettifyJSON("{name: 'Brian'}");
+  expect(result).toMatch(/Invalid JSON/);
+});
+
