@@ -1,12 +1,11 @@
 
-function prettifyJSON(input){
-    try{
-        const jsonString = JSON.stringify(input, null, 2);
-        return jsonString;
-    }
-    catch (error) {
-        return error;
-    }
+function prettifyJSON(input) {
+  try {
+    const obj = typeof input === "string" ? JSON.parse(input) : input;
+    return JSON.stringify(obj, null, 2);
+  } catch (error) {
+    return `Invalid JSON: ${error.message}`;
+  }
 }
 
 
