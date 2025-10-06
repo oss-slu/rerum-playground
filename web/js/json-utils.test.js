@@ -1,9 +1,16 @@
-const validateJSON = require('./json-utils.js');
+const {prettifyJSON, validateJSON} = require('./json-utils.js');
 
-test('Testing prettifying JSON', () => {
-  expect(prettifyJSON("Testing")).toBe(true);
+const SLUStudent = {
+  name : "Brian",
+  year : "Sophomore",
+  major : "Chemistry"
+};
+
+test('JSON is formatted.', () => {
+  expect(prettifyJSON(SLUStudent)).not.toBeUndefined();
 });
 
-test('Testing validating JSON', () => {
-  expect(validateJSON("Testing")).toBe(false);
+test('JSON is validated.', () => {
+  expect(validateJSON(JSON.stringify(SLUStudent,null,2))).toBe(true);
 });
+

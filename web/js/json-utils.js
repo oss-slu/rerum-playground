@@ -1,12 +1,14 @@
+
 function prettifyJSON(input){
     try{
-        const jsonString = JSON.stringify(input);
+        const jsonString = JSON.stringify(input, null, 2);
         return jsonString;
     }
     catch (error) {
-        return false;
+        return error;
     }
 }
+
 
 function validateJSON(input){
     try {
@@ -18,3 +20,7 @@ function validateJSON(input){
     }
 }
 
+module.exports = {
+    prettifyJSON: prettifyJSON,
+    validateJSON: validateJSON
+}
