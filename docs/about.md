@@ -34,7 +34,6 @@ a description of an object in JSON looks like shown below.
 
 **div class = "spacer"**
 - A dedicated empty div element intended to provide necessary vertical spacing at the bottom of the page, ensuring content does not overlap the fixed-position page footer.
-footer. However in the about.html documentation, someone commented it is not the correct way. 
 
 ### IDs
 
