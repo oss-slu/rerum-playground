@@ -1,4 +1,7 @@
 # menu.html Documentation
+## Page Purpose and Role
+This html file focuses as a menu container with links to different pages within RERUM Playground.
+
 ## About the "menu.html" File 
 This html file is represented as the menu container appearing on the RERUM Playground website when
 a user clicks on the three horizontal lines at the page header. 
