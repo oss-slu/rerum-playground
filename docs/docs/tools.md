@@ -1,74 +1,94 @@
-# tools.html Documentation
-## About the "tools.html" File 
-This html file presents the tools page in the RERUM Playground website showing RERUM Playground's available
-tools and loaded manifest.
 
+# Tools Script Reference: tools.js
 
-## Structure Overview 
+This document describes the main playground scripting utilities provided by `tools.js` for the RERUM Playground web application.
 
-**head Container**
+## Overview and Purpose
+`tools.js` manages the rendering and interaction logic for tools, interfaces, technologies, and manifest links in the playground. It tracks recently used tools, handles manifest loading, and provides event handlers for user interactions, supporting a dynamic and personalized playground experience.
 
-- Consists of links to specific JavaScript files for functionality 
-and css files for the page aesthetics.
+---
 
-**body Container**
+## Function Descriptions
 
-- Consists of elements being displayed on the website.
+### getRecentlyUsedTools()
+- **Parameters:** None
+- **Returns:** `Array<object>`
+- **Behavior:** Retrieves recently used tools from local storage, or returns an empty array if none are found.
 
-### Classes
+### saveRecentlyUsedTools(recentTools)
+- **Parameters:**
+	- `recentTools` (`Array<object>`): Array of tool objects to save.
+- **Returns:** `void`
+- **Behavior:** Saves the array of recently used tools to local storage.
 
-**div class = "header"**
-- Represents the top portion of the RERUM about page shown below.
-![image](./Images/about/header.png)
+### updateRecentlyUsedTools(clickedTool)
+- **Parameters:**
+	- `clickedTool` (`object`): The tool object that was clicked.
+- **Returns:** `void`
+- **Behavior:** Moves the clicked tool to the top of the recently used list and updates local storage.
 
-**div class = "manifest-loader"** 
-- Represents the container class where you enter a manifest URL and click the button to load the URL
-as shown below.
-![image](./Images/tools/manifestloader.png)
+### initializeInterfaces(config)
+- **Parameters:**
+	- `config` (`object`): Configuration object for interfaces.
+- **Returns:** `Promise<void>`
+- **Behavior:** Renders interface thumbnails to the DOM and broadcasts a loaded event.
 
-**div class = "dropdown"** 
-- Represents the dropdown section below the mainfest-loader page section
-where you can click the dropdown arrow to see the recently used links.
+### initializeTechnologies(config)
+- **Parameters:**
+	- `config` (`object`): Configuration object for technologies.
+- **Returns:** `Promise<void>`
+- **Behavior:** Renders technology thumbnails to the DOM and broadcasts a loaded event.
 
-![image](./Images/tools/dropdown.png)
+### renderTools()
+- **Parameters:** None
+- **Returns:** `void`
+- **Behavior:** Renders the tool catalog to the DOM, highlighting recently used tools.
 
+### renderStoredManifests()
+- **Parameters:** None
+- **Returns:** `void`
+- **Behavior:** Renders stored manifest links to the DOM.
 
-### IDs
+### handleToolClick(toolLabel)
+- **Parameters:**
+	- `toolLabel` (`string`): The label of the clicked tool.
+- **Returns:** `void`
+- **Behavior:** Updates recently used tools, re-renders the tool list, and opens the tool's view in a new tab.
 
-**div id = "tool_set"**
+### window.updateToolOrder(toolLabel)
+- **Parameters:**
+	- `toolLabel` (`string`): The label of the tool to update.
+- **Returns:** `void`
+- **Behavior:** Updates the order of tools and re-renders the tool list.
 
-- Container where only the tool elements would go.
+---
 
-**div id = "footer-placeholder"** 
-- Container where only the footer elements would go.
+## Example Usage/Workflow Snippet
 
-### Linked Files
+```javascript
+import { getRecentlyUsedTools, saveRecentlyUsedTools, updateRecentlyUsedTools } from './tools.js';
 
-**JavaScript**
-- playground.js
-- tools.js
+// Mark a tool as recently used
+const tool = { label: 'TinyNode', icon: 'icon.png', view: 'https://tiny.rerum.io/', description: 'Flexible tool.' };
+updateRecentlyUsedTools(tool);
 
-**CSS**
-- playground.css
-- tools.css
-- https://unpkg.com/chota@latest (external file)
-- //maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css(external file)
+// Render the tool list
+renderTools();
 
-## Integration with JavaScript
+// Handle manifest link storage
+import { storeManifestLink } from './manifestStorage.js';
+storeManifestLink('https://example.org/manifest.json');
+```
 
-**function openCloseMenu() function** 
-- Triggered when the user clicks
-on the three horizontal lines symbol at the header, which opens or closes the menu.
+---
 
-**fetch('footer.html')** 
-- Fetches elements belonging to the footer-placeholder ID.
+## Dependencies/Relationships
+- Imports utility functions from `utilities.js` (as `UTILS`).
+- Imports configuration from `config.js` (as `PLAYGROUND`).
+- Imports tool catalog from `toolsCatalog.js`.
+- Imports manifest storage functions from `manifestStorage.js`.
+- Used by the playground UI to manage tool, interface, and technology rendering and user interactions.
 
-**fetch('menu.html')** 
-- Fetches elements belonging to the menu-placeholder ID.
+---
 
-**document.getElementById('dropdownLabel').addEventListener('click', toggleDropdown); and  document.getElementById('dropdownArrow').addEventListener('click', toggleDropdown);** 
-- Triggers a dropdown function to see the recently used links.
-
-**document.addEventListener('DOMContentLoaded')**
-- These event listeners ensures the available tools for RERUM Playground are
-loaded into the DOM.
+For further details, see the source file: `web/js/tools.js`.
