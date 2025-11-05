@@ -1,3 +1,5 @@
+import { fetchFooter } from './services/objectService.js';
+
 function showSection(id) {
   document
     .querySelectorAll(".sandbox-section")

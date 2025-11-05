@@ -4,6 +4,7 @@
  */
 
 import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/config.js'
+import { create, update, overwrite, deleteObject, query, resolveJSON, resolveString } from './services/objectService.js';
 
 const logger = {
     fatal(msg) {
@@ -26,103 +27,38 @@ const logger = {
     }
 }
 
-/**
- * Logs any errors
- * @param {HTTPResponse} response from `fetch()`
- * @returns Promise(JSON) || Error
- */
-const handleHTTPError = (response, getAs = "json") => {
-    if (response.ok) return response[getAs]()
-    const errorMessages = {
-        400: "Bad Request",
-        401: "Request was unauthorized",
-        403: "Forbidden to make request",
-        404: "Not found",
-        500: "Internal server error",
-        503: "Server down time",
-    }
-    logger.warn(errorMessages[response.status] ?? `Unhandled HTTP Error ${response.status}`)
-    throw Error("HTTP Error: " + response.statusText)
-}
-
+// RERUM API operations moved to services/objectService.js
 const API = {
-    create: async (obj) => {
-        return fetch(PLAYGROUND.URLS.CREATE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    update: async (obj) => {
-        return fetch(PLAYGROUND.URLS.UPDATE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    overwrite: async (obj) => {
-        return fetch(PLAYGROUND.URLS.OVERWRITE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    delete: async (uri) => {
-        return fetch(PLAYGROUND.URLS.DELETE, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: uri
-        })
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    query: async (obj) => {
-        return fetch(PLAYGROUND.URLS.QUERY, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    resolveJSON: async (uri) => {
-        return fetch(uri)
-            .then(handleHTTPError)
-            .catch(err => { return err })
-    },
-    resolveString: async (uri) => {
-        return fetch(uri)
-            .then(response => handleHTTPError(response, "text"))
-            .catch(err => { return err })
-    }
+    create,
+    update,
+    overwrite,
+    delete: deleteObject,
+    query,
+    resolveJSON,
+    resolveString
 }
 
 export default {
-        handleHTTPError,
-        logger,
-        API,
+    logger,
+    API,
         /**
          * Broadcast a message about PLAYGROUND
          */
         broadcast(event = {}, type = "message", element = document, obj = {}) {
+            // If caller passed a null/undefined element (e.g. container not found),
+            // fall back to document so dispatchEvent is always called on a valid node.
+            // This mirrors previous tolerant behavior and prevents uncaught TypeErrors.
+            if (!element || typeof element.dispatchEvent !== 'function') {
+                logger.warn('broadcast called with invalid element; falling back to document.');
+                element = document;
+            }
 
-            return element.dispatchEvent(new CustomEvent(type, { detail: Object.assign(obj, { target: event.target }), bubbles: true }))
+            try {
+                return element.dispatchEvent(new CustomEvent(type, { detail: Object.assign(obj, { target: (event && event.target) || null }), bubbles: true }))
+            } catch (err) {
+                logger.error('Error broadcasting event: ' + err.message)
+                return false
+            }
         },
 
         /**
