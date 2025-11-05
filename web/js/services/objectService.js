@@ -4,12 +4,19 @@
 import PLAYGROUND from '../config.js';
 
 // Minimal local HTTP error handler that mirrors previous behavior.
-const handleHTTPError = async (response, getAs = 'json') => {
-  if (response.ok) return response[getAs]();
-  const error = new Error('HTTP Error: ' + response.statusText);
-  error.status = response.status;
-  throw error;
-};
+const handleHTTPError = (response, getAs = "json") => {
+    if (response.ok) return response[getAs]()
+    const errorMessages = {
+        400: "Bad Request",
+        401: "Request was unauthorized",
+        403: "Forbidden to make request",
+        404: "Not found",
+        500: "Internal server error",
+        503: "Server down time",
+    }
+    logger.warn(errorMessages[response.status] ?? `Unhandled HTTP Error ${response.status}`)
+    throw Error("HTTP Error: " + response.statusText)
+}
 
 /**
  * Fetches footer HTML and returns text content.
