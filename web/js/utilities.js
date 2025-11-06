@@ -3,29 +3,9 @@
  * 
  */
 
-import { default as PLAYGROUND } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/config.js'
 import { create, update, overwrite, deleteObject, query, resolveJSON, resolveString } from './services/objectService.js';
+import { logger, broadcast, thumbnailGenerator } from './generalUtils.js'
 
-const logger = {
-    fatal(msg) {
-        if (PLAYGROUND.LOGLEVEL > 0) console.error(`%c☠ ${msg}`, `color:crimson;font-weight:bold;font-size:2rem;`)
-    },
-    error(msg) {
-        if (PLAYGROUND.LOGLEVEL > 1) console.error(`💣 ${msg}`)
-    },
-    warn(msg) {
-        if (PLAYGROUND.LOGLEVEL > 2) console.warn(`⚠ ${msg}`)
-    },
-    info(msg) {
-        if (PLAYGROUND.LOGLEVEL > 3) console.info(`ℹ %c${msg}`, `color:#061615;background:#3acabb;`)
-    },
-    debug(msg) {
-        if (PLAYGROUND.LOGLEVEL > 4) console.debug(`🐞 ${msg}`)
-    },
-    trace(msg) {
-        if (PLAYGROUND.LOGLEVEL > 5) console.trace(msg)
-    }
-}
 
 // RERUM API operations moved to services/objectService.js
 const API = {
@@ -44,22 +24,7 @@ export default {
         /**
          * Broadcast a message about PLAYGROUND
          */
-        broadcast(event = {}, type = "message", element = document, obj = {}) {
-            // If caller passed a null/undefined element (e.g. container not found),
-            // fall back to document so dispatchEvent is always called on a valid node.
-            // This mirrors previous tolerant behavior and prevents uncaught TypeErrors.
-            if (!element || typeof element.dispatchEvent !== 'function') {
-                logger.warn('broadcast called with invalid element; falling back to document.');
-                element = document;
-            }
-
-            try {
-                return element.dispatchEvent(new CustomEvent(type, { detail: Object.assign(obj, { target: (event && event.target) || null }), bubbles: true }))
-            } catch (err) {
-                logger.error('Error broadcasting event: ' + err.message)
-                return false
-            }
-        },
+        broadcast,
 
         /**
          * Behavior for when the user picks a tool. They may provide the data to take into that tool.
@@ -98,15 +63,7 @@ export default {
         * @param {Object} entry - each tool/interface/technology object with properties like label, icon, view, and description
         * @returns {String} HTML structure for the thumbnail
         */
-        thumbnailGenerator: (entry) => {
-            return `<a class="catalogEntry" href="${entry.view}">
-            <figure class="thumb">
-                <label>${entry.label}</label>
-                <img src="${entry.icon}" />
-                <figcaption>${entry.description}</figcaption>
-            </figure>
-            </a>`;
-        }
+        thumbnailGenerator
     }
 
 
