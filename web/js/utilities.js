@@ -4,7 +4,7 @@
  */
 
 import { create, update, overwrite, deleteObject, query, resolveJSON, resolveString } from './services/objectService.js';
-import { logger, broadcast, thumbnailGenerator } from './generalUtils.js'
+import { logger, broadcast, thumbnailGenerator } from './utils/generalUtils.js'
 
 
 // RERUM API operations moved to services/objectService.js
