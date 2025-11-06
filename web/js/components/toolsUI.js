@@ -1,33 +1,20 @@
 // Import the function for storing manifest links
-import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
+import { storeManifestLink, getStoredManifestLinks } from '../manifestStorage.js';
 
 // Playground scripting utilities.  Will be available as github CDN.
 import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
 
-import PLAYGROUND from './config.js';
-import ToolsCatalog from './toolsCatalog.js';
+import PLAYGROUND from '../config.js';
+import ToolsCatalog from '../toolsCatalog.js';
 
-const RECENTLY_USED_KEY = 'recentlyUsedTools';
+// Import the function for getting recently used tools
+import { getRecentlyUsedTools } from '../features/tools.js';
 
-/**
- * Retrieve recently used tools from local storage.
- */
-function getRecentlyUsedTools() {
-    const recentTools = localStorage.getItem(RECENTLY_USED_KEY);
-    return recentTools ? JSON.parse(recentTools) : [];
-}
-
-/** 
- * Save recently used tools to local storage.
- */
-function saveRecentlyUsedTools(recentTools) {
-    localStorage.setItem(RECENTLY_USED_KEY, JSON.stringify(recentTools));
-}
 
 /**
  * Update recently used tools, move the clicked tool to the top.
  */
-function updateRecentlyUsedTools(clickedTool) {
+export function updateRecentlyUsedTools(clickedTool) {
     let allTools = getRecentlyUsedTools();
 
     allTools = allTools.filter(
