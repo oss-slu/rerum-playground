@@ -1,0 +1,26 @@
+{
+  "name": "rerum-playground",
+  "version": "1.0.0",
+  "description": "This is a web space that uses the RERUM installation of the Research Computing Group at Saint Louis University to explore the possibilities of interoperable tools and standards. By using the Tiny Things sandbox, users can immediately create reusable JSON-LD objects that conform to IIIF and Web Annotation standards and find new ways to interact with them.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+      "lint": "eslint \"web/**/*.js\"",
+      "lint:fix": "eslint \"web/**/*.js\" --fix",
+      "format": "prettier --check \"web/**/*.{js,css,html,json,md}\"",
+      "format:fix": "prettier --write \"web/**/*.{js,css,html,json,md}\"",
+      "qa": "npm run lint && npm run format",
+      "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
+}
