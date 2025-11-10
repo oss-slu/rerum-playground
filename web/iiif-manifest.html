@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IIIF Manifest Generator</title>
+  <link rel="stylesheet" href="./css/playground.css">
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<body>
+  <div class="container">
+    <h2>IIIF Manifest Generator</h2>
+
+    <form id="manifestForm">
+      <label for="manifestId">Manifest ID (optional)</label>
+      <input id="manifestId" name="manifestId" type="text" placeholder="https://example.org/manifest/1">
+
+      <label for="manifestLabel">Label</label>
+      <input id="manifestLabel" name="manifestLabel" type="text" required placeholder="My Manifest">
+
+      <label for="manifestDesc">Description</label>
+      <textarea id="manifestDesc" name="manifestDesc" rows="3" placeholder="A short description"></textarea>
+
+      <fieldset>
+        <legend>One Canvas (optional)</legend>
+        <label for="canvasImage">Image URL</label>
+        <input id="canvasImage" name="canvasImage" type="url" placeholder="https://example.org/image.jpg">
+
+        <label for="canvasLabel">Canvas Label</label>
+        <input id="canvasLabel" name="canvasLabel" type="text" placeholder="Page 1">
+      </fieldset>
+
+      <div style="margin-top:12px">
+        <button id="generateBtn" type="button">Generate</button>
+        <button id="downloadBtn" type="button" disabled>Download JSON</button>
+        <button id="saveBtn" type="button" disabled>Save to Playground</button>
+      </div>
+    </form>
+
+    <h3>Generated Manifest</h3>
+    <pre id="manifestOutput" style="white-space:pre-wrap;background:#f6f6f6;padding:12px;border-radius:4px;max-height:400px;overflow:auto"></pre>
+
+    <p id="saveMessage" style="color:green"></p>
+  </div>
+
+  <script type="module" src="./js/iiifManifestTool.js"></script>
+</body>
+</html>
