@@ -113,7 +113,7 @@ const config = {
             items: [
               {
                 label: 'RERUM Playground HTML Documentation',
-                to: '/docs',
+                to: '/',
               },
             ],
           },
