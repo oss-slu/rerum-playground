@@ -27,8 +27,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'oss-slu', // Usually your GitHub org/user name.
+  projectName: 'rerum-playground', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -47,10 +47,10 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          // Repository edit links for documentation pages.
+          // Update to point to the project's docs folder on GitHub.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/oss-slu/rerum-playground/edit/main/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -58,10 +58,10 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          // Repository edit links for blog posts.
+          // Update to point to the project's blog folder on GitHub.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/oss-slu/rerum-playground/edit/main/blog/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -97,7 +97,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/oss-slu/rerum-playground',
             label: 'GitHub',
             position: 'right',
           },
@@ -141,12 +141,12 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/oss-slu/rerum-playground',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+  copyright: `Copyright © ${new Date().getFullYear()} RERUM Playground. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

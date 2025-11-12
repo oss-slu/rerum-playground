@@ -83,7 +83,7 @@ function initializeTechnologies(config) {
 }
 
 /**
- * Render tools, higlighting recently used ones.
+ * Render tools, highlighting recently used ones.
  */
 function renderTools() {
     const toolSetContainer = document.getElementById('tool_set');

@@ -21,7 +21,7 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
   ```
 
 ### 4. Set Up Your Environment
-- The code base is in HTML, CSS, JS so there is no seperate software installation is requred. Just run the code it will open and renders in your default browser. Use the live server extention if needed.
+- The codebase is built with HTML, CSS, and JavaScript, so no additional software installation is required. Simply run the code, and it will open and render in your default browser. You can use the Live Server extension if needed.
 
 ---
 

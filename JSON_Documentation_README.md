@@ -17,7 +17,7 @@ JSON is used widely on the internet to send data between a server (like a websit
 
 What is JSON-LD? <br />
 JSON-LD (JSON for Linked Data): <br />
-JSON-LD is like a more savvier JSON. It does everything JSON does, but adds context to the data. This context helps computers understand the meaning of the data, not just its structure. <br />
+JSON-LD is like a savvier JSON. It does everything JSON does, but adds context to the data. This context helps computers understand the meaning of the data, not just its structure. <br />
 
 For instance, when JSON-LD sees "name," it can understand that it's talking about a person's name, not a pet's name or a company's name. This makes it easier for different systems to work together and understand each other's data. <br />
 
