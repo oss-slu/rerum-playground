@@ -46,6 +46,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          // Serve the docs at the site's baseUrl root (no extra '/docs' segment).
+          routeBasePath: '/',
           sidebarPath: './sidebars.js',
           // Repository edit links for documentation pages.
           // Update to point to the project's docs folder on GitHub.
