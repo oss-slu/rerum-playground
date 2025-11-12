@@ -29,7 +29,7 @@ message content.
 
 **div class = "content"** 
 - Represents the middle portion of the RERUM about page showing a welcome message shown below.
-![image](./Images/index/content.png)
+![image](./Images/index/Content.png)
 
 ### IDs
 
