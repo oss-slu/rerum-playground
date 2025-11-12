@@ -20,10 +20,10 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://oss-slu.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  // For GitHub Pages deployment of a project site, this site will live under '/<repoName>/docs/'
+  baseUrl: '/rerum-playground/docs/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
