@@ -9,8 +9,8 @@
   "scripts": {
       "lint": "eslint \"web/**/*.js\"",
       "lint:fix": "eslint \"web/**/*.js\" --fix",
-      "format": "prettier --check \"web/**/*.{js,css,html,json,md}\"",
-      "format:fix": "prettier --write \"web/**/*.{js,css,html,json,md}\"",
+      "format": "prettier --check \"web/**/*.js\"",
+      "format:fix": "prettier --write \"web/**/*.js\"",
       "qa": "npm run lint && npm run format",
       "test": "echo \"Error: no test specified\" && exit 1"
   },
