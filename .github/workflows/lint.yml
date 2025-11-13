@@ -27,3 +27,6 @@ jobs:
 
       - name: Prettier Check
         run: npm run format
+
+      - name: Debug - Show that workflow is updated
+        run: echo "WORKFLOW VERSION 1.1"
