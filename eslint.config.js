@@ -16,6 +16,7 @@ module.exports = [
         alert: "readonly",
         setTimeout: "readonly",
         CustomEvent: "readonly",
+        module: "readonly"
       }
     },
     plugins: {
