@@ -22,8 +22,9 @@ const config = {
   // Set the production url of your site here
   url: 'https://oss-slu.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub Pages deployment of a project site, this site will live under '/<repoName>/docs/'
-  baseUrl: '/rerum-playground/docs/',
+  // For GitHub Pages deployment of a project site, serve the site under '/<repoName>/'
+  // and put the docs under '/<repoName>/docs/' by using the docs plugin routeBasePath 'docs'.
+  baseUrl: '/rerum-playground/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -46,8 +47,9 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          // Serve the docs at the site's baseUrl root (no extra '/docs' segment).
-          routeBasePath: '/',
+          // Serve the docs under '/docs' so the site is available at
+          // /rerum-playground/docs/ when baseUrl is '/rerum-playground/'.
+          routeBasePath: 'docs',
           sidebarPath: './sidebars.js',
           // Repository edit links for documentation pages.
           // Update to point to the project's docs folder on GitHub.
@@ -113,7 +115,7 @@ const config = {
             items: [
               {
                 label: 'RERUM Playground HTML Documentation',
-                to: '/',
+                to: '/docs',
               },
             ],
           },
