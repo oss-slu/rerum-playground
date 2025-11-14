@@ -1,4 +1,30 @@
-nbproject/
-build.xml
-*.properties
+# Node
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db 
+
+# Environment variables
+.env 
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp 
+*.swp 
