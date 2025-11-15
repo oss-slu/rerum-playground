@@ -6,6 +6,7 @@ import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/r
 
 import PLAYGROUND from '../config.js';
 import ToolsCatalog from '../toolsCatalog.js';
+import { fetchManifest } from '../services/objectService.js';
 
 // Import the function for getting recently used tools
 import { getRecentlyUsedTools } from '../features/tools.js';
@@ -228,11 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading();
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+            const data = await fetchManifest(url);
 
             hideLoading();
             manifestMessage.textContent = 'Manifest loaded successfully!';
