@@ -47,7 +47,7 @@ const config = {
       ({
         docs: {
           // Serve the docs at the site's baseUrl root (no extra '/docs' segment).
-          routeBasePath: '/',
+          routeBasePath: 'docs',
           sidebarPath: './sidebars.js',
           // Repository edit links for documentation pages.
           // Update to point to the project's docs folder on GitHub.
