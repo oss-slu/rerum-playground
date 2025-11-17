@@ -23,7 +23,7 @@ const config = {
   url: 'https://oss-slu.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub Pages deployment of a project site, this site will live under '/<repoName>/docs/'
-  baseUrl: '/rerum-playground/',
+  baseUrl: '/rerum-playground-docs-site/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
