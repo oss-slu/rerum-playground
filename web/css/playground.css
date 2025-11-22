@@ -167,3 +167,9 @@ p{
     background: none;
     border: none;
 }
+
+#manifestOutput {
+    text-align: left !important;
+    font-family: monospace;
+    white-space: pre;
+}
