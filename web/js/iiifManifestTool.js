@@ -1,5 +1,27 @@
 import { saveManifest } from './manifestStorage.js';
 
+// URL syntax checker
+function isValidHttpUrl(url) {
+    try {
+        const u = new URL(url);
+        return u.protocol === "http:" || u.protocol === "https:";
+    } catch {
+        return false;
+    }
+}
+
+// HEAD request to verify the URL is reachable & returns an image
+async function urlExistsAndIsImage(url) {
+    try {
+        const res = await fetch(url, { method: "HEAD" });
+        if (!res.ok) return false;
+        const type = res.headers.get("content-type") || "";
+        return type.startsWith("image/");
+    } catch {
+        return false;
+    }
+}
+
 /**
  * Construct an ID if none is provided
  */
@@ -47,13 +69,15 @@ async function fetchIIIFInfo(imageUrl) {
  */
 async function buildManifest({ id, label, description, canvasImage, canvasLabel }) {
     const manifest = {
-        '@context': 'http://iiif.io/api/presentation/3/context.json',
+        '@context': 'https://iiif.io/api/presentation/3/context.json',
         id,
         type: 'Manifest',
         label: { en: [label || 'Untitled Manifest'] },
     };
 
-    if (description) manifest.description = { en: [description] };
+    if (description) {
+        manifest.summary = { en: [description] };
+    }
 
     if (!canvasImage || !canvasImage.trim()) {
         manifest.items = [];
@@ -63,16 +87,25 @@ async function buildManifest({ id, label, description, canvasImage, canvasLabel 
     // Attempt metadata fetch
     const info = await fetchIIIFInfo(canvasImage);
 
-    // Resolve dimensions
     const width = info?.width || 1000;
     const height = info?.height || 1000;
 
-    // Resolve image format
+    // Infer image format from URL
     const inferredFormat = inferFormatFromUrl(canvasImage);
-    const format = info?.profile?.formats?.[0] || inferredFormat || 'image/jpeg';
+    const format = inferredFormat || 'image/jpeg';
 
-    const canvasId = id + '/canvas/1';
-    const annotationId = canvasId + '/annotation/1';
+    const canvasId = `${id}/canvas/1`;
+    const annotationId = `${canvasId}/annotation/1`;
+
+    // Add ImageService block if info.json exists
+    let serviceBlock = null;
+    if (info?.id) {
+        serviceBlock = [{
+            id: info.id,
+            type: "ImageService3",
+            profile: info.profile || "level1"
+        }];
+    }
 
     const canvas = {
         id: canvasId,
@@ -82,7 +115,7 @@ async function buildManifest({ id, label, description, canvasImage, canvasLabel 
         height,
         items: [
             {
-                id: canvasId + '/page',
+                id: `${canvasId}/page`,
                 type: 'AnnotationPage',
                 items: [
                     {
@@ -92,7 +125,10 @@ async function buildManifest({ id, label, description, canvasImage, canvasLabel 
                         body: {
                             id: canvasImage,
                             type: 'Image',
-                            format
+                            format,
+                            width,
+                            height,
+                            ...(serviceBlock ? { service: serviceBlock } : {})
                         },
                         target: canvasId
                     }
@@ -142,6 +178,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const canvasImage = formData.get('canvasImage');
         const canvasLabel = formData.get('canvasLabel');
 
+        if (!isValidHttpUrl(canvasImage)) {
+            alert("The canvas image URL is not a valid http/https URL.");
+            return;
+        }
+
+        if (!await urlExistsAndIsImage(canvasImage)) {
+            alert("The provided URL does not point to a reachable image resource.");
+            return;
+        }
+
         const manifest = await buildManifest({ id, label, description, canvasImage, canvasLabel });
         currentManifest = manifest;
 
@@ -157,10 +203,54 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadData(filename, JSON.stringify(currentManifest, null, 2));
     });
 
-    saveBtn.addEventListener('click', () => {
-        if (!currentManifest) return;
-        const link = saveManifest(currentManifest);
-        saveMessage.textContent = 'Manifest saved to playground and available in Stored Manifests.';
-        // window.open(link, '_blank'); // optional
+    saveBtn.addEventListener('click', async () => {
+        if (!currentManifest) {
+            saveMessage.textContent = 'Please generate a manifest first.';
+            saveMessage.style.color = 'red';
+            return;
+        }
+
+        // Show loading state
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving to RERUM...';
+        saveMessage.textContent = 'Please wait...';
+        saveMessage.style.color = '#666';
+
+        try {
+            // Save to RERUM
+            const rerumUrl = await saveManifest(currentManifest);
+            
+            // Show success message with clickable link
+            saveMessage.innerHTML = `
+                <strong>✓ Success!</strong> Manifest saved to RERUM:<br>
+                <a href="${rerumUrl}" target="_blank" style="color: #0066cc; text-decoration: underline; word-break: break-all;">
+                    ${rerumUrl}
+                </a>
+            `;
+            saveMessage.style.color = 'green';
+
+            console.log("Saved to RERUM:", rerumUrl);
+
+        } catch (error) {
+            // Show detailed error message
+            let errorMsg = 'Failed to save to RERUM. ';
+            
+            if (error.message.includes('400')) {
+                errorMsg += 'The manifest format is invalid. Please check that all required fields are filled.';
+            } else if (error.message.includes('network') || error.message.includes('fetch')) {
+                errorMsg += 'Network error. Please check your connection.';
+            } else {
+                errorMsg += error.message;
+            }
+            
+            saveMessage.textContent = errorMsg;
+            saveMessage.style.color = 'red';
+            console.error("RERUM save error:", error);
+
+        } finally {
+            // Reset button state
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save to RERUM';
+        }
     });
 });

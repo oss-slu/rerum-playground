@@ -1,5 +1,4 @@
 const MANIFEST_LINKS_KEY = 'storedManifestLinks';
-const MANIFEST_OBJECTS_KEY = 'storedManifests';
 
 /**
  * Save the given manifest link to local storage.
@@ -22,38 +21,109 @@ export function getStoredManifestLinks() {
 }
 
 /**
- * Save a manifest object to local storage and register a link for it.
- * Returns the data URL used as the link.
+ * Prepare manifest for RERUM - ensure it has the required structure
  */
-export function saveManifest(manifest) {
-    const json = JSON.stringify(manifest, null, 2);
-    // create a data URL so it can be opened in a new tab
-    const dataUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
-
-    // store the manifest JSON keyed by the dataUrl (so we can retrieve if needed)
-    let stored = getStoredManifestObjects();
-    stored[dataUrl] = json;
-    localStorage.setItem(MANIFEST_OBJECTS_KEY, JSON.stringify(stored));
-
-    // also store the link in the manifest links list for quick access
-    storeManifestLink(dataUrl);
-
-    return dataUrl;
+function prepareManifestForRerum(manifest) {
+    // Create a copy to avoid modifying the original
+    const rerumManifest = JSON.parse(JSON.stringify(manifest));
+    
+    // RERUM v1 expects @context (not context)
+    if (!rerumManifest['@context'] && manifest.context) {
+        rerumManifest['@context'] = manifest.context;
+    }
+    
+    // Ensure @context exists
+    if (!rerumManifest['@context']) {
+        rerumManifest['@context'] = 'http://iiif.io/api/presentation/3/context.json';
+    }
+    
+    return rerumManifest;
 }
 
 /**
- * Return an object mapping stored data URLs to manifest JSON strings.
+ * Save a manifest to RERUM and return the RERUM URL.
+ * This posts to the RERUM API and gets back a permanent URL.
  */
-export function getStoredManifestObjects() {
-    const stored = localStorage.getItem(MANIFEST_OBJECTS_KEY);
-    return stored ? JSON.parse(stored) : {};
+export async function saveManifest(manifest) {
+    // Try the public v1 endpoint first (no auth required for some operations)
+    const RERUM_API_URL = 'https://store.rerum.io/v1/api/create';
+    
+    try {
+        // Prepare the manifest with required RERUM fields
+        const rerumManifest = prepareManifestForRerum(manifest);
+        
+        console.log('Sending to RERUM:', JSON.stringify(rerumManifest, null, 2));
+        
+        const response = await fetch(RERUM_API_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(rerumManifest)
+        });
+
+        console.log('RERUM response status:', response.status);
+        
+        // Get the response text first to see what we're dealing with
+        const responseText = await response.text();
+        console.log('RERUM response body:', responseText);
+
+        if (!response.ok) {
+            // Try to parse as JSON for better error message
+            let errorMessage = `RERUM API error: ${response.status} ${response.statusText}`;
+            try {
+                const errorData = JSON.parse(responseText);
+                if (errorData.message) {
+                    errorMessage += ` - ${errorData.message}`;
+                }
+            } catch (e) {
+                // Not JSON, use text as-is
+                if (responseText) {
+                    errorMessage += ` - ${responseText}`;
+                }
+            }
+            throw new Error(errorMessage);
+        }
+
+        // Parse the successful response
+        const result = JSON.parse(responseText);
+        console.log('RERUM created object:', result);
+        
+        // RERUM returns the created object with an @id property
+        const rerumUrl = result['@id'] || result.id;
+        
+        if (!rerumUrl) {
+            console.error('RERUM response missing ID:', result);
+            throw new Error('RERUM did not return a valid ID. Response: ' + JSON.stringify(result));
+        }
+
+        // Store the RERUM link in recently used links
+        storeManifestLink(rerumUrl);
+
+        return rerumUrl;
+
+    } catch (error) {
+        console.error('Error saving to RERUM:', error);
+        
+        // If it's a CORS or network error
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            throw new Error('Network error. RERUM may be down or blocking requests from this domain.');
+        }
+        
+        // If it's an auth error
+        if (error.message.includes('401') || error.message.includes('403')) {
+            throw new Error('Authentication required. RERUM requires an access token for this operation.');
+        }
+        
+        throw error;
+    }
 }
 
 /**
- * Return an array of { link, json } for stored manifests to simplify UI use.
+ * Get stored manifest links for display
  */
 export function getStoredManifests() {
-    const links = getStoredManifestLinks();
-    const objs = getStoredManifestObjects();
-    return links.map(link => ({ link, json: objs[link] || null }));
+    return getStoredManifestLinks();
 }
