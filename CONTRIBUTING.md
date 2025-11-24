@@ -84,6 +84,32 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
 
 ---
 
+## Architecture
+
+In the web/js folder path containing JavaScript files, new folder names are categorized by functionality. JavaScript code should be focused on the folder name.
+
+Currently, the folders inside the web/js folder are:
+
+- components
+- features
+- services
+- utils
+
+**Examples**
+
+- In components, JavaScript code should focus on DOM functionality.
+- In features, JavaScript code should focus on functionality of features in RERUM Playground.
+- In services, JavaScript code should have fetch-related functions.
+- In utils, JavaScript code should have utility-related functions.
+
+**Additional Guidelines**
+
+Ensure functions or modules follow the single-responsibility principle. Each function or module should have one main purpose.
+
+There shouldn't be any inline JavaScript code since they are reserved for .html files.
+
+---
+
 ## Code of Conduct
 
 All contributors are expected to follow the [Code of Conduct](https://github.com/oss-slu/rerum-playground/blob/main/Code_Of_Conduct.md) in all interactions related to this project. Please be respectful and considerate.
