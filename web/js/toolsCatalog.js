@@ -37,6 +37,12 @@ const ToolsCatalog = [
         icon: "./images/uv-logo.png",
         view: "https://universalviewer.io/",
         description: "A viewer for web objects, allowing users to share their media with the world."
+    },
+    {
+        label: "Web Annotation Tool",
+        icon: "./images/rerum_logo.png",
+        view: "./web-annotation.html",
+        description: "A simple tool for creating and downloading Web Annotations in JSON-LD format."
     }
 ];
 

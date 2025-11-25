@@ -167,3 +167,8 @@ p{
     background: none;
     border: none;
 }
+
+#annotationOutput {
+    white-space: pre-wrap;
+    text-align: left !important;
+}

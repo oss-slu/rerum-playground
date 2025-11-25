@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web Annotation Tool | Rerum Playground</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- JS -->
+    <script src="./js/webAnnotationTool.js" type="module" defer></script>
+    <script src="./js/playground.js" type="module"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/playground.css">
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+
+</head>
+
+<body>
+    <div id="menu-placeholder"></div>
+
+    <header>
+        <div class="header">
+            <div class="row">
+                <button onclick="openCloseMenu()" aria-label="Toggle Menu">
+                    &#9776;
+                </button>
+                <img src="logo.png" alt="Rerum Playground">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="placeholder" style="height: 50px;"></div>
+
+        <div id="content">
+            <h2>Web Annotation Generator</h2>
+            <p>Create simple W3C Web Annotations targeting any URI on the web.</p>
+
+            <form id="annotationForm" class="tool-form">
+
+                <label>Target URI *</label>
+                <input type="url" id="targetUrl" placeholder="https://example.org/page" required>
+
+                <label>Annotation Body (optional)</label>
+                <textarea id="annotationBody" placeholder="Write annotation text..."></textarea>
+
+                <label>Motivation</label>
+                <select id="motivation">
+                    <option value="commenting">Commenting</option>
+                    <option value="tagging">Tagging</option>
+                    <option value="highlighting">Highlighting</option>
+                    <option value="linking">Linking</option>
+                    <option value="describing">Describing</option>
+                </select>
+
+                <button type="button" id="generateBtn" class="button primary">
+                    Generate Annotation
+                </button>
+            </form>
+
+            <h3>Generated Annotation</h3>
+            <pre id="annotationOutput" class="output-box"></pre>
+
+            <button id="downloadBtn" class="button" disabled>
+                Download JSON
+            </button>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
