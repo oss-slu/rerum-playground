@@ -37,6 +37,12 @@ const ToolsCatalog = [
         icon: "./images/uv-logo.png",
         view: "https://universalviewer.io/",
         description: "A viewer for web objects, allowing users to share their media with the world."
+    },
+    {
+        label: "Linked Data Notification",
+        icon: "./images/rerum_logo.png",
+        view: "https://inbox-docs.rerum.io/#!/",
+        description: "Allows user to generate and view announcements about RERUM data edits"
     }
 ];
 
