@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="./css/playground.css">
     <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 
+    <style>
+        body{
+            padding-bottom: 90px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -38,8 +44,11 @@
 
             <form id="annotationForm" class="tool-form">
 
-                <label>Target URI *</label>
-                <input type="url" id="targetUrl" placeholder="https://example.org/page" required>
+               <label>Target URI *</label>
+               <input list="recentTargets" type="url" id="targetUrl"
+                    placeholder="https://example.org/page" required>
+                
+                <datalist id="recentTargets"></datalist>
 
                 <label>Annotation Body (optional)</label>
                 <textarea id="annotationBody" placeholder="Write annotation text..."></textarea>
@@ -64,6 +73,12 @@
             <button id="downloadBtn" class="button" disabled>
                 Download JSON
             </button>
+
+            <button id="saveRerumBtn" class="button secondary" disabled>
+                Save to RERUM (sandbox)
+            </button>
+
+            <p id="rerumStatus" class="status"></p>
         </div>
     </div>
 
