@@ -38,6 +38,13 @@ const ToolsCatalog = [
         view: "https://universalviewer.io/",
         description: "A viewer for web objects, allowing users to share their media with the world."
     }
+    ,
+    {
+        label: "IIIF Manifest Generator",
+        icon: "./images/rerum_logo.png",
+        view: "./iiif-manifest.html",
+        description: "Generate simple IIIF Presentation API manifest JSON and save it into the playground."
+    }
 ];
 
 // export the tools catalog to be used in config.js
