@@ -115,7 +115,7 @@ async function buildManifest({ id, label, description, canvasImage, canvasLabel 
         height,
         items: [
             {
-                id: `${canvasId}/page`,
+                id: `${canvasId}`,
                 type: 'AnnotationPage',
                 items: [
                     {
