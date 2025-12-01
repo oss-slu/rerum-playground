@@ -108,6 +108,12 @@ Ensure functions or modules follow the single-responsibility principle. Each fun
 
 There shouldn't be any inline JavaScript code since they are reserved for .html files.
 
+**Adding a new feature page**
+
+1. Create a new html file in the /web/ folder representing a feature.
+2. Create a new JavaScript file in the web/js/features/ folder and link it with its respective .html file.
+3. Create a .css file in the web/css/ folder and link it with its respective .html file.
+
 ---
 
 ## Code of Conduct
