@@ -64,7 +64,11 @@ export default {
         * @returns {String} HTML structure for the thumbnail
         */
         thumbnailGenerator
+<<<<<<< HEAD
     }
 
 
 
+=======
+    }
+>>>>>>> dev_luis

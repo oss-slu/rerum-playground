@@ -4,7 +4,11 @@
    
 // Playground scripting utilities.  Will be available as github CDN.
 
+<<<<<<< HEAD:web/js/playground.js
 import { fetchFooter, fetchMenu } from './services/objectService.js';
+=======
+import { fetchFooter, fetchMenu } from '../services/objectService.js';
+>>>>>>> dev_luis:web/js/features/playground.js
 
 // fetch footer via service
 fetchFooter()
@@ -19,6 +23,7 @@ fetchMenu()
         document.getElementById('menu-placeholder').innerHTML = data;
     })
     .catch(error => console.error('Error loading menu:', error));
+
 
 //menubar js 
 function openCloseMenu() {

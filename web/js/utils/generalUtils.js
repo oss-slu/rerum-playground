@@ -84,4 +84,8 @@ export default {
     logger,
     broadcast,
     thumbnailGenerator
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> dev_luis
