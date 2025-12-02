@@ -59,7 +59,7 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
 
 ## Code Guidelines
 
-### 1. Style Guide
+### 1. Style Guides
 - Keep your code readable, maintainable, and well-documented.
 
 ### 2. Testing Your Changes
@@ -81,6 +81,38 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
 
 ### 2. Suggesting Enhancements
 - If you have ideas for new features, improvements, or optimizations, submit them through a GitHub issue and tag it with **suggestanissue**.
+
+---
+
+## Architecture
+
+In the web/js folder path containing JavaScript files, new folder names are categorized by functionality. JavaScript code should be focused on the folder name.
+
+Currently, the folders inside the web/js folder are:
+
+- components
+- features
+- services
+- utils
+
+**Examples**
+
+- In components, JavaScript code should focus on DOM functionality.
+- In features, JavaScript code should focus on functionality of features in RERUM Playground.
+- In services, JavaScript code should have fetch-related functions.
+- In utils, JavaScript code should have utility-related functions.
+
+**Additional Guidelines**
+
+Ensure functions or modules follow the single-responsibility principle. Each function or module should have one main purpose.
+
+There shouldn't be any inline JavaScript code since they are reserved for .html files.
+
+**Adding a new feature page**
+
+1. Create a new html file in the /web/ folder representing a feature.
+2. Create a new JavaScript file in the web/js/features/ folder and link it with its respective .html file.
+3. Create a .css file in the web/css/ folder and link it with its respective .html file.
 
 ---
 

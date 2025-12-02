@@ -4,21 +4,26 @@
    
 // Playground scripting utilities.  Will be available as github CDN.
 
-//fetch footer
-fetch('footer.html')
-    .then(response => response.text())
+<<<<<<< HEAD:web/js/playground.js
+import { fetchFooter, fetchMenu } from './services/objectService.js';
+=======
+import { fetchFooter, fetchMenu } from '../services/objectService.js';
+>>>>>>> dev_luis:web/js/features/playground.js
+
+// fetch footer via service
+fetchFooter()
     .then(data => {
         document.getElementById('footer-placeholder').innerHTML = data;
     })
     .catch(error => console.error('Error loading footer:', error));
 
-//fetch menu
-fetch('menu.html')
-    .then(response => response.text())
+// fetch menu via service
+fetchMenu()
     .then(data => {
         document.getElementById('menu-placeholder').innerHTML = data;
     })
     .catch(error => console.error('Error loading menu:', error));
+
 
 //menubar js 
 function openCloseMenu() {
