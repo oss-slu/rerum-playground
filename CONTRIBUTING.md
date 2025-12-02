@@ -59,7 +59,7 @@ Thank you for considering contributing to **Rerum Playground**! We appreciate yo
 
 ## Code Guidelines
 
-### 1. Style Guide
+### 1. Style Guides
 - Keep your code readable, maintainable, and well-documented.
 
 ### 2. Testing Your Changes
