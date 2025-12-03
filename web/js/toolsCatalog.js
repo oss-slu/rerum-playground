@@ -37,6 +37,12 @@ const ToolsCatalog = [
         icon: "./images/uv-logo.png",
         view: "https://universalviewer.io/",
         description: "A viewer for web objects, allowing users to share their media with the world."
+    },
+    {
+        label: "TPEN3",
+        icon: "./images/TPEN3_logo.png",
+        view: "https://three.t-pen.org/",
+        description: "A tool that offers line-by-line annotation of IIIF data to produce transcriptions."
     }
 ];
 
