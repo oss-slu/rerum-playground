@@ -60,7 +60,6 @@ Architecture must support long-term growth without rewriting core files.
 
 
 # Before vs. After Structure
-
 ##  Before
 
 /web/js/
@@ -77,30 +76,32 @@ Architecture must support long-term growth without rewriting core files.
 
 ##  After (Layered Design)
 
+```bash
 /web/js/
 │
-├─ services/
-│ └─ objectService.js
+├── services/                     # Network & API logic only
+│   └── objectService.js          # Centralized CRUD + fetch methods
 │
-├─ utils/
-│ └─ generalUtils.js
+├── utils/                        # Shared helper utilities
+│   └── generalUtils.js           # logger, broadcast, thumbnailGenerator
 │
-├─ components/
-│ ├─ sandboxUI.js
-│ └─ toolsUI.js
+├── components/                   # UI-only, DOM event handlers & rendering
+│   ├── sandboxUI.js              # Sandbox page UI logic
+│   └── toolsUI.js                # Tools page UI logic
 │
-├─ features/
-│ ├─ tools-feature.js
-│ ├─ sandbox-feature.js
-│ └─ playground-feature.js
+├── features/                     # Feature orchestration (no UI, no API)
+│   ├── playground-feature.js     # Root playground bootstrapping
+│   ├── sandbox-feature.js        # Sandbox initialization & wiring
+│   └── tools-feature.js          # Tools page initialization & wiring
 │
-├─ catalog/
-│ └─ toolsCatalog.js
+├── catalog/                      # Domain data for tools/interfaces
+│   └── toolsCatalog.js           # Catalog entries for UI rendering
 │
-├─ manifest/
-│ └─ manifestStorage.js
+├── manifest/                     # Domain logic for IIIF manifest tool
+│   └── manifestStorage.js        # Persist and retrieve manifest data
 │
-└─ config.js
+└── config.js                     # Global config: URLs, constants, events
+```
 
 ✔ Centralized service logic  
 ✔ UI code separate  
@@ -156,6 +157,7 @@ This follows:
 
 
 # Architecture Diagram
+```bash
 
 +------------------------+
 | HTML Pages |
@@ -188,10 +190,11 @@ v
 | Utilities & Helpers |
 | generalUtils.js |
 +------------------------+
+```
 
 # Outcomes of the Refactor
 
-###  Clean system boundaries  
+### Clean system boundaries  
 UI, feature logic, and services no longer overlap.
 
 ###  Clarity for contributors  
@@ -209,12 +212,13 @@ New developer can learn architecture in one glance.
 ###  Extensibility  
 Adding tools no longer requires rewriting core files.
 
+
 # TUTORIAL
 
 ## How to Add a New Tool in the Refactored Playground
 
 Below is the official standard onboarding workflow for future contributors.
-
+```bash
 #### Step 1: Add tool in tool catalog
 {
   label: "IIIF Manifest Generator",
@@ -242,14 +246,15 @@ window.onload = () => {
 
 #### Step 4: Reference Feature in HTML
 <script type="module" src="./js/features/myTool-feature.js"></script>
-Step 5: Use RERUM API via Services
+
+#### Step 5: Use RERUM API via Services
 import { create } from "../services/objectService.js";
 
 async function storeManifest(obj) {
   const result = await create(obj);
   console.log("Manifest stored:", result);
 }
-
+```
 ### Evidence of Architectural Work
  - Tools for:
    - manifest generation
