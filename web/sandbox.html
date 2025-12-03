@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sandbox</title>
+  <script src="./js/features/playground.js" type="module"></script>
+  <script src = "./js/components/sandboxUI.js" type = "module"></script>
+  <link rel="stylesheet" href="./css/playground.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+  <link rel="stylesheet" href="./css/sandbox.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest" />
+  <link
+    rel="stylesheet"
+    href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+  />
+</head>
+
+<body>
+  <div id="menu-placeholder"></div>
+
+  <header>
+    <div class="header">
+      <div class="row">
+        <button onclick="openCloseMenu()" aria-label="Toggle Menu">&#9776;</button>
+        <img src="logo.png" alt="Rerum Playground" />
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="placeholder" style="height: 50px;"></div>
+
+    <div id="content">
+      <h2>RERUM Sandbox</h2>
+      <p>Experiment with CRUD operations against the RERUM API.</p>
+
+      <div class="sandbox-buttons">
+        <button onclick="showSection('create')">Create</button>
+        <button onclick="showSection('read')">Read</button>
+        <button onclick="showSection('update')">Update</button>
+        <button onclick="showSection('overwrite')">Overwrite</button>
+        <button onclick="showSection('delete')">Delete</button>
+        <button onclick = "showSection('view')">View</button>
+      </div>
+
+      <div id="sandbox-sections">
+        <!-- Create -->
+        <section id="create" class="sandbox-section hidden">
+          <h3>Create</h3>
+          <p>Provide a JSON object to create a new record in RERUM.</p>
+          <textarea placeholder="Enter JSON to create"></textarea>
+          <button class="action-btn">Create</button>
+        </section>
+
+        <!-- Read -->
+        <section id="read" class="sandbox-section hidden">
+          <h3>Read</h3>
+          <p>
+            Enter a key and value to search RERUM for objects containing that
+            key-value pair. <em>Note: RERUM supports more complex queries than
+            this simple form (multi-key, embedded-key, wildcards, etc.).</em>
+          </p>
+          <input type="text" placeholder="Key" />
+          <input type="text" placeholder="Value" />
+          <button class="action-btn">Read</button>
+        </section>
+
+        <!-- Update -->
+        <section id="update" class="sandbox-section hidden">
+          <h3>Update</h3>
+          <p>
+            Provide the URI of an object to update. Then, provide a new
+            representation of the JSON object to update with. By default, this
+            is a RESTful PUT update. The resulting object is attributed to your
+            RERUM registered agent.
+          </p>
+          <input type="text" placeholder="URI to update" />
+          <textarea placeholder="JSON to update"></textarea>
+          <button class="action-btn">Update</button>
+        </section>
+
+        <!-- Overwrite -->
+        <section id="overwrite" class="sandbox-section hidden">
+          <h3>Overwrite</h3>
+          <p>
+            Provide the URI of an object to overwrite. Then, provide a new
+            representation of the JSON object to overwrite with. This will
+            perform a RESTful PUT update but will not make a new node in
+            history. Instead, the originating node at the provided URI will be
+            overwritten, with no way to see how it originally existed. Only
+            those objects attributed to this application's RERUM registration
+            agent can be overwritten.
+          </p>
+          <input type="text" placeholder="URI to overwrite" />
+          <textarea placeholder="New JSON representation"></textarea>
+          <button class="action-btn">Overwrite</button>
+        </section>
+
+        <!-- Delete -->
+        <section id="delete" class="sandbox-section hidden">
+          <h3>Delete</h3>
+          <p>
+            Provide a URI to a RERUM object attributed to your RERUM registered
+            application to delete it. Only those objects attributed to this
+            application's RERUM registration agent can be deleted.
+          </p>
+          <input type="text" placeholder="URI to delete" />
+          <button class="action-btn">Delete</button>
+        </section>
+
+        <!-- View -->
+        <section id="view" class="sandbox-section hidden">
+          <h3>View</h3>
+          <p>Paste the URI link to view the JSON representation of the data
+            associated with the URI.
+          </p>
+          <textarea placeholder="URI to view"></textarea>
+          <button class="action-btn">View</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+</body>
+</html>
