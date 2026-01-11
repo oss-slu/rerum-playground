@@ -4,11 +4,7 @@
    
 // Playground scripting utilities.  Will be available as github CDN.
 
-<<<<<<< HEAD:web/js/playground.js
 import { fetchFooter, fetchMenu } from './services/objectService.js';
-=======
-import { fetchFooter, fetchMenu } from '../services/objectService.js';
->>>>>>> dev_luis:web/js/features/playground.js
 
 // fetch footer via service
 fetchFooter()
