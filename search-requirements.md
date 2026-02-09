@@ -26,8 +26,9 @@ Type: Plain-text, case-insensitive
 
 - Plain-text search: The search operates on plain text content without special query syntax
 - Case-insensitive: Search queries match regardless of case (e.g., "hello" matches "Hello", "HELLO", "HeLLo")
-- Exact word matching: Searches for exact word matches (partial word matches and wildcards are not supported)
-- Multi-word searches: When multiple words are provided, finds annotations containing all search terms (AND logic)
+- Substring matching: The search performs case-insensitive substring matching, as supported by the RERUM text search API
+- Multi-word searches: Multi-word search behavior is dependent on the RERUM API and is not strictly defined in Iteration 1
+
 
 Input Format
 
@@ -60,7 +61,7 @@ For each matching annotation, the following fields are returned:
    - Type: String (URI) or null
    - Note: May not be available for all annotations
 
-Response Format: JSON array of annotation objects, sorted by relevance score (highest first)
+Response Format: JSON array of annotation objects, returned in the order provided by the RERUM API
 
 Example Response:
 
@@ -84,11 +85,16 @@ Assumptions and Limitations for Iteration 1
 1. Body text only: Only the body text content of annotations is searched; no other fields are searchable
 2. No phrase search: Phrase search functionality is not included in Iteration 1
 3. No advanced query syntax: No support for boolean operators (AND, OR, NOT), wildcards, or regex patterns
-4. No partial word matching: Only exact word matches are supported
+4. Matching behavior: Search behavior follows case-insensitive substring matching as provided by the RERUM API
 5. Pagination required: Results may require pagination using limit (max 100) and skip parameters
-6. Linguistic analysis: Standard linguistic analysis (stemming, stop words) is applied automatically by the API
+6. Linguistic analysis: No assumptions are made about stemming, stop words, or linguistic normalization in Iteration 1
 7. Expensive operation: Search operations are resource-intensive; caching and rate limiting should be considered
 
-API Endpoint: https://devstore.rerum.io/v1/api/search
-HTTP Method: POST
-Content-Type: application/json; charset=utf-8
+API Endpoint (Iteration 1):
+GET https://store.rerum.io/v1/search/text
+
+Notes:
+- Phrase search is supported by RERUM but excluded from Iteration 1
+- Requests use query parameters (q, limit, skip)
+- Maximum limit per request is 100
+
