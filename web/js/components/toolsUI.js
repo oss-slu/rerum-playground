@@ -1,33 +1,27 @@
 // Import the function for storing manifest links
-import { storeManifestLink, getStoredManifestLinks } from './manifestStorage.js';
+import { storeManifestLink, getStoredManifestLinks } from '../manifestStorage.js';
 
 // Playground scripting utilities.  Will be available as github CDN.
 import { default as UTILS } from 'https://centerfordigitalhumanities.github.io/rerum-playground/web/js/utilities.js'
 
+<<<<<<< HEAD:web/js/tools.js
 import PLAYGROUND from './config.js';
 import ToolsCatalog from './toolsCatalog.js';
+import { fetchManifest } from './services/objectService.js';
+=======
+import PLAYGROUND from '../config.js';
+import ToolsCatalog from '../toolsCatalog.js';
+import { fetchManifest } from '../services/objectService.js';
+>>>>>>> dev_luis:web/js/components/toolsUI.js
 
-const RECENTLY_USED_KEY = 'recentlyUsedTools';
+// Import the function for getting recently used tools
+import { getRecentlyUsedTools } from '../features/tools.js';
 
-/**
- * Retrieve recently used tools from local storage.
- */
-function getRecentlyUsedTools() {
-    const recentTools = localStorage.getItem(RECENTLY_USED_KEY);
-    return recentTools ? JSON.parse(recentTools) : [];
-}
-
-/** 
- * Save recently used tools to local storage.
- */
-function saveRecentlyUsedTools(recentTools) {
-    localStorage.setItem(RECENTLY_USED_KEY, JSON.stringify(recentTools));
-}
 
 /**
  * Update recently used tools, move the clicked tool to the top.
  */
-function updateRecentlyUsedTools(clickedTool) {
+export function updateRecentlyUsedTools(clickedTool) {
     let allTools = getRecentlyUsedTools();
 
     allTools = allTools.filter(
@@ -241,11 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading();
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+            const data = await fetchManifest(url);
 
             hideLoading();
             manifestMessage.textContent = 'Manifest loaded successfully!';
