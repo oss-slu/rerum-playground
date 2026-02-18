@@ -16,6 +16,7 @@ export default {
         SINCE: "http://devstore.rerum.io/v1/since",
         HISTORY: "http://devstore.rerum.io/v1/history",
         SEARCH_TEXT: "https://devstore.rerum.io/v1/api/search/text",
+        SEARCH_TEXT_FALLBACK: "https://devstore.rerum.io/v1/api/search",
         SEARCH_PHRASE: "https://devstore.rerum.io/v1/api/search/phrase"
     },
     /** Max page size for RERUM search (API recommends ≤ 100). */

@@ -78,19 +78,23 @@ function normalizeHit(hit) {
  * @param {number} skip - Offset for pagination
  * @returns {Promise<object[]>} Raw annotation array (may be empty)
  */
-async function fetchSearchPage(url, query, skip) {
+async function fetchSearchPage(url, query, skip, payload) {
     const limit = PAGE_LIMIT;
     const sep = url.includes("?") ? "&" : "?";
     const pageUrl = `${url}${sep}limit=${limit}&skip=${skip}`;
-    const body = JSON.stringify({ searchText: query });
+    const body =
+        payload.mode === "string"
+            ? query
+            : JSON.stringify({ [payload.bodyKey]: query });
     const response = await fetch(pageUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body,
     });
     if (!response.ok) {
-        const msg = `Search API error: ${response.status} ${response.statusText}`;
-        throw new Error(msg);
+        const err = new Error(`Search API error: ${response.status} ${response.statusText}`);
+        err.status = response.status;
+        throw err;
     }
     const data = await response.json();
     return extractHits(data);
@@ -107,6 +111,8 @@ function extractHits(data) {
     if (Array.isArray(data.items)) return data.items;
     if (Array.isArray(data.results)) return data.results;
     if (Array.isArray(data.hits)) return data.hits;
+    if (Array.isArray(data.docs)) return data.docs;
+    if (Array.isArray(data["@graph"])) return data["@graph"];
     return [];
 }
 
@@ -116,16 +122,58 @@ function extractHits(data) {
  * @param {string} query - Search text
  * @returns {Promise<object[]>} All raw annotation hits
  */
-async function fetchAllPages(baseUrl, query) {
+async function fetchAllPages(baseUrl, query, payload) {
     const all = [];
     let skip = 0;
     while (true) {
-        const page = await fetchSearchPage(baseUrl, query, skip);
+        const page = await fetchSearchPage(baseUrl, query, skip, payload);
         if (!page.length) break;
         all.push(...page);
         skip += page.length;
     }
     return all;
+}
+
+function getPayloadCandidates(searchType) {
+    const bodyKeys =
+        searchType === "phrase"
+            ? ["phrase", "searchText", "text", "query"]
+            : ["searchText", "text", "query"];
+    const objectPayloads = bodyKeys.map((bodyKey) => ({ mode: "object", bodyKey }));
+    return [...objectPayloads, { mode: "string", bodyKey: null }];
+}
+
+/**
+ * Try one or more endpoint URLs. If an endpoint responds with 404, try next.
+ * @param {string[]} urls - candidate search endpoint URLs
+ * @param {string} query - Search query
+ * @returns {Promise<object[]>}
+ */
+async function fetchAllPagesWithFallback(urls, query, searchType) {
+    let lastError = null;
+    let sawEmptyResults = false;
+    const payloadCandidates = getPayloadCandidates(searchType);
+
+    for (const url of urls) {
+        for (const payload of payloadCandidates) {
+            try {
+                const firstPage = await fetchSearchPage(url, query, 0, payload);
+                if (firstPage.length > 0) {
+                    const rest = await fetchAllPages(url, query, payload);
+                    return rest;
+                }
+                sawEmptyResults = true;
+            } catch (err) {
+                lastError = err;
+                if (err?.status === 404) {
+                    break;
+                }
+                throw err;
+            }
+        }
+    }
+    if (sawEmptyResults) return [];
+    throw lastError ?? new Error("Search API error: no usable endpoint.");
 }
 
 /**
@@ -154,8 +202,13 @@ export async function searchAnnotations(query, searchType = "text") {
         return normalized;
     }
 
-    const url = searchType === "phrase" ? CONFIG.URLS.SEARCH_PHRASE : CONFIG.URLS.SEARCH_TEXT;
-    if (!url) {
+    const endpointCandidates =
+        searchType === "phrase"
+            ? [CONFIG.URLS.SEARCH_PHRASE]
+            : [CONFIG.URLS.SEARCH_TEXT, CONFIG.URLS.SEARCH_TEXT_FALLBACK];
+    const urls = endpointCandidates.filter(Boolean);
+
+    if (!urls.length) {
         normalized.error = "Search endpoint not configured.";
         return normalized;
     }
@@ -173,7 +226,7 @@ export async function searchAnnotations(query, searchType = "text") {
     lastSearchAt = now;
 
     try {
-        const rawHits = await fetchAllPages(url, trimmed);
+        const rawHits = await fetchAllPagesWithFallback(urls, trimmed, searchType);
         normalized.results = rawHits.map(normalizeHit);
         searchCache.set(cacheKey, { cachedAt: Date.now(), value: { ...normalized } });
         return normalized;
@@ -184,4 +237,4 @@ export async function searchAnnotations(query, searchType = "text") {
     }
 }
 
-export { normalizeHit, extractHits, PAGE_LIMIT };
+export { normalizeHit, extractHits, PAGE_LIMIT, fetchAllPagesWithFallback };
