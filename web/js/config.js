@@ -14,8 +14,16 @@ export default {
         OVERWRITE: "http://tinydev.rerum.io/app/overwrite",
         QUERY: "http://tinydev.rerum.io/app/query",
         SINCE: "http://devstore.rerum.io/v1/since",
-        HISTORY: "http://devstore.rerum.io/v1/history"
+        HISTORY: "http://devstore.rerum.io/v1/history",
+        SEARCH_TEXT: "https://devstore.rerum.io/v1/api/search/text",
+        SEARCH_PHRASE: "https://devstore.rerum.io/v1/api/search/phrase"
     },
+    /** Max page size for RERUM search (API recommends ≤ 100). */
+    SEARCH_PAGE_LIMIT: 100,
+    /** Prevent burst submissions from repeatedly hammering search endpoints. */
+    SEARCH_COOLDOWN_MS: 500,
+    /** Cache repeated identical queries briefly to reduce expensive duplicate calls. */
+    SEARCH_CACHE_TTL_MS: 60_000,
     EVENTS: {
         CREATED: "created",
         UPDATED: "updated",
