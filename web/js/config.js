@@ -8,15 +8,14 @@ import ToolsCatalog from './toolsCatalog.js';
 export default {
     URLS: {
         //TODO Bring in internal TT.  Register as a new application for RERUM dev.  
-        CREATE: "http://tinydev.rerum.io/app/create",
-        UPDATE: "http://tinydev.rerum.io/app/update",
-        PATCH: "http://tinydev.rerum.io/app/patch",
-        OVERWRITE: "http://tinydev.rerum.io/app/overwrite",
-        QUERY: "http://tinydev.rerum.io/app/query",
-        SINCE: "http://devstore.rerum.io/v1/since",
-        HISTORY: "http://devstore.rerum.io/v1/history",
-        SEARCH_TEXT: "https://devstore.rerum.io/v1/api/search/text",
-        SEARCH_TEXT_FALLBACK: "https://devstore.rerum.io/v1/api/search",
+        CREATE: "https://tinydev.rerum.io/app/create",
+        UPDATE: "https://tinydev.rerum.io/app/update",
+        PATCH: "https://tinydev.rerum.io/app/patch",
+        OVERWRITE: "https://tinydev.rerum.io/app/overwrite",
+        QUERY: "https://tinydev.rerum.io/app/query",
+        SINCE: "https://devstore.rerum.io/v1/since",
+        HISTORY: "https://devstore.rerum.io/v1/history",
+        SEARCH_TEXT: "https://devstore.rerum.io/v1/api/search",
         SEARCH_PHRASE: "https://devstore.rerum.io/v1/api/search/phrase"
     },
     /** Max page size for RERUM search (API recommends ≤ 100). */
@@ -25,6 +24,8 @@ export default {
     SEARCH_COOLDOWN_MS: 500,
     /** Cache repeated identical queries briefly to reduce expensive duplicate calls. */
     SEARCH_CACHE_TTL_MS: 60_000,
+    /** Safety cap for page fetches per search request. */
+    SEARCH_MAX_PAGES: 50,
     EVENTS: {
         CREATED: "created",
         UPDATED: "updated",

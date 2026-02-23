@@ -1,6 +1,6 @@
 /**
  * Search service for RERUM annotation text and phrase search.
- * Uses /search/text and /search/phrase endpoints with pagination (limit ≤ 100)
+ * Uses /search and /search/phrase endpoints with pagination (limit ≤ 100)
  * and normalizes results for the frontend.
  */
 import CONFIG from "../config.js";
@@ -8,15 +8,30 @@ import CONFIG from "../config.js";
 const PAGE_LIMIT = Math.min(100, CONFIG.SEARCH_PAGE_LIMIT ?? 100);
 const SEARCH_COOLDOWN_MS = CONFIG.SEARCH_COOLDOWN_MS ?? 500;
 const SEARCH_CACHE_TTL_MS = CONFIG.SEARCH_CACHE_TTL_MS ?? 60_000;
+const SEARCH_CACHE_MAX_ENTRIES = CONFIG.SEARCH_CACHE_MAX_ENTRIES ?? 200;
+const SEARCH_MAX_PAGES = CONFIG.SEARCH_MAX_PAGES ?? 50;
 
 const searchCache = new Map();
 let lastSearchAt = 0;
+
+function pruneSearchCache(now = Date.now()) {
+    for (const [key, value] of searchCache.entries()) {
+        if (now - value.cachedAt >= SEARCH_CACHE_TTL_MS) {
+            searchCache.delete(key);
+        }
+    }
+    while (searchCache.size > SEARCH_CACHE_MAX_ENTRIES) {
+        const oldestKey = searchCache.keys().next().value;
+        if (!oldestKey) break;
+        searchCache.delete(oldestKey);
+    }
+}
 
 /**
  * Normalize a single RERUM annotation hit into a consistent shape.
  * Handles Web Annotation and IIIF body/target shapes.
  * @param {object} hit - Raw annotation from RERUM search response
- * @returns {{ id: string, bodyText: string, targetUri: string | null, score: number | null }}
+ * @returns {{ id: string, annotationId: string, bodyText: string, snippet: string, targetUri: string | null, score: number | null }}
  */
 function normalizeHit(hit) {
     if (!hit || typeof hit !== "object") {
@@ -76,6 +91,7 @@ function normalizeHit(hit) {
  * @param {string} url - Base URL (with optional query already)
  * @param {string} query - Search text
  * @param {number} skip - Offset for pagination
+ * @param {{ mode: "object"|"string", bodyKey: string | null }} payload - How to encode the search body
  * @returns {Promise<object[]>} Raw annotation array (may be empty)
  */
 async function fetchSearchPage(url, query, skip, payload) {
@@ -86,9 +102,13 @@ async function fetchSearchPage(url, query, skip, payload) {
         payload.mode === "string"
             ? query
             : JSON.stringify({ [payload.bodyKey]: query });
+    const contentType =
+        payload.mode === "string"
+            ? "text/plain; charset=utf-8"
+            : "application/json; charset=utf-8";
     const response = await fetch(pageUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
+        headers: { "Content-Type": contentType },
         body,
     });
     if (!response.ok) {
@@ -120,16 +140,21 @@ function extractHits(data) {
  * Run paged search until no more results (limit applied per request, never > 100).
  * @param {string} baseUrl - CONFIG.URLS.SEARCH_TEXT or SEARCH_PHRASE
  * @param {string} query - Search text
+ * @param {{ mode: "object"|"string", bodyKey: string | null }} payload - How to encode the search body
+ * @param {number} startSkip - Initial offset for pagination
+ * @param {object[]} initialResults - Optional already-fetched first page
  * @returns {Promise<object[]>} All raw annotation hits
  */
-async function fetchAllPages(baseUrl, query, payload) {
-    const all = [];
-    let skip = 0;
-    while (true) {
+async function fetchAllPages(baseUrl, query, payload, startSkip = 0, initialResults = []) {
+    const all = [...initialResults];
+    let skip = startSkip;
+    let pages = initialResults.length > 0 ? 1 : 0;
+    while (pages < SEARCH_MAX_PAGES) {
         const page = await fetchSearchPage(baseUrl, query, skip, payload);
         if (!page.length) break;
         all.push(...page);
         skip += page.length;
+        pages += 1;
     }
     return all;
 }
@@ -159,7 +184,7 @@ async function fetchAllPagesWithFallback(urls, query, searchType) {
             try {
                 const firstPage = await fetchSearchPage(url, query, 0, payload);
                 if (firstPage.length > 0) {
-                    const rest = await fetchAllPages(url, query, payload);
+                    const rest = await fetchAllPages(url, query, payload, firstPage.length, firstPage);
                     return rest;
                 }
                 sawEmptyResults = true;
@@ -182,7 +207,7 @@ async function fetchAllPagesWithFallback(urls, query, searchType) {
  *
  * @param {string} query - Search query (plain text or phrase)
  * @param {"text"|"phrase"} searchType - "text" for full-text, "phrase" for phrase search
- * @returns {Promise<{ results: Array<{ id: string, bodyText: string, targetUri: string | null, score: number | null }>, error: string | null }>}
+ * @returns {Promise<{ results: Array<{ id: string, annotationId: string, bodyText: string, snippet: string, targetUri: string | null, score: number | null }>, error: string | null }>}
  *   Normalized result object; `error` is set on API or empty-query failure, `results` empty in that case.
  */
 export async function searchAnnotations(query, searchType = "text") {
@@ -205,7 +230,7 @@ export async function searchAnnotations(query, searchType = "text") {
     const endpointCandidates =
         searchType === "phrase"
             ? [CONFIG.URLS.SEARCH_PHRASE]
-            : [CONFIG.URLS.SEARCH_TEXT, CONFIG.URLS.SEARCH_TEXT_FALLBACK];
+            : [CONFIG.URLS.SEARCH_TEXT];
     const urls = endpointCandidates.filter(Boolean);
 
     if (!urls.length) {
@@ -215,9 +240,13 @@ export async function searchAnnotations(query, searchType = "text") {
 
     const cacheKey = `${searchType}::${trimmed}`;
     const now = Date.now();
+    pruneSearchCache(now);
     const cached = searchCache.get(cacheKey);
     if (cached && now - cached.cachedAt < SEARCH_CACHE_TTL_MS) {
-        return { ...cached.value };
+        return {
+            error: cached.value.error,
+            results: [...cached.value.results],
+        };
     }
     if (now - lastSearchAt < SEARCH_COOLDOWN_MS) {
         normalized.error = "Please wait a moment before searching again.";
@@ -228,7 +257,14 @@ export async function searchAnnotations(query, searchType = "text") {
     try {
         const rawHits = await fetchAllPagesWithFallback(urls, trimmed, searchType);
         normalized.results = rawHits.map(normalizeHit);
-        searchCache.set(cacheKey, { cachedAt: Date.now(), value: { ...normalized } });
+        searchCache.set(cacheKey, {
+            cachedAt: Date.now(),
+            value: {
+                error: normalized.error,
+                results: [...normalized.results],
+            },
+        });
+        pruneSearchCache();
         return normalized;
     } catch (err) {
         normalized.error = err instanceof Error ? err.message : String(err);
