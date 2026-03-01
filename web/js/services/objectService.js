@@ -106,9 +106,4 @@ export async function resolveJSON(uri) {
 export async function resolveString(uri) {
   const res = await fetch(uri);
   return handleHTTPError(res, 'text').catch(err => err);
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> dev_luis

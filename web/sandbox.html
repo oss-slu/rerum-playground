@@ -43,6 +43,7 @@
         <button onclick="showSection('overwrite')">Overwrite</button>
         <button onclick="showSection('delete')">Delete</button>
         <button onclick = "showSection('view')">View</button>
+        <button onclick="showSection('search')">Search</button>
       </div>
 
       <div id="sandbox-sections">
@@ -118,6 +119,18 @@
           </p>
           <textarea placeholder="URI to view"></textarea>
           <button class="action-btn">View</button>
+        </section>
+        <!-- Search -->
+        <section id="search" class="sandbox-section hidden">
+          <h3>Search Annotations</h3>
+          <p>Search RERUM annotations by text or phrase.</p>
+          <input id="search-query" type="text" placeholder="Enter search query" />
+          <select id="search-type">
+            <option value="text">Text</option>
+            <option value="phrase">Phrase</option>
+          </select>
+          <button id="search-run-btn">Search</button>
+          <div id="search-results"></div>
         </section>
       </div>
     </div>
