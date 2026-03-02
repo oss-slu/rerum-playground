@@ -42,7 +42,7 @@ const ToolsCatalog = [
         label: "Annotation Text Search",
         icon: "./images/rerum_logo.png",
         view: "./search.html",
-        description: "Search RERUM Web Annotations and IIIF text content with client-side caching and rate limits to protect the API."
+        description: "Search RERUM Web Annotations with client-side caching and rate limits to protect the API."
     }
 ];
 

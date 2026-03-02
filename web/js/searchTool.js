@@ -1,21 +1,7 @@
 const RERUM_API_BASE = "https://store.rerum.io/v1";
 
 /**
- * Client-side protections for RERUM search
- *
- * - Query-based cache stored in localStorage with a 20 minute TTL
- *   (within the requested 15–30 minute window) to avoid duplicate
- *   network calls for identical searches.
- * - Rate limiting per browser session:
- *   - Max 1 search per second.
- *   - Max 5 searches per rolling 60 second window.
- * - When limits are exceeded, the search control is temporarily
- *   disabled and a user-friendly status message explains why and
- *   when it will be available again.
- *
- * These protections are intentionally conservative to prevent
- * accidental overload of the RERUM API and to reduce the risk of
- * this interface being used as a conduit for automated abuse.
+ * Client-side protections for RERUM search API.
  */
 
 const CACHE_TTL_MS = 20 * 60 * 1000; // 20 minutes
