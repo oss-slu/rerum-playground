@@ -131,9 +131,9 @@ function formatRetryTime(ms) {
   return minutes === 1 ? "about 1 minute" : `about ${minutes} minutes`;
 }
 
-async function performRerumSearch({ searchText, usePhrase }) {
-  const limit = 50;
-  const skip = 0;
+const PAGE_LIMIT = 50; // Never exceed 100 per RERUM guidance.
+
+async function performRerumSearch({ searchText, usePhrase, limit = PAGE_LIMIT, skip = 0 }) {
   const cacheKey = makeCacheKey(searchText, usePhrase, limit, skip);
 
   const cached = getCachedResults(cacheKey);
@@ -295,6 +295,8 @@ function wireUpSearchUI() {
   const clearButton = document.getElementById("clear-results");
   const status = document.getElementById("search-status");
   const clientFilter = document.getElementById("client-filter");
+  const loadMoreButton = document.getElementById("load-more");
+  const paginationRow = document.getElementById("pagination-row");
 
   if (
     !form ||
@@ -303,7 +305,9 @@ function wireUpSearchUI() {
     !searchButton ||
     !clearButton ||
     !status ||
-    !clientFilter
+    !clientFilter ||
+    !loadMoreButton ||
+    !paginationRow
   ) {
     console.error("Search UI elements are missing from the DOM.");
     return;
@@ -312,7 +316,10 @@ function wireUpSearchUI() {
   // Prevent any automatic search on page load; searches only run
   // in response to this explicit form submission.
   let lastResults = [];
+  let totalLoaded = 0;
+  let lastQuery = null;
   let rateLimitTimeoutId = null;
+  let isSearching = false;
 
   function setStatus(message, type = "info") {
     status.textContent = message;
@@ -321,6 +328,7 @@ function wireUpSearchUI() {
 
   function setSearching(isSearching) {
     searchButton.disabled = isSearching;
+    loadMoreButton.disabled = isSearching;
     form.querySelectorAll("input,button").forEach((el) => {
       if (el === clientFilter || el === clearButton) return;
       if (isSearching) {
@@ -349,6 +357,11 @@ function wireUpSearchUI() {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    if (isSearching) {
+      // A search is already in progress; ignore rapid repeat submits.
+      return;
+    }
+
     const searchText = searchInput.value.trim();
     if (!searchText) {
       setStatus("Please enter text to search.", "error");
@@ -365,17 +378,30 @@ function wireUpSearchUI() {
     const usePhrase = phraseCheckbox.checked;
 
     try {
+      isSearching = true;
       setSearching(true);
       setStatus("Running search…", "info");
 
       const { results, fromCache } = await performRerumSearch({
         searchText,
-        usePhrase
+        usePhrase,
+        limit: PAGE_LIMIT,
+        skip: 0
       });
 
+      lastQuery = { searchText, usePhrase };
       lastResults = results;
+      totalLoaded = results.length;
       clientFilter.value = "";
       renderResults(lastResults, "");
+
+      // Show or hide pagination controls based on whether we might have more.
+      if (results.length >= PAGE_LIMIT) {
+        paginationRow.style.display = "";
+        loadMoreButton.disabled = false;
+      } else {
+        paginationRow.style.display = "none";
+      }
 
       if (fromCache) {
         setStatus(
@@ -395,6 +421,66 @@ function wireUpSearchUI() {
         "error"
       );
     } finally {
+      isSearching = false;
+      setSearching(false);
+    }
+  });
+
+  loadMoreButton.addEventListener("click", async () => {
+    if (isSearching || !lastQuery) {
+      return;
+    }
+
+    // Check limits before doing anything.
+    const limitCheck = checkRateLimit();
+    if (!limitCheck.ok) {
+      disableSearchTemporarily(limitCheck.reason, limitCheck.retryAfterMs || 1000);
+      return;
+    }
+
+    try {
+      isSearching = true;
+      setSearching(true);
+      setStatus("Loading more results…", "info");
+
+      const { searchText, usePhrase } = lastQuery;
+      const { results, fromCache } = await performRerumSearch({
+        searchText,
+        usePhrase,
+        limit: PAGE_LIMIT,
+        skip: totalLoaded
+      });
+
+      // Append new page and update counters.
+      if (results.length > 0) {
+        lastResults = lastResults.concat(results);
+        totalLoaded = lastResults.length;
+        renderResults(lastResults, clientFilter.value);
+      }
+
+      if (results.length < PAGE_LIMIT) {
+        // No more pages expected.
+        paginationRow.style.display = "none";
+        setStatus(
+          `All results loaded (${lastResults.length} total).${fromCache ? " Additional pages came from cache where available." : ""
+          }`,
+          "success"
+        );
+      } else {
+        setStatus(
+          `${lastResults.length} results loaded so far.${fromCache ? " This page was served from cache." : ""
+          }`,
+          "success"
+        );
+      }
+    } catch (err) {
+      console.error("Load more failed:", err);
+      setStatus(
+        "Loading more results failed. Please try again in a moment.",
+        "error"
+      );
+    } finally {
+      isSearching = false;
       setSearching(false);
     }
   });
@@ -405,13 +491,17 @@ function wireUpSearchUI() {
 
   clearButton.addEventListener("click", () => {
     lastResults = [];
+    lastQuery = null;
+    totalLoaded = 0;
     renderResults(lastResults, "");
     clientFilter.value = "";
+    paginationRow.style.display = "none";
     setStatus("Results cleared. Enter text and press Search to run a new query.", "info");
   });
 
   // Initial UI state.
   renderResults([], "");
+  paginationRow.style.display = "none";
   setStatus(
     "Enter text and press Search to query RERUM annotations. Results may be cached for up to 20 minutes.",
     "info"
