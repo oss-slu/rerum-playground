@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Annotation Text Search | RERUM Playground</title>
+
+    <script src="./js/playground.js" type="module"></script>
+    <script src="./js/searchTool.js" type="module" defer></script>
+
+    <link rel="stylesheet" href="./css/playground.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/footer.css" />
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest" />
+    <link
+        rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+</head>
+
+<body>
+    <div id="menu-placeholder"></div>
+
+    <header>
+        <div class="header">
+            <div class="row">
+                <button onclick="openCloseMenu()" aria-label="Toggle Menu">
+                    &#9776;
+                </button>
+                <img src="logo.png" alt="Rerum Playground" />
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section>
+            <h2>Annotation Text Search</h2>
+            <p>
+                Search Web Annotations and IIIF resources stored in RERUM by text
+                appearing in their bodies. Results are cached client-side to avoid
+                duplicate searches and are rate limited to protect the RERUM API.
+            </p>
+        </section>
+
+        <section class="card">
+            <h3>Search Controls</h3>
+            <form id="search-form">
+                <div class="row">
+                    <div class="col">
+                        <label for="search-text">Search text</label>
+                        <input
+                            id="search-text"
+                            type="text"
+                            placeholder="Enter text to search in annotation bodies"
+                            autocomplete="off"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label>
+                            <input
+                                id="phrase-search"
+                                type="checkbox"
+                            />
+                            Treat as phrase search (words near each other)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label for="client-filter">Filter within results (client-side)</label>
+                        <input
+                            id="client-filter"
+                            type="text"
+                            placeholder="Filter text within current results"
+                            autocomplete="off"
+                        />
+                        <small>
+                            This filter never triggers new API calls; it only narrows
+                            the results already loaded on the page.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button id="search-button" type="submit" class="button primary">
+                            Search
+                        </button>
+                        <button id="clear-results" type="button" class="button secondary">
+                            Clear results
+                        </button>
+                    </div>
+                </div>
+
+                <p id="search-status" class="text-small"></p>
+            </form>
+        </section>
+
+        <section class="card">
+            <h3>Results</h3>
+            <p id="results-summary" class="text-small"></p>
+            <div id="results-container"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+

@@ -37,6 +37,12 @@ const ToolsCatalog = [
         icon: "./images/uv-logo.png",
         view: "https://universalviewer.io/",
         description: "A viewer for web objects, allowing users to share their media with the world."
+    },
+    {
+        label: "Annotation Text Search",
+        icon: "./images/rerum_logo.png",
+        view: "./search.html",
+        description: "Search RERUM Web Annotations and IIIF text content with client-side caching and rate limits to protect the API."
     }
 ];
 
