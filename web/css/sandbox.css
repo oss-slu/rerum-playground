@@ -93,7 +93,7 @@
   border-radius: 4px;
   padding: 0.75rem 1rem;
   margin-top: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .search-result-item > div {
@@ -119,17 +119,3 @@
   border-radius: 4px;
 }
 
-#search-run-btn {
-  background-color: #001e3c;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-#search-run-btn:hover {
-  background-color: #003366;
-}
