@@ -76,3 +76,46 @@
 .hidden {
   display: none;
 }
+
+.search-status {
+  color: #001e3c;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.search-status--error {
+  color: #c0392b;
+}
+
+.search-result-item {
+  background: #f0f4f8;
+  border: 1px solid #ccd6e0;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+
+.search-result-item > div {
+  margin-bottom: 0.3rem;
+}
+
+.search-result-item a {
+  color: #001e3c;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+.search-result-item a:hover {
+  text-decoration: underline;
+}
+
+#search-type {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
