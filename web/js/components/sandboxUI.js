@@ -2,6 +2,16 @@ import { searchAnnotations } from '../services/searchService.js';
 
 const BODY_TRUNCATE_LENGTH = 250;
 
+function renderSearchStatus(message, resultsEl, isError = false) {
+  const msg = document.createElement("p");
+  msg.className = isError ? "search-status search-status--error" : "search-status";
+  if (isError) {
+    msg.setAttribute("role", "alert");
+  }
+  msg.textContent = message;
+  resultsEl.replaceChildren(msg);
+}
+
 function showSection(id) {
   document
     .querySelectorAll(".sandbox-section")
@@ -69,11 +79,7 @@ async function handleSearch() {
   const searchBtn = document.getElementById("search-run-btn");
 
   if (!query) {
-    const msg = document.createElement("p");
-    msg.className = "search-status search-status--error";
-    msg.setAttribute("role", "alert");
-    msg.textContent = "Please enter a search query.";
-    resultsEl.replaceChildren(msg);
+    renderSearchStatus("Please enter a search query.", resultsEl, true);
     return;
   }
 
@@ -95,21 +101,15 @@ async function handleSearch() {
 
   try {
     const { results, error } = await searchAnnotations(query, searchType);
+    const safeResults = Array.isArray(results) ? results : [];
 
     if (error) {
-      const errMsg = document.createElement("p");
-      errMsg.className = "search-status search-status--error";
-      errMsg.setAttribute("role", "alert");
-      errMsg.textContent = error;
-      resultsEl.replaceChildren(errMsg);
+      renderSearchStatus(error, resultsEl, true);
       return;
     }
 
-    if (!results.length) {
-      const noResults = document.createElement("p");
-      noResults.className = "search-status";
-      noResults.textContent = "No results found.";
-      resultsEl.replaceChildren(noResults);
+    if (!safeResults.length) {
+      renderSearchStatus("No results found.", resultsEl);
       return;
     }
 
@@ -117,10 +117,12 @@ async function handleSearch() {
     const countEl = document.createElement("p");
     countEl.className = "search-result-count";
     countEl.setAttribute("role", "status");
-    countEl.textContent = `${results.length} result${results.length !== 1 ? "s" : ""} found.`;
+    countEl.textContent = `${safeResults.length} result${safeResults.length !== 1 ? "s" : ""} found.`;
 
     const fragment = document.createDocumentFragment();
-    for (const r of results) {
+    // Protection layer: normalize each row shape before rendering so malformed data cannot break the UI.
+    for (const row of safeResults) {
+      const r = row && typeof row === "object" ? row : {};
       const item = document.createElement("div");
       item.className = "search-result-item";
 
@@ -216,11 +218,7 @@ async function handleSearch() {
     }
     resultsEl.replaceChildren(countEl, fragment);
   } catch (err) {
-    const errMsg = document.createElement("p");
-    errMsg.className = "search-status search-status--error";
-    errMsg.setAttribute("role", "alert");
-    errMsg.textContent = "An unexpected error occurred. Please try again.";
-    resultsEl.replaceChildren(errMsg);
+    renderSearchStatus("An unexpected error occurred. Please try again.", resultsEl, true);
     console.error(err);
   } finally {
     searchBtn.disabled = false;
