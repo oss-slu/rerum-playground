@@ -1,6 +1,7 @@
 import { searchAnnotations } from '../services/searchService.js';
 
 const BODY_TRUNCATE_LENGTH = 250;
+let isSearchRunning = false;
 
 function renderSearchStatus(message, resultsEl, isError = false) {
   const msg = document.createElement("p");
@@ -56,6 +57,10 @@ function highlightTerms(text, query, searchType) {
   let match;
 
   while ((match = regex.exec(text)) !== null) {
+    if (match[0].length === 0) {
+      regex.lastIndex += 1;
+      continue;
+    }
     if (match.index > lastIndex) {
       frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
     }
@@ -78,11 +83,16 @@ async function handleSearch() {
   const resultsEl = document.getElementById("search-results");
   const searchBtn = document.getElementById("search-run-btn");
 
+  if (isSearchRunning || searchBtn?.disabled) {
+    return;
+  }
+
   if (!query) {
     renderSearchStatus("Please enter a search query.", resultsEl, true);
     return;
   }
 
+  isSearchRunning = true;
   searchBtn.disabled = true;
 
   // Loading spinner
@@ -222,6 +232,7 @@ async function handleSearch() {
     console.error(err);
   } finally {
     searchBtn.disabled = false;
+    isSearchRunning = false;
   }
 }
 
@@ -241,7 +252,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("search-query")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleSearch();
+      const searchBtn = document.getElementById("search-run-btn");
+      if (searchBtn && !searchBtn.disabled) {
+        handleSearch();
+      }
     }
   });
 

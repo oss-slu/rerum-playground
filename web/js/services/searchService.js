@@ -40,7 +40,8 @@ function logSearch(level, event, details = {}) {
         ts: new Date().toISOString(),
         ...details,
     };
-    if (level === "debug" && !isDebugEnabled()) return;
+    const debugEnabled = isDebugEnabled();
+    if (!debugEnabled && (level === "debug" || level === "info")) return;
     const logger = level === "error" ? console.error : level === "warn" ? console.warn : console.log;
     logger("[search]", payload);
 }
@@ -137,7 +138,7 @@ async function fetchSearchPage(url, query, skip, payload) {
         payload.mode === "string"
             ? "text/plain; charset=utf-8"
             : "application/json; charset=utf-8";
-    logSearch("info", "api_request", { url: pageUrl, skip, payloadMode: payload.mode, bodyKey: payload.bodyKey });
+    logSearch("debug", "api_request", { url: pageUrl, skip, payloadMode: payload.mode, bodyKey: payload.bodyKey });
     let response;
     try {
         response = await fetch(pageUrl, {
@@ -222,7 +223,7 @@ async function fetchAllPages(baseUrl, query, payload, startSkip = 0, initialResu
     let skip = startSkip;
     let pages = initialResults.length > 0 ? 1 : 0;
     while (pages < SEARCH_MAX_PAGES) {
-        logSearch("info", "pagination_fetch", { baseUrl, skip, page: pages + 1 });
+        logSearch("debug", "pagination_fetch", { baseUrl, skip, page: pages + 1 });
         const page = await fetchSearchPage(baseUrl, query, skip, payload);
         if (!page.length) break;
         all.push(...page);
@@ -318,10 +319,10 @@ export async function searchAnnotations(query, searchType = "text") {
     const cacheKey = `${searchType}::${trimmed}`;
     const now = Date.now();
     pruneSearchCache(now);
-    logSearch("info", "search_start", { searchType, queryLength: trimmed.length, cacheKey });
+    logSearch("debug", "search_start", { searchType, queryLength: trimmed.length });
     const cached = searchCache.get(cacheKey);
     if (cached && now - cached.cachedAt < SEARCH_CACHE_TTL_MS) {
-        logSearch("info", "cache_hit", { cacheKey });
+        logSearch("debug", "cache_hit", { searchType });
         return {
             error: cached.value.error,
             results: [...cached.value.results],
@@ -352,7 +353,7 @@ export async function searchAnnotations(query, searchType = "text") {
             pruneSearchCache();
             return normalized;
         } catch (err) {
-            logSearch("error", "search_failure", { cacheKey, error: err instanceof Error ? err.message : String(err) });
+            logSearch("error", "search_failure", { error: err instanceof Error ? err.message : String(err) });
             normalized.error = toUserMessage(err);
             normalized.results = [];
             return normalized;
