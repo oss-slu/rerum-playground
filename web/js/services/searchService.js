@@ -10,9 +10,41 @@ const SEARCH_COOLDOWN_MS = CONFIG.SEARCH_COOLDOWN_MS ?? 500;
 const SEARCH_CACHE_TTL_MS = CONFIG.SEARCH_CACHE_TTL_MS ?? 60_000;
 const SEARCH_CACHE_MAX_ENTRIES = CONFIG.SEARCH_CACHE_MAX_ENTRIES ?? 200;
 const SEARCH_MAX_PAGES = CONFIG.SEARCH_MAX_PAGES ?? 50;
+const SEARCH_MAX_QUERY_LENGTH = CONFIG.SEARCH_MAX_QUERY_LENGTH ?? 512;
 
 const searchCache = new Map();
 let lastSearchAt = 0;
+const inFlightSearches = new Map();
+
+const FRIENDLY_MESSAGES = {
+    network: "Unable to reach the search service. Check your connection and try again.",
+    malformed: "Search service returned an unexpected response. Please try again.",
+    empty: "Search service returned an empty response.",
+    unknown: "Search failed unexpectedly. Please try again.",
+};
+
+function isDebugEnabled() {
+    const configDebug = Boolean(CONFIG.SEARCH_DEBUG);
+    if (configDebug) return true;
+    if (typeof window === "undefined" || typeof window.location === "undefined") return false;
+    const isDevHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    if (!isDevHost) return false;
+    const queryDebug = new URLSearchParams(window.location.search).get("searchDebug");
+    const localToggle = window.localStorage?.getItem("rerum:search-debug");
+    return queryDebug === "1" || localToggle === "1";
+}
+
+function logSearch(level, event, details = {}) {
+    const payload = {
+        event,
+        ts: new Date().toISOString(),
+        ...details,
+    };
+    const debugEnabled = isDebugEnabled();
+    if (!debugEnabled && (level === "debug" || level === "info")) return;
+    const logger = level === "error" ? console.error : level === "warn" ? console.warn : console.log;
+    logger("[search]", payload);
+}
 
 function pruneSearchCache(now = Date.now()) {
     for (const [key, value] of searchCache.entries()) {
@@ -106,17 +138,41 @@ async function fetchSearchPage(url, query, skip, payload) {
         payload.mode === "string"
             ? "text/plain; charset=utf-8"
             : "application/json; charset=utf-8";
-    const response = await fetch(pageUrl, {
-        method: "POST",
-        headers: { "Content-Type": contentType },
-        body,
-    });
+    logSearch("debug", "api_request", { url: pageUrl, skip, payloadMode: payload.mode, bodyKey: payload.bodyKey });
+    let response;
+    try {
+        response = await fetch(pageUrl, {
+            method: "POST",
+            headers: { "Content-Type": contentType },
+            body,
+        });
+    } catch (err) {
+        const networkError = new Error(FRIENDLY_MESSAGES.network);
+        networkError.code = "NETWORK_FAILURE";
+        networkError.cause = err;
+        throw networkError;
+    }
     if (!response.ok) {
-        const err = new Error(`Search API error: ${response.status} ${response.statusText}`);
+        const err = new Error(`Search request failed (${response.status}). Please try again.`);
         err.status = response.status;
+        err.code = "API_FAILURE";
         throw err;
     }
-    const data = await response.json();
+    const rawBody = await response.text();
+    if (!rawBody || !rawBody.trim()) {
+        const emptyErr = new Error(FRIENDLY_MESSAGES.empty);
+        emptyErr.code = "EMPTY_RESPONSE";
+        throw emptyErr;
+    }
+    let data;
+    try {
+        data = JSON.parse(rawBody);
+    } catch (err) {
+        const malformedErr = new Error(FRIENDLY_MESSAGES.malformed);
+        malformedErr.code = "MALFORMED_RESPONSE";
+        malformedErr.cause = err;
+        throw malformedErr;
+    }
     return extractHits(data);
 }
 
@@ -136,6 +192,23 @@ function extractHits(data) {
     return [];
 }
 
+function sanitizeHits(hits) {
+    if (!Array.isArray(hits)) return [];
+    return hits.filter((hit) => hit && typeof hit === "object");
+}
+
+function toUserMessage(err) {
+    if (!err) return FRIENDLY_MESSAGES.unknown;
+    if (err.code === "NETWORK_FAILURE") return FRIENDLY_MESSAGES.network;
+    if (err.code === "MALFORMED_RESPONSE") return FRIENDLY_MESSAGES.malformed;
+    if (err.code === "EMPTY_RESPONSE") return FRIENDLY_MESSAGES.empty;
+    if (err.code === "API_FAILURE" || typeof err.status === "number") {
+        const status = err.status ?? "unknown";
+        return `Search service returned an error (${status}). Please try again.`;
+    }
+    return err instanceof Error && err.message ? err.message : FRIENDLY_MESSAGES.unknown;
+}
+
 /**
  * Run paged search until no more results (limit applied per request, never > 100).
  * @param {string} baseUrl - CONFIG.URLS.SEARCH_TEXT or SEARCH_PHRASE
@@ -150,6 +223,7 @@ async function fetchAllPages(baseUrl, query, payload, startSkip = 0, initialResu
     let skip = startSkip;
     let pages = initialResults.length > 0 ? 1 : 0;
     while (pages < SEARCH_MAX_PAGES) {
+        logSearch("debug", "pagination_fetch", { baseUrl, skip, page: pages + 1 });
         const page = await fetchSearchPage(baseUrl, query, skip, payload);
         if (!page.length) break;
         all.push(...page);
@@ -221,6 +295,10 @@ export async function searchAnnotations(query, searchType = "text") {
         normalized.error = "Search query is required.";
         return normalized;
     }
+    if (trimmed.length > SEARCH_MAX_QUERY_LENGTH) {
+        normalized.error = `Search query is too long. Please keep it under ${SEARCH_MAX_QUERY_LENGTH} characters.`;
+        return normalized;
+    }
 
     if (searchType !== "text" && searchType !== "phrase") {
         normalized.error = "searchType must be 'text' or 'phrase'.";
@@ -241,12 +319,19 @@ export async function searchAnnotations(query, searchType = "text") {
     const cacheKey = `${searchType}::${trimmed}`;
     const now = Date.now();
     pruneSearchCache(now);
+    logSearch("debug", "search_start", { searchType, queryLength: trimmed.length });
     const cached = searchCache.get(cacheKey);
     if (cached && now - cached.cachedAt < SEARCH_CACHE_TTL_MS) {
+        logSearch("debug", "cache_hit", { searchType });
         return {
             error: cached.value.error,
             results: [...cached.value.results],
         };
+    }
+    const inFlight = inFlightSearches.get(cacheKey);
+    if (inFlight) {
+        logSearch("debug", "in_flight_reuse", { cacheKey });
+        return inFlight;
     }
     if (now - lastSearchAt < SEARCH_COOLDOWN_MS) {
         normalized.error = "Please wait a moment before searching again.";
@@ -254,23 +339,30 @@ export async function searchAnnotations(query, searchType = "text") {
     }
     lastSearchAt = now;
 
-    try {
-        const rawHits = await fetchAllPagesWithFallback(urls, trimmed, searchType);
-        normalized.results = rawHits.map(normalizeHit);
-        searchCache.set(cacheKey, {
-            cachedAt: Date.now(),
-            value: {
-                error: normalized.error,
-                results: [...normalized.results],
-            },
-        });
-        pruneSearchCache();
-        return normalized;
-    } catch (err) {
-        normalized.error = err instanceof Error ? err.message : String(err);
-        normalized.results = [];
-        return normalized;
-    }
+    const requestPromise = (async () => {
+        try {
+            const rawHits = await fetchAllPagesWithFallback(urls, trimmed, searchType);
+            normalized.results = sanitizeHits(rawHits).map(normalizeHit);
+            searchCache.set(cacheKey, {
+                cachedAt: Date.now(),
+                value: {
+                    error: normalized.error,
+                    results: [...normalized.results],
+                },
+            });
+            pruneSearchCache();
+            return normalized;
+        } catch (err) {
+            logSearch("error", "search_failure", { error: err instanceof Error ? err.message : String(err) });
+            normalized.error = toUserMessage(err);
+            normalized.results = [];
+            return normalized;
+        } finally {
+            inFlightSearches.delete(cacheKey);
+        }
+    })();
+    inFlightSearches.set(cacheKey, requestPromise);
+    return requestPromise;
 }
 
-export { normalizeHit, extractHits, PAGE_LIMIT, fetchAllPagesWithFallback };
+export { normalizeHit, extractHits, sanitizeHits, toUserMessage, PAGE_LIMIT, fetchAllPagesWithFallback };

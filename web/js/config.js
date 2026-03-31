@@ -24,8 +24,14 @@ export default {
     SEARCH_COOLDOWN_MS: 500,
     /** Cache repeated identical queries briefly to reduce expensive duplicate calls. */
     SEARCH_CACHE_TTL_MS: 60_000,
+    /** Cap cache entries to prevent unbounded growth. */
+    SEARCH_CACHE_MAX_ENTRIES: 200,
     /** Safety cap for page fetches per search request. */
     SEARCH_MAX_PAGES: 50,
+    /** Guardrail for very long search inputs. */
+    SEARCH_MAX_QUERY_LENGTH: 512,
+    /** Optional verbose search logs (best used only in local development). */
+    SEARCH_DEBUG: false,
     EVENTS: {
         CREATED: "created",
         UPDATED: "updated",
