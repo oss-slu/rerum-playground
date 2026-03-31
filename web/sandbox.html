@@ -124,14 +124,28 @@
         <section id="search" class="sandbox-section hidden">
           <h3>Search Annotations</h3>
           <p>Search RERUM annotations by text or phrase.</p>
-          <input id="search-query" type="text" placeholder="Enter search query" />
-          <select id="search-type">
+
+          <label for="search-query">Search Query</label>
+          <input id="search-query" type="text" placeholder="Enter search query"
+                 aria-describedby="search-helper-text" />
+
+          <label for="search-type">Search Type</label>
+          <select id="search-type" aria-describedby="search-helper-text">
             <option value="text">Text</option>
             <option value="phrase">Phrase</option>
           </select>
-          <small><strong>Text</strong> matches any annotation containing the word(s) anywhere. <strong>Phrase</strong> matches the exact sequence of words in order.</small>
-          <button id="search-run-btn" class="action-btn">Search</button>
-          <div id="search-results" aria-live="polite"></div>
+
+          <small id="search-helper-text">
+            <strong>Text</strong> matches any annotation containing the word(s) anywhere.
+            <strong>Phrase</strong> matches the exact sequence of words in order.
+          </small>
+
+          <div class="search-actions">
+            <button id="search-run-btn" class="action-btn">Search</button>
+            <button id="search-clear-btn" class="action-btn search-clear-btn" type="button">Clear</button>
+          </div>
+
+          <div id="search-results" aria-live="polite" role="region" aria-label="Search results"></div>
         </section>
       </div>
     </div>
