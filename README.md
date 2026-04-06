@@ -42,11 +42,16 @@ Purpose:
 - Serves as a playground for developers to test app-level behaviors and example workflows without affecting production data.
 
 Main files:
-- `/web/js/sandbox.js` — Contains the sandbox UI logic, including `showSection(id)` to switch visible sandbox panels and placeholder action handlers bound to `.action-btn` elements.
-- `/web/sandbox.html` — The sandbox HTML page that loads the sandbox UI and includes buttons and sections for Create, Read, Update, Overwrite, Delete, and View workflows.
+- `/web/js/components/sandboxUI.js` — `showSection(id)` and placeholder handlers for non-search sandbox actions.
+- `/web/js/components/searchController.js` — Annotation search UI: query handling, loading state, result list rendering, and safe highlighting.
+- `/web/js/services/searchProtection.js` — Wraps the search service with cache, cooldown, and in-flight request deduplication; exports `searchAnnotations` used by the controller.
+- `/web/js/services/searchService.js` — RERUM search HTTP calls, pagination, and `normalizeHit` (pure API layer).
+- `/web/sandbox.html` — Loads the sandbox and search modules.
 
 Documentation:
-- A full reference for the sandbox implementation is available in the project's Docusaurus docs: `docs/docs/sandbox.md` (renders at the docs site as the Sandbox reference page).
+- Technical documentation lives under [`docs/docs/`](docs/docs/). Run `npm run start` from the `docs/` folder to preview the Docusaurus site locally.
+- **Annotation search (contributors):** see [`docs/docs/search-module.md`](docs/docs/search-module.md).
+- Sandbox HTML reference: [`docs/docs/sandbox-html.md`](docs/docs/sandbox-html.md).
 
 ### Usage & setup
 
@@ -73,7 +78,7 @@ You can access and test the Sandbox in two quick ways depending on your needs:
        npm run start
        ```
 
-   4. Open the local site URL printed by the dev server (usually http://localhost:3000) and navigate to the "Sandbox" docs page.
+   4. Open the local site URL printed by the dev server (usually http://localhost:3000) and navigate to the docs.
 
    Note: If `docusaurus` is not recognized, use `npx docusaurus start` as a fallback or ensure dependencies installed correctly. See `docs/package.json` for required packages.
 
@@ -86,11 +91,11 @@ You can access and test the Sandbox in two quick ways depending on your needs:
 ### For contributors
 
 - The Sandbox is intended as an experimentation and testing area for the RERUM Playground. Contributions are welcome — please open issues or pull requests to improve the UI, add real API integrations, or expand the documentation.
-- Documentation changes should be made under the `docs/docs/` folder (for example, `docs/docs/sandbox.md`) so the Docusaurus site can render updates.
+- Documentation changes should be made under the `docs/docs/` folder (for example, `docs/docs/sandbox-html.md`) so the Docusaurus site can render updates.
 
 ### Docs link
 
-View the project's documentation (local Docusaurus site) in `docs/` or the rendered docs when hosted. To quickly find the Sandbox reference in the repo, see: `docs/docs/sandbox.md`.
+View the project's documentation by running the Docusaurus site from the `docs/` folder, or the rendered docs when hosted. The Sandbox HTML reference is at `docs/docs/sandbox-html.md`.
 
 ## Contributing
 
