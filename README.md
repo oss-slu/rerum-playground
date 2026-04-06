@@ -33,6 +33,66 @@ This project allows users to create, interact with, and manage IIIF-compliant JS
 - **`.github/`**: GitHub-specific configuration files for CI workflows.
 - **`README.md`**: Setup and project overview.
 
+## Sandbox Implementation
+
+The Sandbox provides an interactive environment for experimenting with CRUD operations against the RERUM API and for testing JSON payloads and UI interactions before integrating with other tools.
+
+Purpose:
+- Allows users to create, read, update, overwrite, delete, and view JSON objects via a simple UI.
+- Serves as a playground for developers to test app-level behaviors and example workflows without affecting production data.
+
+Main files:
+- `/web/js/sandbox.js` — Contains the sandbox UI logic, including `showSection(id)` to switch visible sandbox panels and placeholder action handlers bound to `.action-btn` elements.
+- `/web/sandbox.html` — The sandbox HTML page that loads the sandbox UI and includes buttons and sections for Create, Read, Update, Overwrite, Delete, and View workflows.
+
+Documentation:
+- Technical documentation for the project is maintained under [`docs/docs/`](docs/docs/) (Docusaurus). Run `npm run start` from the `docs/` folder to preview it locally.
+- **Annotation search (contributors):** architecture, protection layer, pagination, caching, RERUM integration, API examples, and extension points are documented in [`docs/docs/search-module.md`](docs/docs/search-module.md).
+
+### Usage & setup
+
+You can access and test the Sandbox in two quick ways depending on your needs:
+
+- Open the standalone page (fast, no install):
+
+   1. Use the live-server extension to open sandbox by right-clicking `web/sandbox.html` and choose "Open with Live Server" (recommended).
+   2. The page will open in your browser and the client-side sandbox UI will be available immediately. The sandbox uses client-side placeholders for actions; no server/backend is required to try the UI.
+
+- Run the docs site locally (if you want the Docusaurus docs and integrated site):
+
+   1. Ensure Node.js is >= 18: `node -v` (Docusaurus preset in `docs/package.json` requires Node 18+).
+   2. From the `docs/` folder, install dependencies:
+
+       ```powershell
+       cd docs
+       npm install
+       ```
+
+   3. Start the Docusaurus dev server:
+
+       ```powershell
+       npm run start
+       ```
+
+   4. Open the local site URL printed by the dev server (usually http://localhost:3000) and navigate to the "Sandbox" docs page.
+
+   Note: If `docusaurus` is not recognized, use `npx docusaurus start` as a fallback or ensure dependencies installed correctly. See `docs/package.json` for required packages.
+
+### Dependencies & configuration
+
+- Node.js >= 18 (only required to run the Docusaurus docs site).
+- VS Code Live Server extension (recommended) for quickly opening `web/sandbox.html`.
+- No backend is required to use the placeholder sandbox UI; real CRUD operations would require a reachable RERUM API endpoint and appropriate credentials.
+
+### For contributors
+
+- The Sandbox is intended as an experimentation and testing area for the RERUM Playground. Contributions are welcome — please open issues or pull requests to improve the UI, add real API integrations, or expand the documentation.
+- Documentation changes should be made under the `docs/docs/` folder so the Docusaurus site can render updates.
+
+### Docs link
+
+View the project's documentation by running the Docusaurus site from the `docs/` folder, or the rendered docs when hosted.
+
 ## Contributing
 
 Contributions are welcome! Check out the `CONTRIBUTING.md` for guidelines.
