@@ -1,3 +1,11 @@
+/**
+ * ToolsCatalog
+ * A list of available tools for the playground. Each entry contains these properties:
+ *  - label: display name
+ *  - icon: path to icon image
+ *  - view: URL to open when selected
+ *  - description: short description of the tool
+ */
 // This is the catalog of tools that will be used in the playground.
 // Each tool contains a label, icon, description, and a view (URL) for redirection.
 

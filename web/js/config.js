@@ -8,14 +8,30 @@ import ToolsCatalog from './toolsCatalog.js';
 export default {
     URLS: {
         //TODO Bring in internal TT.  Register as a new application for RERUM dev.  
-        CREATE: "http://tinydev.rerum.io/app/create",
-        UPDATE: "http://tinydev.rerum.io/app/update",
-        PATCH: "http://tinydev.rerum.io/app/patch",
-        OVERWRITE: "http://tinydev.rerum.io/app/overwrite",
-        QUERY: "http://tinydev.rerum.io/app/query",
-        SINCE: "http://devstore.rerum.io/v1/since",
-        HISTORY: "http://devstore.rerum.io/v1/history"
+        CREATE: "https://tinydev.rerum.io/app/create",
+        UPDATE: "https://tinydev.rerum.io/app/update",
+        PATCH: "https://tinydev.rerum.io/app/patch",
+        OVERWRITE: "https://tinydev.rerum.io/app/overwrite",
+        QUERY: "https://tinydev.rerum.io/app/query",
+        SINCE: "https://devstore.rerum.io/v1/since",
+        HISTORY: "https://devstore.rerum.io/v1/history",
+        SEARCH_TEXT: "https://devstore.rerum.io/v1/api/search",
+        SEARCH_PHRASE: "https://devstore.rerum.io/v1/api/search/phrase"
     },
+    /** Max page size for RERUM search (API recommends ≤ 100). */
+    SEARCH_PAGE_LIMIT: 100,
+    /** Prevent burst submissions from repeatedly hammering search endpoints. */
+    SEARCH_COOLDOWN_MS: 500,
+    /** Cache repeated identical queries briefly to reduce expensive duplicate calls. */
+    SEARCH_CACHE_TTL_MS: 60_000,
+    /** Cap cache entries to prevent unbounded growth. */
+    SEARCH_CACHE_MAX_ENTRIES: 200,
+    /** Safety cap for page fetches per search request. */
+    SEARCH_MAX_PAGES: 50,
+    /** Guardrail for very long search inputs. */
+    SEARCH_MAX_QUERY_LENGTH: 512,
+    /** Optional verbose search logs (best used only in local development). */
+    SEARCH_DEBUG: false,
     EVENTS: {
         CREATED: "created",
         UPDATED: "updated",

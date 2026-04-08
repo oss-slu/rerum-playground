@@ -5,14 +5,14 @@ function showSection(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
+// Exposed globally for sandbox.html onclick attributes
 window.showSection = showSection;
 
-// Placeholder action handlers
+// Event handlers
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".action-btn").forEach((btn) => {
+  document.querySelectorAll(".action-btn:not(#search-run-btn):not(#search-clear-btn)").forEach((btn) => {
     btn.addEventListener("click", () => {
       const action = btn.textContent.trim();
-      console.log(`${action} action triggered (placeholder).`);
       alert(`${action} action clicked (placeholder).`);
     });
   });
