@@ -109,7 +109,8 @@ export async function searchAnnotations(query, searchType = "text") {
     const inFlight = inFlightSearches.get(cacheKey);
     if (inFlight) {
         logSearch("debug", "in_flight_reuse", { cacheKey });
-        return inFlight;
+        const shared = await inFlight;
+        return { error: shared.error, results: [...shared.results] };
     }
 
     // Cooldown: reject if last request was within SEARCH_COOLDOWN_MS

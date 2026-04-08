@@ -138,7 +138,7 @@ async function handleSearch() {
         const a = document.createElement("a");
         a.href = r.annotationId;
         a.target = "_blank";
-        a.rel = "noopener";
+        a.rel = "noopener noreferrer";
         a.textContent = r.annotationId;
         idDiv.appendChild(a);
       } else {
@@ -196,7 +196,7 @@ async function handleSearch() {
         const a = document.createElement("a");
         a.href = r.targetUri;
         a.target = "_blank";
-        a.rel = "noopener";
+        a.rel = "noopener noreferrer";
         a.textContent = r.targetUri;
         targetDiv.appendChild(a);
       } else {
