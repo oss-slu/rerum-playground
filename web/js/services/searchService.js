@@ -1,20 +1,12 @@
 /**
  * Search service for RERUM annotation text and phrase search.
- * Uses /search and /search/phrase endpoints with pagination (limit ≤ 100)
- * and normalizes results for the frontend.
+ * Pure stateless API layer: fetch, paginate, and normalize results only.
+ * Protection logic (cache, cooldown, deduplication) lives in searchProtection.js.
  */
 import CONFIG from "../config.js";
 
 const PAGE_LIMIT = Math.min(100, CONFIG.SEARCH_PAGE_LIMIT ?? 100);
-const SEARCH_COOLDOWN_MS = CONFIG.SEARCH_COOLDOWN_MS ?? 500;
-const SEARCH_CACHE_TTL_MS = CONFIG.SEARCH_CACHE_TTL_MS ?? 60_000;
-const SEARCH_CACHE_MAX_ENTRIES = CONFIG.SEARCH_CACHE_MAX_ENTRIES ?? 200;
 const SEARCH_MAX_PAGES = CONFIG.SEARCH_MAX_PAGES ?? 50;
-const SEARCH_MAX_QUERY_LENGTH = CONFIG.SEARCH_MAX_QUERY_LENGTH ?? 512;
-
-const searchCache = new Map();
-let lastSearchAt = 0;
-const inFlightSearches = new Map();
 
 const FRIENDLY_MESSAGES = {
     network: "Unable to reach the search service. Check your connection and try again.",
@@ -23,47 +15,11 @@ const FRIENDLY_MESSAGES = {
     unknown: "Search failed unexpectedly. Please try again.",
 };
 
-function isDebugEnabled() {
-    const configDebug = Boolean(CONFIG.SEARCH_DEBUG);
-    if (configDebug) return true;
-    if (typeof window === "undefined" || typeof window.location === "undefined") return false;
-    const isDevHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-    if (!isDevHost) return false;
-    const queryDebug = new URLSearchParams(window.location.search).get("searchDebug");
-    const localToggle = window.localStorage?.getItem("rerum:search-debug");
-    return queryDebug === "1" || localToggle === "1";
-}
-
-function logSearch(level, event, details = {}) {
-    const payload = {
-        event,
-        ts: new Date().toISOString(),
-        ...details,
-    };
-    const debugEnabled = isDebugEnabled();
-    if (!debugEnabled && (level === "debug" || level === "info")) return;
-    const logger = level === "error" ? console.error : level === "warn" ? console.warn : console.log;
-    logger("[search]", payload);
-}
-
-function pruneSearchCache(now = Date.now()) {
-    for (const [key, value] of searchCache.entries()) {
-        if (now - value.cachedAt >= SEARCH_CACHE_TTL_MS) {
-            searchCache.delete(key);
-        }
-    }
-    while (searchCache.size > SEARCH_CACHE_MAX_ENTRIES) {
-        const oldestKey = searchCache.keys().next().value;
-        if (!oldestKey) break;
-        searchCache.delete(oldestKey);
-    }
-}
-
 /**
  * Normalize a single RERUM annotation hit into a consistent shape.
  * Handles Web Annotation and IIIF body/target shapes.
  * @param {object} hit - Raw annotation from RERUM search response
- * @returns {{ id: string, annotationId: string, bodyText: string, snippet: string, targetUri: string | null, score: number | null }}
+ * @returns {{ id: string, annotationId: string, bodyText: string, targetUri: string | null, score: number | null }}
  */
 function normalizeHit(hit) {
     if (!hit || typeof hit !== "object") {
@@ -71,7 +27,6 @@ function normalizeHit(hit) {
             id: "",
             annotationId: "",
             bodyText: "",
-            snippet: "",
             targetUri: null,
             score: null,
         };
@@ -112,7 +67,6 @@ function normalizeHit(hit) {
         id,
         annotationId: id,
         bodyText,
-        snippet: bodyText,
         targetUri,
         score,
     };
@@ -138,7 +92,6 @@ async function fetchSearchPage(url, query, skip, payload) {
         payload.mode === "string"
             ? "text/plain; charset=utf-8"
             : "application/json; charset=utf-8";
-    logSearch("debug", "api_request", { url: pageUrl, skip, payloadMode: payload.mode, bodyKey: payload.bodyKey });
     let response;
     try {
         response = await fetch(pageUrl, {
@@ -222,8 +175,8 @@ async function fetchAllPages(baseUrl, query, payload, startSkip = 0, initialResu
     const all = [...initialResults];
     let skip = startSkip;
     let pages = initialResults.length > 0 ? 1 : 0;
+    // Pagination: fetches pages by incrementing skip until empty page or SEARCH_MAX_PAGES cap
     while (pages < SEARCH_MAX_PAGES) {
-        logSearch("debug", "pagination_fetch", { baseUrl, skip, page: pages + 1 });
         const page = await fetchSearchPage(baseUrl, query, skip, payload);
         if (!page.length) break;
         all.push(...page);
@@ -246,6 +199,7 @@ function getPayloadCandidates(searchType) {
  * Try one or more endpoint URLs. If an endpoint responds with 404, try next.
  * @param {string[]} urls - candidate search endpoint URLs
  * @param {string} query - Search query
+ * @param {string} searchType - "text" or "phrase"
  * @returns {Promise<object[]>}
  */
 async function fetchAllPagesWithFallback(urls, query, searchType) {
@@ -273,96 +227,6 @@ async function fetchAllPagesWithFallback(urls, query, searchType) {
     }
     if (sawEmptyResults) return [];
     throw lastError ?? new Error("Search API error: no usable endpoint.");
-}
-
-/**
- * Search RERUM annotations by text or phrase and return normalized results.
- * Pagination is handled internally (limit ≤ 100 per request); all pages are fetched.
- *
- * @param {string} query - Search query (plain text or phrase)
- * @param {"text"|"phrase"} searchType - "text" for full-text, "phrase" for phrase search
- * @returns {Promise<{ results: Array<{ id: string, annotationId: string, bodyText: string, snippet: string, targetUri: string | null, score: number | null }>, error: string | null }>}
- *   Normalized result object; `error` is set on API or empty-query failure, `results` empty in that case.
- */
-export async function searchAnnotations(query, searchType = "text") {
-    const normalized = {
-        results: [],
-        error: null,
-    };
-
-    const trimmed = typeof query === "string" ? query.trim() : "";
-    if (!trimmed) {
-        normalized.error = "Search query is required.";
-        return normalized;
-    }
-    if (trimmed.length > SEARCH_MAX_QUERY_LENGTH) {
-        normalized.error = `Search query is too long. Please keep it under ${SEARCH_MAX_QUERY_LENGTH} characters.`;
-        return normalized;
-    }
-
-    if (searchType !== "text" && searchType !== "phrase") {
-        normalized.error = "searchType must be 'text' or 'phrase'.";
-        return normalized;
-    }
-
-    const endpointCandidates =
-        searchType === "phrase"
-            ? [CONFIG.URLS.SEARCH_PHRASE]
-            : [CONFIG.URLS.SEARCH_TEXT];
-    const urls = endpointCandidates.filter(Boolean);
-
-    if (!urls.length) {
-        normalized.error = "Search endpoint not configured.";
-        return normalized;
-    }
-
-    const cacheKey = `${searchType}::${trimmed}`;
-    const now = Date.now();
-    pruneSearchCache(now);
-    logSearch("debug", "search_start", { searchType, queryLength: trimmed.length });
-    const cached = searchCache.get(cacheKey);
-    if (cached && now - cached.cachedAt < SEARCH_CACHE_TTL_MS) {
-        logSearch("debug", "cache_hit", { searchType });
-        return {
-            error: cached.value.error,
-            results: [...cached.value.results],
-        };
-    }
-    const inFlight = inFlightSearches.get(cacheKey);
-    if (inFlight) {
-        logSearch("debug", "in_flight_reuse", { cacheKey });
-        return inFlight;
-    }
-    if (now - lastSearchAt < SEARCH_COOLDOWN_MS) {
-        normalized.error = "Please wait a moment before searching again.";
-        return normalized;
-    }
-    lastSearchAt = now;
-
-    const requestPromise = (async () => {
-        try {
-            const rawHits = await fetchAllPagesWithFallback(urls, trimmed, searchType);
-            normalized.results = sanitizeHits(rawHits).map(normalizeHit);
-            searchCache.set(cacheKey, {
-                cachedAt: Date.now(),
-                value: {
-                    error: normalized.error,
-                    results: [...normalized.results],
-                },
-            });
-            pruneSearchCache();
-            return normalized;
-        } catch (err) {
-            logSearch("error", "search_failure", { error: err instanceof Error ? err.message : String(err) });
-            normalized.error = toUserMessage(err);
-            normalized.results = [];
-            return normalized;
-        } finally {
-            inFlightSearches.delete(cacheKey);
-        }
-    })();
-    inFlightSearches.set(cacheKey, requestPromise);
-    return requestPromise;
 }
 
 export { normalizeHit, extractHits, sanitizeHits, toUserMessage, PAGE_LIMIT, fetchAllPagesWithFallback };
