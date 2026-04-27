@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Annotator</title>
+  <script src="./js/features/playground.js" type="module"></script>
+  <script src="./js/components/annotatorUI.js" type="module"></script>
+  <link rel="stylesheet" href="./css/playground.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+  <link rel="stylesheet" href="./css/annotator.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest" />
+  <link
+    rel="stylesheet"
+    href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+  />
+</head>
+
+<body>
+  <div id="menu-placeholder"></div>
+
+  <header>
+    <div class="header">
+      <div class="row">
+        <button onclick="openCloseMenu()" aria-label="Toggle Menu">&#9776;</button>
+        <img src="logo.png" alt="Rerum Playground" />
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="placeholder" style="height: 50px;"></div>
+
+    <div id="content">
+      <h2>Web Annotator</h2>
+
+      <div class="annotator-intro">
+        <p>
+          A <strong>Web Annotation</strong> is a way to attach a comment, tag, or description
+          to any resource on the web — a web page, image, video, or document — using its URI.
+          Annotations are expressed as <strong>JSON-LD</strong>, a format that links your data
+          to shared vocabularies so machines can understand it too.
+        </p>
+        <p>
+          Fill in the form below to build your own annotation. When you are happy with the
+          preview, you can save it to <strong>RERUM</strong> (a Linked Open Data store) or
+          download it as a file.
+        </p>
+      </div>
+
+      <form class="annotator-form" novalidate>
+        <h3>Build Your Annotation</h3>
+
+        <label for="anno-target">Target URI <span aria-hidden="true">*</span></label>
+        <span class="field-hint">The URL of the resource you want to annotate.</span>
+        <input
+          type="url"
+          id="anno-target"
+          placeholder="https://example.com/resource"
+          aria-required="true"
+          aria-describedby="anno-target-hint"
+        />
+
+        <label for="anno-body">Body Text <span aria-hidden="true">*</span></label>
+        <span class="field-hint">What do you want to say about this resource?</span>
+        <textarea
+          id="anno-body"
+          placeholder="Enter your annotation text here…"
+          aria-required="true"
+        ></textarea>
+
+        <label for="anno-motivation">
+          Motivation
+          <span class="optional-label">(optional)</span>
+        </label>
+        <span class="field-hint">Why are you creating this annotation?</span>
+        <select id="anno-motivation">
+          <option value="commenting">Commenting</option>
+          <option value="describing">Describing</option>
+          <option value="tagging">Tagging</option>
+          <option value="bookmarking">Bookmarking</option>
+        </select>
+
+        <label for="anno-label">
+          Label
+          <span class="optional-label">(optional)</span>
+        </label>
+        <span class="field-hint">A short human-readable name for this annotation.</span>
+        <input
+          type="text"
+          id="anno-label"
+          placeholder="e.g. My note on Charizard"
+        />
+
+        <button type="button" id="generate-btn" class="generate-btn">
+          Generate Annotation
+        </button>
+      </form>
+
+      <div id="anno-status" aria-live="polite" role="status"></div>
+
+      <div id="anno-preview" class="hidden">
+        <h3>Annotation Preview</h3>
+        <pre id="anno-json-output" aria-label="Generated annotation JSON"></pre>
+        <div class="anno-actions">
+          <button type="button" id="save-btn">Save to RERUM</button>
+          <button type="button" id="download-btn">Download JSON</button>
+          <button type="button" id="reset-btn" class="anno-btn-secondary">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+</body>
+</html>

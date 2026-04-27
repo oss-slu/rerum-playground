@@ -1,0 +1,232 @@
+.container {
+  padding-bottom: 15rem;
+}
+
+.annotator-intro {
+  background: #f9f9f9;
+  border-left: 4px solid #001e3c;
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.annotator-intro strong {
+  color: #001e3c;
+}
+
+.annotator-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.annotator-form h3 {
+  margin-top: 0;
+  color: #001e3c;
+}
+
+.annotator-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #001e3c;
+}
+
+.annotator-form .field-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: -0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.annotator-form input,
+.annotator-form textarea,
+.annotator-form select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.annotator-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.annotator-form input:focus-visible,
+.annotator-form textarea:focus-visible,
+.annotator-form select:focus-visible {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+}
+
+.annotator-form .optional-label {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #666;
+  margin-left: 0.3rem;
+}
+
+.generate-btn {
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+
+.generate-btn:hover {
+  background-color: #003366;
+}
+
+.generate-btn:focus-visible {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+}
+
+/* Preview section */
+#anno-preview {
+  max-width: 700px;
+  margin-top: 1.5rem;
+}
+
+#anno-preview h3 {
+  color: #001e3c;
+  margin-bottom: 0.75rem;
+}
+
+#anno-json-output {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 1.25rem;
+  border-radius: 6px;
+  margin: 0 0 1rem;
+  overflow-x: auto;
+}
+
+.anno-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.anno-actions button {
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.anno-actions button:hover {
+  background-color: #003366;
+}
+
+.anno-actions button:focus-visible {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+}
+
+.anno-btn-secondary {
+  background-color: transparent !important;
+  color: #001e3c !important;
+  border: 2px solid #001e3c !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.anno-btn-secondary:hover {
+  background-color: #001e3c !important;
+  color: white !important;
+}
+
+/* Status messages */
+#anno-status {
+  max-width: 700px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  min-height: 1.5rem;
+}
+
+.anno-status--success {
+  color: #155724;
+  font-weight: 600;
+}
+
+.anno-status--error {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.anno-status--info {
+  color: #001e3c;
+  font-style: italic;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Spinner */
+.anno-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.anno-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #003366;
+  border-radius: 50%;
+  animation: anno-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes anno-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anno-spinner {
+    animation: none;
+    border-top-color: #003366;
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 600px) {
+  .anno-actions {
+    flex-direction: column;
+  }
+
+  .anno-actions button {
+    width: 100%;
+  }
+}
