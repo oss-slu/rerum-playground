@@ -2,3 +2,4 @@ nbproject/
 build.xml
 *.properties
 CLAUDE.md
+node_modules/
