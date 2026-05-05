@@ -1,0 +1,140 @@
+/* Web Annotator page styles */
+
+.annotator-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Form panel */
+.annotator-form-panel {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.annotator-form-panel h3 {
+  margin-top: 0;
+  color: #001e3c;
+}
+
+.annotator-form-panel label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #001e3c;
+}
+
+.annotator-form-panel input,
+.annotator-form-panel textarea,
+.annotator-form-panel select {
+  width: 100%;
+  margin-bottom: 0.4rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  box-sizing: border-box;
+}
+
+.annotator-form-panel textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.annotator-form-panel small {
+  display: block;
+  color: #555;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Preview panel */
+.annotator-preview-panel {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.annotator-preview-panel h3 {
+  margin-top: 0;
+  color: #001e3c;
+}
+
+#annotation-preview {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  white-space: pre;
+  color: #001e3c;
+}
+
+/* Action buttons */
+.annotator-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.action-btn {
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.action-btn:hover:not(:disabled) {
+  background-color: #003366;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Status messages */
+.annotator-status {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  word-break: break-all;
+}
+
+.annotator-status--success {
+  color: #1a5c2e;
+}
+
+.annotator-status--error {
+  color: #c0392b;
+}
+
+/* Focus states */
+.annotator-form-panel input:focus-visible,
+.annotator-form-panel select:focus-visible,
+.annotator-form-panel textarea:focus-visible,
+.action-btn:focus-visible {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+}
+
+/* Responsive: stack panels on small screens */
+@media (max-width: 700px) {
+  .annotator-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Annotator</title>
+  <script src="./js/features/playground.js" type="module"></script>
+  <script src="./js/components/annotatorUI.js" type="module"></script>
+  <link rel="stylesheet" href="./css/playground.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+  <link rel="stylesheet" href="./css/annotator.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest" />
+  <link
+    rel="stylesheet"
+    href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+  />
+</head>
+
+<body>
+  <div id="menu-placeholder"></div>
+
+  <header>
+    <div class="header">
+      <div class="row">
+        <button onclick="openCloseMenu()" aria-label="Toggle Menu">&#9776;</button>
+        <img src="logo.png" alt="Rerum Playground" />
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="placeholder" style="height: 50px;"></div>
+
+    <div id="content">
+      <h2>Web Annotator</h2>
+      <p>
+        Build a <a href="https://www.w3.org/TR/annotation-model/" target="_blank" rel="noopener noreferrer">W3C Web Annotation</a>
+        by filling in the form. The live preview shows the JSON-LD 1.1 object that will be saved to RERUM.
+      </p>
+
+      <div class="annotator-layout">
+        <!-- Form panel -->
+        <section class="annotator-form-panel" aria-label="Annotation form">
+          <h3>Annotation Fields</h3>
+
+          <label for="annotator-body">Body Text <span aria-hidden="true">*</span></label>
+          <textarea
+            id="annotator-body"
+            placeholder="Enter the text of your annotation"
+            aria-describedby="annotator-body-help"
+            aria-required="true"
+          ></textarea>
+          <small id="annotator-body-help">
+            The plain-text content of the annotation (<code>body.value</code> → <code>rdf:value</code>).
+          </small>
+
+          <label for="annotator-target">Target URI <span aria-hidden="true">*</span></label>
+          <input
+            id="annotator-target"
+            type="url"
+            placeholder="https://example.org/resource"
+            aria-describedby="annotator-target-help"
+            aria-required="true"
+          />
+          <small id="annotator-target-help">
+            URI of the resource being annotated (<code>target</code> → <code>oa:hasTarget</code>).
+          </small>
+
+          <label for="annotator-motivation">Motivation</label>
+          <select id="annotator-motivation" aria-describedby="annotator-motivation-help">
+            <option value="commenting">commenting</option>
+            <option value="tagging">tagging</option>
+            <option value="describing">describing</option>
+            <option value="identifying">identifying</option>
+            <option value="classifying">classifying</option>
+          </select>
+          <small id="annotator-motivation-help">
+            Reason for the annotation (<code>motivation</code> → <code>oa:motivatedBy</code>).
+          </small>
+
+          <label for="annotator-language">Language</label>
+          <input
+            id="annotator-language"
+            type="text"
+            value="en"
+            placeholder="en"
+            aria-describedby="annotator-language-help"
+          />
+          <small id="annotator-language-help">
+            BCP47 language tag for the body text (<code>body.language</code> → <code>dc:language</code>).
+          </small>
+
+          <div class="annotator-actions">
+            <button id="annotator-save-btn" class="action-btn" disabled aria-describedby="annotator-save-help">
+              Save to RERUM
+            </button>
+          </div>
+          <small id="annotator-save-help">Fill in Body Text and Target URI to enable saving.</small>
+
+          <div id="annotator-status" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- Preview panel -->
+        <section class="annotator-preview-panel" aria-label="JSON-LD preview">
+          <h3>JSON-LD Preview</h3>
+          <pre id="annotation-preview" aria-label="Live annotation JSON-LD output">{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "type": "Annotation",
+  "motivation": "commenting",
+  "body": {
+    "type": "TextualBody",
+    "value": "",
+    "format": "text/plain",
+    "language": "en"
+  },
+  "target": ""
+}</pre>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+</body>
+</html>
